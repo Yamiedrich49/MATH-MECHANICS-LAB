@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#f7fbfc">
-<title>MATH MECHANICS LAB UI v3</title>
+<title>MATH MECHANICS LAB UI v4</title>
 <style>
 :root{--bg:#f7fbfc;--card:#ffffff;--ink:#173746;--sub:#69818b;--soft:#95acb4;--line:#dbe8ec;--cyan:#00a9c0;--cyan2:#0c8ea2;--pale:#eaf8fa;--red:#eb6b71;--redp:#fff0f0;--blue:#1ea7d0;--bluep:#eef8ff;--ok:#159a8a;--okp:#ecfbf7;--shadow:0 8px 22px rgba(17,60,75,.06);--radius:22px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -116,6 +116,56 @@ svg{width:100%;height:auto;display:block;touch-action:none;user-select:none}
 .hidden{display:none!important}
 @keyframes fade{from{opacity:.35;transform:translateY(5px)}to{opacity:1;transform:none}}
 @media (max-width:360px){.shell{padding-left:12px;padding-right:12px}.title{font-size:22px}.logo{font-size:20px}.hero h1{font-size:25px}.tile{min-height:58px;font-size:24px}.menu-illust{width:74px;height:74px}}
+
+/* UI v4: one uninterrupted interactive board */
+.unified-title{display:flex;align-items:center;gap:11px;margin:0 0 10px}
+.unified-title h3{font-size:16px;letter-spacing:-.035em;margin:0}
+.unified-title small{display:block;font-size:11px;color:var(--sub);line-height:1.5;margin-top:3px}
+.scanboard{max-width:414px;margin:8px auto 4px;touch-action:none;user-select:none;-webkit-user-select:none}
+.scanboard .scan-area{width:100%;max-width:none;grid-template-columns:37px 1fr;grid-template-rows:37px 1fr;gap:7px}
+.scanboard .scan-top,.scanboard .scan-side{gap:5px}
+.scanboard .probe{border-radius:12px;background:#edf9fb;color:var(--cyan2);border:1px solid #d3e9ed;min-height:36px;min-width:0;font-size:16px;touch-action:manipulation;transition:transform .15s,background .2s}
+.scanboard .probe:active{transform:scale(.92)}
+.scanboard .probe.used{background:var(--cyan);color:white;border-color:var(--cyan);font-size:19px}
+.scanboard .probe.prompt{animation:pulsehalo 1.8s ease-in-out infinite}
+.scanboard .answergrid{aspect-ratio:1;border:2px solid #d4e7eb;border-radius:18px;box-shadow:0 10px 26px rgba(28,105,128,.055);background:white}
+.scanboard .scan-cell{display:grid;place-items:center;position:relative;background:white;touch-action:none;border-right:1px solid #e8f0f2;border-bottom:1px solid #e8f0f2}
+.scanboard .scan-cell i{display:block;width:75%;height:75%;border-radius:10px;background:transparent;transition:background .12s,box-shadow .12s}
+.scanboard .scan-cell.on i{background:linear-gradient(145deg,#16bed2,#0298b0);box-shadow:inset 0 2px 5px rgba(255,255,255,.22),0 2px 4px rgba(0,155,177,.14)}
+.scanboard .scan-cell.on::after{content:'';display:block;position:absolute;width:22%;height:22%;border-radius:50%;background:rgba(255,255,255,.85);box-shadow:0 0 0 1px rgba(255,255,255,.45)}
+.scanboard .scan-cell:active{background:#f0fbfc}
+.scan-shape{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:5px}
+.scan-shape .sample-grid{flex:none;width:58px;height:58px}
+.scan-shape .shape-caption{font-size:11px;color:var(--sub);line-height:1.6;flex:1}
+.scan-shape .shape-caption strong{font-size:13px;color:var(--ink)}
+.board-hint{text-align:center;font-size:11px;color:#8aa3ad;line-height:1.5;margin:10px 0}
+.checkarea{display:flex;gap:9px;margin-top:16px}
+.checkarea button{min-height:49px}
+.triad-play{position:relative;overflow:visible}
+.triad-btn-strip{position:relative;height:89px;margin:19px 0 7px}
+.triad-choice{position:absolute;top:0;display:flex;align-items:center;flex-direction:column;gap:4px;transform:translateX(-50%);width:48px}
+.triad-choice .range{font-size:10px;line-height:1;font-weight:750;color:#8da8b1;white-space:nowrap}
+.triad-choice button{border:1px solid #b8e7ef;color:var(--cyan2);font-size:26px;font-weight:850;background:#eaf9fb;border-radius:14px;width:46px;height:50px;display:grid;place-items:center;box-shadow:0 3px 9px rgba(30,127,150,.06);transition:background .12s,transform .12s}
+.triad-choice button:active{transform:scale(.94);background:#cbf0f5}
+.triad-choice.selected button{background:var(--cyan);color:white}
+.triad-range{height:5px;position:absolute;top:-10px;border-radius:8px;background:var(--cyan);opacity:0;pointer-events:none;transition:opacity .14s}
+.triad-range.on{opacity:1}
+.tile{will-change:transform;position:relative;z-index:1}
+.tile.spotlight{border-color:#7ad5e1;background:#e9f9fb;box-shadow:0 0 0 3px #d5f3f7}
+.tile.motion{z-index:3}
+.triad-copy{font-size:12px;color:var(--sub);text-align:center;line-height:1.7;margin:8px 0 0}
+.triad-targets{display:flex;align-items:center;gap:8px;margin-top:13px;font-size:11px;color:var(--soft)}
+.triad-targets .targetrow{flex:1;margin:0}
+.triad-targets b{font-size:10px;color:var(--cyan2)}
+.cut-elite{border:1px solid #cae6ed;border-radius:15px;padding:12px;background:linear-gradient(110deg,#effcfd,#fff);margin:0 0 13px}
+.cut-elite strong{font-size:12px;color:var(--cyan2);letter-spacing:.05em}
+.cut-elite p{font-size:12px;color:var(--ink);line-height:1.55;margin:4px 0 0}
+.cut-strokeline{stroke:#04adc5;stroke-width:4;stroke-linecap:round;stroke-dasharray:4 4;pointer-events:none;filter:drop-shadow(0 1px 3px rgba(0,168,192,.3))}
+.cut-board{touch-action:none!important}
+.cutboard-caption{text-align:center;font-size:11px;line-height:1.7;color:var(--sub);margin-top:9px}
+.fadegame{opacity:.68;pointer-events:none}
+@keyframes pulsehalo{0%,100%{box-shadow:0 0 0 2px rgba(0,169,192,.10)}50%{box-shadow:0 0 0 6px rgba(0,169,192,.20)}}
+@media (prefers-reduced-motion:reduce){.probe.prompt{animation:none}}
 </style>
 </head>
 <body>
@@ -138,13 +188,16 @@ let page=prefs.page||'home', game=prefs.game||'scan', sound=prefs.sound!==false,
 let board={}, audio;
 const app=$('#app');
 const scanDefs=[
- {n:3,shape:[[0,0],[0,1],[1,0],[1,1]],rot:false,target:3,cap:2,title:'かくれた四角を見つけよう',sub:'まず矢印で行・列を調べよう。数字は「その行・列に、形のマスがいくつあるか」。最後は自分の指で形を置いて答える。'},
- {n:4,shape:[[0,0],[0,1],[1,0],[1,1]],rot:false,target:6,cap:4,title:'9か所のどこ？',sub:'2×2の四角がどこかに隠れている。スキャンで集めた情報から、自分で予想して置こう。'},
+ {n:3,shape:[[0,0],[0,1],[1,0],[1,1]],rot:false,target:3,cap:2,title:'かくれた四角を見つけよう',sub:'矢印で数を調べ、そのままマスを塗って形を見つけよう。'},
+ {n:4,shape:[[0,0],[0,1],[1,0],[1,1]],rot:false,target:6,cap:4,title:'9か所のどこ？',sub:'同じ盤面の上で、調べながら形を描こう。'},
  {n:4,shape:[[0,0],[1,0],[2,0],[2,1]],rot:true,target:17,cap:4,title:'L字の向きも考える',sub:'今度はL字。場所だけでなく向きも変わる。'},
  {n:5,shape:[[0,0],[1,0],[2,0],[2,1]],rot:true,target:31,cap:4,title:'48通りからしぼる',sub:'候補はたくさんある。でも調べる回数は4回まで。'}
 ];
 const cutDefs=[
- {title:'1本だけ切ろう',sub:'赤いランプを消し、青いランプは残す。線の上を指でスッとなぞると切れる。',cap:1,nodes:{S:[.11,.53,'s'],A:[.43,.53,'n'],L:[.78,.23,'b'],R:[.80,.78,'r']},edges:[['S','A'],['A','L'],['A','R']]},
+
+ {title:'THE CHOKEPOINT',sub:'赤4個を消して青4個を守る。4回だけ切れる。大きな回り道のどこが急所か、考えてみよう。',cap:4,boss:true,nodes:{S:[.07,.49,'s'],A:[.24,.17,'b'],B:[.22,.49,'b'],C:[.24,.82,'b'],H1:[.44,.17,'n'],H2:[.43,.50,'n'],H3:[.44,.83,'n'],U:[.64,.23,'b'],V:[.64,.73,'n'],R1:[.90,.10,'r'],R2:[.89,.35,'r'],R3:[.91,.59,'r'],R4:[.90,.89,'r']},edges:[['S','A'],['S','B'],['S','C'],['A','H1'],['A','H2'],['B','H1'],['B','H2'],['B','H3'],['C','H2'],['C','H3'],['H1','U'],['H2','U'],['H2','V'],['H3','V'],['U','R1'],['U','R2'],['V','R2'],['V','R3'],['V','R4']]},
+ {title:'THE BLUE TRAP',sub:'今度は青の位置が変わる。5回しか切れない。さっきと同じ場所では、青まで消えてしまう。',cap:5,boss:true,nodes:{S:[.07,.49,'s'],A:[.24,.17,'b'],B:[.22,.49,'b'],C:[.24,.82,'b'],H1:[.44,.17,'n'],H2:[.43,.50,'n'],H3:[.44,.83,'n'],U:[.64,.23,'n'],V:[.64,.73,'b'],R1:[.88,.10,'r'],R2:[.93,.35,'r'],R3:[.93,.62,'r'],R4:[.88,.88,'r'],R5:[.75,.04,'r']},edges:[['S','A'],['S','B'],['S','C'],['A','H1'],['A','H2'],['B','H1'],['B','H2'],['B','H3'],['C','H2'],['C','H3'],['H1','U'],['H2','U'],['H2','V'],['H3','V'],['U','R1'],['U','R2'],['V','R2'],['V','R3'],['V','R4'],['U','R5']]},
+ {title:'1本だけ切ろう',sub:'赤いランプを消し、青いランプは残す。線を指でスッと横切ると切れる。',cap:1,nodes:{S:[.11,.53,'s'],A:[.43,.53,'n'],L:[.78,.23,'b'],R:[.80,.78,'r']},edges:[['S','A'],['A','L'],['A','R']]},
  {title:'回り道がある',sub:'1本切っても別の道からつながってしまう。どこを切ればいい？',cap:2,nodes:{S:[.10,.5,'s'],A:[.48,.22,'b'],B:[.48,.78,'b'],R:[.88,.5,'r']},edges:[['S','A'],['S','B'],['A','R'],['B','R']]},
  {title:'3つの赤を2本で',sub:'2本しか切れない。ネットワーク全体を見て急所を探そう。',cap:2,nodes:{S:[.08,.5,'s'],A:[.31,.26,'b'],B:[.31,.74,'b'],H:[.57,.5,'n'],R1:[.83,.16,'r'],R2:[.92,.5,'r'],R3:[.83,.84,'r']},edges:[['S','A'],['S','B'],['A','H'],['B','H'],['H','R1'],['H','R2'],['H','R3']]},
  {title:'青を守りながら切る',sub:'前と同じように見えても、青いランプの位置が変わると正解も変わる。',cap:3,nodes:{S:[.07,.5,'s'],A:[.26,.24,'b'],B:[.26,.76,'b'],H:[.48,.5,'n'],T:[.69,.5,'b'],R1:[.90,.16,'r'],R2:[.92,.5,'r'],R3:[.90,.84,'r']},edges:[['S','A'],['S','B'],['A','H'],['B','H'],['H','T'],['T','R1'],['T','R2'],['T','R3']]}
@@ -158,7 +211,7 @@ const triadDefs=[
 ];
 const defs={scan:scanDefs,cut:cutDefs,triad:triadDefs};
 
-function save(){localStorage.setItem(storeKey,JSON.stringify({sound,page,game,levels}))}
+function save(){try{localStorage.setItem(storeKey,JSON.stringify({sound,page,game,levels}))}catch{}}
 function beep(type='tap'){if(!sound) return; try{audio ||= new (window.AudioContext||window.webkitAudioContext)(); if(audio.state==='suspended') audio.resume(); const now=audio.currentTime; const notes=type==='win'?[523.25,659.25,783.99,1046.5]:type==='cut'?[280,360]:type==='rotate'?[360,480]:[520]; notes.forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain(),st=now+i*(type==='win'?0.06:0.01);o.type='sine';o.frequency.setValueAtTime(hz,st);g.gain.setValueAtTime(.0001,st);g.gain.exponentialRampToValueAtTime(type==='win'?0.075:0.04,st+.015);g.gain.exponentialRampToValueAtTime(.0001,st+(type==='win'?0.38:0.09)); o.connect(g).connect(audio.destination); o.start(st); o.stop(st+(type==='win'?0.42:0.1));});}catch(e){}}
 function normalize(shape){const minY=Math.min(...shape.map(v=>v[0])), minX=Math.min(...shape.map(v=>v[1])); return shape.map(([y,x])=>[y-minY,x-minX]).sort((a,b)=>a[0]-b[0]||a[1]-b[1]);}
 function scanCandidates(d){
@@ -197,11 +250,10 @@ function footer(){
 function success(){return `<div class="success"><strong>クリア！</strong><div>今のルールで、ちゃんと先読みできた？</div><div class="actions" style="margin-top:10px"><button class="action primary" id="clearNextBtn">次のステージへ</button></div></div>`}
 
 function renderHome(){
-  app.innerHTML=`<div class="page"><div class="hero card"><div class="over">THREE PROTOTYPES</div><h1>まずは、<br>何をするゲームかが
-すぐ伝わるように。</h1><p>今回は、3つの候補を<strong>UI重視</strong>で磨いた版です。まだ最終評価ではなく、まずは「何をさせられているのか分からない」をなくすことを目標にしています。</p></div>
-  ${gameCard('scan','01','SCAN GRID','矢印で行・列を調べて、最後は自分で形を置いて答える。','調べる → 予想する → 指で決める','<svg viewBox="0 0 80 80"><g fill="none" stroke="#cce9ee"><rect x="12" y="12" width="56" height="56" rx="12" fill="#fff"/><path d="M30 12v56M49 12v56M12 30h56M12 49h56"/></g><rect x="31" y="31" width="18" height="18" rx="5" fill="#00a9c0"/><path d="M30 5l-8 8h5v7h6v-7h5zM50 5l-8 8h5v7h6v-7h5z" fill="#94dfe9"/></svg>')}
-  ${gameCard('cut','02','CUT CIRCUIT','線をなぞって切り、赤いランプを消しながら青いランプを守る。','タップではなく、指でスパッと切る','<svg viewBox="0 0 80 80"><path d="M12 42h20L44 25h24" stroke="#9cc3cd" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="13" cy="42" r="8" fill="#ffd86f"/><circle cx="44" cy="25" r="8" fill="#4aa3bf"/><circle cx="68" cy="25" r="8" fill="#eb6b71"/><path d="M28 18l11 11M39 18L28 29" stroke="#00a9c0" stroke-width="4" stroke-linecap="round"/></svg>')}
-  ${gameCard('triad','03','TRIAD SHIFT','3枚ずつ右へ回す。どの3枚が動いて、どう変わるかを見ながら押す。','押す前に「前 → 後」の変化を見せる','<svg viewBox="0 0 80 80"><rect x="8" y="22" width="18" height="18" rx="6" fill="#eef9fb" stroke="#cde9ee"/><rect x="31" y="22" width="18" height="18" rx="6" fill="#eef9fb" stroke="#cde9ee"/><rect x="54" y="22" width="18" height="18" rx="6" fill="#eef9fb" stroke="#cde9ee"/><text x="17" y="35" font-size="10" font-weight="900" text-anchor="middle" fill="#173746">2</text><text x="40" y="35" font-size="10" font-weight="900" text-anchor="middle" fill="#173746">3</text><text x="63" y="35" font-size="10" font-weight="900" text-anchor="middle" fill="#173746">1</text><path d="M17 53c8 7 38 7 46 0" stroke="#00a9c0" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M59 47l8 6-8 6" fill="none" stroke="#00a9c0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>')}
+  app.innerHTML=`<div class="page"><div class="hero card"><div class="over">THREE PROTOTYPES</div><h1>さわって、<br>発見する。</h1><p>3つの数学パズルの「面白さの核」を研究中。まずは、直感的に遊べることから。</p></div>
+  ${gameCard('scan','01','SCAN GRID','同じ盤面で、スキャンも答えも。','矢印で調べる・マスを塗る','<svg viewBox="0 0 80 80"><g fill="none" stroke="#cce9ee"><rect x="12" y="12" width="56" height="56" rx="12" fill="#fff"/><path d="M30 12v56M49 12v56M12 30h56M12 49h56"/></g><rect x="31" y="31" width="18" height="18" rx="5" fill="#00a9c0"/><path d="M30 5l-8 8h5v7h6v-7h5zM50 5l-8 8h5v7h6v-7h5z" fill="#94dfe9"/></svg>')}
+  ${gameCard('cut','02','CUT CIRCUIT','青を守りながら赤を消す。最初から上級の勝負へ。','まずは全体の急所を見抜く','<svg viewBox="0 0 80 80"><path d="M12 42h20L44 25h24" stroke="#9cc3cd" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="13" cy="42" r="8" fill="#ffd86f"/><circle cx="44" cy="25" r="8" fill="#4aa3bf"/><circle cx="68" cy="25" r="8" fill="#eb6b71"/><path d="M28 18l11 11M39 18L28 29" stroke="#00a9c0" stroke-width="4" stroke-linecap="round"/></svg>')}
+  ${gameCard('triad','03','TRIAD SHIFT','3枚ずつ右へ回して順番に並べる。','範囲を示す矢印から動かそう','<svg viewBox="0 0 80 80"><rect x="8" y="22" width="18" height="18" rx="6" fill="#eef9fb" stroke="#cde9ee"/><rect x="31" y="22" width="18" height="18" rx="6" fill="#eef9fb" stroke="#cde9ee"/><rect x="54" y="22" width="18" height="18" rx="6" fill="#eef9fb" stroke="#cde9ee"/><text x="17" y="35" font-size="10" font-weight="900" text-anchor="middle" fill="#173746">2</text><text x="40" y="35" font-size="10" font-weight="900" text-anchor="middle" fill="#173746">3</text><text x="63" y="35" font-size="10" font-weight="900" text-anchor="middle" fill="#173746">1</text><path d="M17 53c8 7 38 7 46 0" stroke="#00a9c0" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M59 47l8 6-8 6" fill="none" stroke="#00a9c0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>')}
   <div class="small">これは「ゲームの核」を判断するための試遊研究版です。<br>まだ採用決定ではありません。</div></div>`;
   $$('[data-open]').forEach(b=>b.onclick=()=>{beep(); openGame(b.dataset.open)});
 }
@@ -209,27 +261,21 @@ function gameCard(id,no,name,desc,tip,svg){return `<button class="menu-item card
 
 function scanSample(shape){const n=Math.max(...shape.map(v=>v[0]),...shape.map(v=>v[1]))+1; let cells=''; for(let y=0;y<n;y++) for(let x=0;x<n;x++){ const on=shape.some(([yy,xx])=>yy===y&&xx===x); cells+=`<div class="${on?'on':''}"></div>`; } return `<div class="sample-grid" style="grid-template-columns:repeat(${n},1fr);grid-template-rows:repeat(${n},1fr)">${cells}</div>`;}
 function scanView(){
-  const d=scanDefs[levels.scan], n=d.n; const heat=[]; for(let y=0;y<n;y++)for(let x=0;x<n;x++){let c=0; for(const sh of board.remain) if(sh.some(([yy,xx])=>yy===y&&xx===x)) c++; heat.push(c);} 
-  const top=Array.from({length:n},(_,i)=>{const used=board.used.find(u=>u.ax==='c'&&u.i===i); return `<button class="probe ${used?'used':''} ${!used&&i===0&&board.used.length===0?'prompt':''}" ${used?'disabled':''} data-scan="c:${i}">${used?used.count:'↓'}</button>`}).join('');
-  const side=Array.from({length:n},(_,i)=>{const used=board.used.find(u=>u.ax==='r'&&u.i===i); return `<button class="probe ${used?'used':''} ${!used&&i===0&&board.used.length===0?'prompt':''}" ${used?'disabled':''} data-scan="r:${i}">${used?used.count:'→'}</button>`}).join('');
-  const heatCells=heat.map(v=>{const opacity=v?Math.min(.85,.10+.72*v/board.remain.length):0; return `<div class="cell"><div class="ghost" style="opacity:${opacity}"></div></div>`}).join('');
-  const guessCells=Array.from({length:n*n},(_,idx)=>{const y=Math.floor(idx/n),x=idx%n,key=`${y},${x}`;const on=board.guess.has(key); return `<button class="toggle ${on?'on':''}" data-cell="${y},${x}"></button>`}).join('');
-  let feedback=`<div class="feedback info">まずは矢印で<strong>行</strong>か<strong>列</strong>を調べよう。数字が出たら、その情報を手がかりに、下の予想グリッドで自分の答えを作る。</div>`;
-  if(board.feedback==='wrong') feedback=`<div class="feedback ng">まだちがうみたい。もう少し調べるか、予想を置きなおしてみよう。</div>`;
-  if(board.won) feedback=`<div class="feedback ok">ぴったり！ スキャンした情報から、自分で形を当てられた。</div>`;
-  return `<div class="stagebar"><strong>STAGE ${levels.scan+1} / ${scanDefs.length}</strong><span>候補 ${board.remain.length} 通り ・ スキャン ${board.used.length} / ${d.cap}</span></div>
-    <div class="boardcard card">
-      <div class="section"><div class="step">STEP 1</div><h3>矢印で、行や列を調べる</h3><p>押した行・列の中に、形のマスがいくつあるか分かる。</p>
-        <div class="shape-sample">${scanSample(normalize(d.shape))}<div class="notice">今回の形はこれ。<br>${d.rot?'向きも変わる。':'向きは固定。'}</div></div>
-        <div class="meter"><div class="badge">残り候補 ${board.remain.length}</div><div class="badge">スキャン残り ${d.cap-board.used.length}</div></div>
-        <div class="grid-wrap"><div class="scan-area"><div class="scan-top" style="grid-template-columns:repeat(${n},1fr)">${top}</div><div class="scan-side" style="grid-template-rows:repeat(${n},1fr)">${side}</div><div class="heatgrid" style="grid-template-columns:repeat(${n},1fr);grid-template-rows:repeat(${n},1fr)">${heatCells}</div></div></div>
-      </div>
-      <div class="section"><div class="step">STEP 2</div><h3>自分で形を置いて、答える</h3><p>下のマスをタップして、隠れていると思う場所に形を置こう。</p>
-        <div class="answergrid" style="grid-template-columns:repeat(${n},1fr);grid-template-rows:repeat(${n},1fr)">${guessCells}</div>
-        <div class="actions"><button class="action" id="clearGuessBtn">予想を消す</button><button class="action primary" id="checkGuessBtn">これで決定</button></div>
-        ${feedback}
-      </div>
-    </div>${board.won?success():''}${footer()}`;
+  const d=scanDefs[levels.scan], n=d.n;
+  const top=Array.from({length:n},(_,i)=>{const u=board.used.find(x=>x.ax==='c'&&x.i===i);return `<button class="probe ${u?'used':''} ${!u&&i===0&&!board.used.length?'prompt':''}" ${u||board.used.length>=d.cap||board.won?'disabled':''} data-scan="c:${i}" aria-label="${i+1}列をスキャン">${u?u.count:'↓'}</button>`}).join('');
+  const side=Array.from({length:n},(_,i)=>{const u=board.used.find(x=>x.ax==='r'&&x.i===i);return `<button class="probe ${u?'used':''} ${!u&&i===0&&!board.used.length?'prompt':''}" ${u||board.used.length>=d.cap||board.won?'disabled':''} data-scan="r:${i}" aria-label="${i+1}行をスキャン">${u?u.count:'→'}</button>`}).join('');
+  const cells=Array.from({length:n*n},(_,idx)=>{const y=Math.floor(idx/n),x=idx%n,key=y+','+x;const active=board.guess.has(key);return `<div role="button" tabindex="0" aria-pressed="${active}" aria-label="${y+1}行${x+1}列" class="scan-cell ${active?'on':''}" data-cell="${key}"><i></i></div>`}).join('');
+  let feedback=''; if(board.feedback==='wrong')feedback='<div class="feedback ng">まだ一致しないみたい。数字を見直して、形を動かしてみよう。</div>';
+  if(board.won)feedback='<div class="feedback ok">見つけた！ 自分で形を完成させた。</div>';
+  const sample=scanSample(normalize(d.shape));
+  return `<div class="stagebar"><strong>STAGE ${levels.scan+1} / ${scanDefs.length}</strong><span>残りのスキャン ${d.cap-board.used.length}</span></div>
+  <div class="boardcard card">
+    <div class="scan-shape">${sample}<div class="shape-caption"><strong>この形が隠れている。</strong><br>${d.rot?'回転することもある。':'向きはこのまま。'}<br>矢印の数字は、その行・列にあるマスの数。</div></div>
+    <div class="scanboard"><div class="scan-area"><div class="scan-top" style="grid-template-columns:repeat(${n},1fr)">${top}</div><div class="scan-side" style="grid-template-rows:repeat(${n},1fr)">${side}</div><div class="answergrid" id="paintGrid" style="grid-template-columns:repeat(${n},1fr);grid-template-rows:repeat(${n},1fr)">${cells}</div></div></div>
+    <div class="board-hint">矢印で調べる　・　マスを指で塗る</div>
+    <div class="checkarea"><button class="action" id="clearGuessBtn">消す</button><button class="action primary" id="checkGuessBtn" ${board.won?'disabled':''}>この形で答える</button></div>
+    ${feedback}
+  </div>${board.won?success():''}${footer()}`;
 }
 function cutPower(d){const adj={}; d.edges.forEach(([a,b],i)=>{if(board.cuts.has(i)) return; (adj[a]??=[]).push(b); (adj[b]??=[]).push(a)}); const seen=new Set(['S']), q=['S']; while(q.length){ const cur=q.pop(); for(const nxt of (adj[cur]||[])) if(!seen.has(nxt)){seen.add(nxt);q.push(nxt)} } return seen; }
 function cutView(){
@@ -237,15 +283,16 @@ function cutView(){
   const svgW=400, svgH=300;
   const edges=d.edges.map(([a,b],i)=>{const p=d.nodes[a], q=d.nodes[b]; const x1=p[0]*svgW, y1=p[1]*svgH, x2=q[0]*svgW, y2=q[1]*svgH; return `<g data-edgeg="${i}"><line class="edge ${board.cuts.has(i)?'cut':''}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"></line><line class="edge-hit" data-edge="${i}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"></line></g>`}).join('');
   const nodes=Object.entries(d.nodes).map(([id,[x,y,t]])=>{const on=live.has(id); return `<g><circle class="node ${t} ${on?'on':'off'}" cx="${x*svgW}" cy="${y*svgH}" r="18"></circle><text class="nlabel" x="${x*svgW}" y="${y*svgH+1}">${t==='s'?'⚡':t==='r'?'赤':t==='b'?'青':'・'}</text><text class="nname" x="${x*svgW}" y="${y*svgH+34}">${id==='S'?'電源':''}</text></g>`}).join('');
-  let feedback=`<div class="feedback info">線の上を指でスッとなぞると切れる。<strong>赤は消す</strong>、<strong>青は守る</strong>。</div>`;
+  let feedback=`<div class="feedback info">線を指でスッと横切ると切れる。<strong>赤は消す</strong>、<strong>青は守る</strong>。</div>`;
   if(board.feedback==='limit') feedback=`<div class="feedback ng">もう切れる本数の上限です。やり直すか、1手もどしてみよう。</div>`;
   if(board.won) feedback=`<div class="feedback ok">条件達成！ 赤だけ消して、青は守れた。</div>`;
-  return `<div class="stagebar"><strong>STAGE ${levels.cut+1} / ${cutDefs.length}</strong><span>切った本数 ${board.cuts.size} / ${d.cap}</span></div>
+  return `<div class="stagebar"><strong>${d.boss?'EXPERT':'STAGE'} ${levels.cut+1} / ${cutDefs.length}</strong><span>切った本数 ${board.cuts.size} / ${d.cap}</span></div>
     <div class="boardcard card">
-      <div class="section"><div class="step">GOAL</div><h3>赤いランプを消して、青いランプを守る</h3><p>タップではなく、<strong>線を横切るようにスワイプ</strong>して切る。切った線は「1手もどす」や「リセット」で戻せる。</p>
+      ${d.boss?'<div class="cut-elite"><strong>EXPERT CHALLENGE</strong><p>全体を眺めて、切るべき急所を見つけよう。<br>青を守ったまま、全部の赤を消す。</p></div>':''}
+      <div class="section"><div class="step">GOAL</div><h3>赤を消して、青を守る</h3><p>線を<strong>横切るように指でスッと切る</strong>。</p>
         <div class="meter"><div class="badge red">赤 = 消す</div><div class="badge blue">青 = 守る</div><div class="badge">残り ${d.cap-board.cuts.size} 本</div></div>
-        <div class="svgwrap"><svg id="cutSvg" viewBox="0 0 ${svgW} ${svgH}">${edges}${nodes}</svg></div>
-        <div class="cutguide"><div class="scissor">✂︎</div><div>線の上を指でスッとなぞると切れる。<br>今のステージでは <strong>${d.cap}本まで</strong> 切ってよい。</div></div>
+        <div class="svgwrap"><svg id="cutSvg" class="cut-board" viewBox="0 0 ${svgW} ${svgH}">${edges}${nodes}<line id="cutStrokeline" class="cut-strokeline" x1="0" y1="0" x2="0" y2="0" style="opacity:0" /></svg></div>
+        <div class="cutguide"><div class="scissor">✂︎</div><div>線を指でスッと横切ると切れる。<br>今のステージでは <strong>${d.cap}本まで</strong> 切ってよい。</div></div>
         ${feedback}
         <div class="actions"><button class="action" id="undoCutBtn" ${board.history.length?'':'disabled'}>1手もどす</button><button class="action" id="resetCutBtn">最初から</button></div>
       </div>
@@ -253,27 +300,24 @@ function cutView(){
 }
 function triadView(){
   const d=triadDefs[levels.triad], n=board.arr.length, groups=n-2;
-  const tiles=board.arr.map((v,i)=>`<div class="tile ${board.lastGroup!==null && i>=board.lastGroup && i<board.lastGroup+3?'mark':''}">${v}</div>`).join('');
+  const tiles=board.arr.map((v,i)=>`<div class="tile ${board.lastGroup!==null&&i>=board.lastGroup&&i<board.lastGroup+3?'mark':''}" data-tile="${i}">${v}</div>`).join('');
   const target=Array.from({length:n},(_,i)=>`<div class="targetcell">${i+1}</div>`).join('');
-  const controls=Array.from({length:groups},(_,i)=>{const a=board.arr[i],b=board.arr[i+1],c=board.arr[i+2]; return `<div class="group"><div class="group-top">左から ${i+1} 〜 ${i+3} 番目の3枚が動く</div><div class="group-preview"><div class="mini"><span class="mtile">${a}</span><span class="mtile">${b}</span><span class="mtile">${c}</span></div><div style="color:var(--cyan2);font-weight:900">→</div><div class="mini"><span class="mtile">${c}</span><span class="mtile">${a}</span><span class="mtile">${b}</span></div></div><button data-triad="${i}">この3枚を右へ1マス回す</button></div>`}).join('');
-  let feedback=`<div class="feedback info">ボタンを押す前に、<strong>どの3枚が動くか</strong>と、<strong>押した後どう並ぶか</strong>を下のプレビューで確認しよう。</div>`;
-  if(board.won) feedback=`<div class="feedback ok">きれいに並んだ！ どの3枚を選ぶかが分かってくると、見え方が変わる。</div>`;
-  return `<div class="stagebar"><strong>STAGE ${levels.triad+1} / ${triadDefs.length}</strong><span>手数 ${board.history.length} / ${d.steps}</span></div>
-    <div class="boardcard card">
-      <div class="section"><div class="step">NOW</div><h3>今のならび</h3><p>動くのは毎回<strong>3枚だけ</strong>。押すボタンごとに、動く範囲が決まっている。</p>
-        <div class="tiles-wrap"><div class="tiles" style="grid-template-columns:repeat(${n},1fr)">${tiles}</div><div class="targetrow" style="grid-template-columns:repeat(${n},1fr)">${target}</div></div>
-        ${feedback}
-        <div class="actions"><button class="action" id="undoTriadBtn" ${board.history.length?'':'disabled'}>1手もどす</button><button class="action" id="resetTriadBtn">最初から</button></div>
-      </div>
-      <div class="section"><div class="step">MOVE</div><h3>どの3枚を右へ回す？</h3><p>各ボタンの上にある「前 → 後」を見れば、押した瞬間にどう変わるか分かる。</p><div class="triad-controls">${controls}</div></div>
-    </div>${board.won?success():''}${footer()}`;
+  const choices=Array.from({length:groups},(_,i)=>`<div class="triad-choice" data-choice="${i}" style="left:${(i+1.5)/n*100}%"><span class="range">${i+1}–${i+3}</span><button data-triad="${i}" aria-label="${i+1}番目から3枚を右に回す">↻</button></div>`).join('');
+  let feedback='';if(board.won)feedback='<div class="feedback ok">きれいに並んだ！</div>';
+  return `<div class="stagebar"><strong>STAGE ${levels.triad+1} / ${triadDefs.length}</strong><span>使った手 ${board.history.length} / ${d.steps}</span></div>
+  <div class="boardcard card"><div class="section"><div class="step">NOW</div><h3>数字を順番に並べる</h3><p>矢印の上に並んだ<strong>3枚だけ</strong>が、右へ1つずつ回る。</p>
+    <div class="triad-play" id="triadPlay"><div class="tiles" id="triadTiles" style="grid-template-columns:repeat(${n},1fr)">${tiles}</div>
+    <div class="triad-targets"><b>GOAL</b><div class="targetrow" style="grid-template-columns:repeat(${n},1fr)">${target}</div></div>
+    <div class="triad-btn-strip" style="--groups:${groups}">${choices}</div></div>
+    <div class="triad-copy">どの3枚が動くか、矢印の上に指を置いて確かめよう。</div>
+    ${feedback}<div class="actions"><button class="action" id="undoTriadBtn" ${board.history.length?'':'disabled'}>↶ 1手もどす</button><button class="action" id="resetTriadBtn">↺ 最初から</button></div>
+  </div></div>${board.won?success():''}${footer()}`;
 }
-
 function dialog(){
   const map={
-    scan:['SCAN GRID','矢印で行や列を調べて、その情報から最後は自分で形を置いて当てるゲーム。','<strong>1.</strong> 矢印を押す → 数字が出る<br><strong>2.</strong> 候補の濃さを見る<br><strong>3.</strong> 下の予想グリッドで自分の答えを作る'],
-    cut:['CUT CIRCUIT','赤いランプだけを消し、青いランプは残すゲーム。線はタップではなく、指でスパッと切る。','<strong>1.</strong> 線の上をスワイプする<br><strong>2.</strong> 電気の流れが変わる<br><strong>3.</strong> 赤は消灯、青は点灯のままを目指す'],
-    triad:['TRIAD SHIFT','3枚だけを右に回して、数字を順番どおりに並べるゲーム。','<strong>2 3 1</strong> に対応するボタンを押すと<br><strong>1 2 3</strong> に変わる。<br>どの3枚が動くかを、押す前に必ず見る']
+    scan:['SCAN GRID','矢印で行・列のマス数を調べ、同じ盤面に隠れた形を描こう。','<strong>矢印</strong>を押すと、その行・列にある形のマス数が分かる。<br><strong>マス</strong>を指でなぞって塗る。<br>最後に「この形で答える」。'],
+    cut:['CUT CIRCUIT','赤いランプを消し、青いランプを守る。切れる本数には制限がある。','<strong>線を横切る</strong>ように指を滑らせて切る。<br>タップだけでは切れない。<br>最初から上級問題に挑戦できる。'],
+    triad:['TRIAD SHIFT','矢印を押すと、その上に並んだ3枚だけが右へ循環移動する。','数字が移動するアニメーションを見ながら、どの矢印を押すか考えよう。']
   };
   const d=map[game];
   document.body.insertAdjacentHTML('beforeend',`<div class="overlay" id="ov"><div class="dialog"><div class="over">HOW TO PLAY</div><h2>${d[0]}</h2><p>${d[1]}</p><div class="demo">${d[2]}</div><button id="closeOv">わかった！</button></div></div>`);
@@ -287,34 +331,74 @@ function render(){soundIcon(); if(page==='home'){renderHome(); return;} const d=
 
 function bindScan(){
   const d=scanDefs[levels.scan];
-  $$('[data-scan]',app).forEach(b=>b.onclick=()=>{const [ax,iStr]=b.dataset.scan.split(':'), i=+iStr; const count=countIn(board.secret,ax,i); board.remain=board.remain.filter(s=>countIn(s,ax,i)===count); board.used.push({ax,i,count}); board.feedback=null; beep(); render();});
-  $$('[data-cell]',app).forEach(b=>b.onclick=()=>{const key=b.dataset.cell; board.guess.has(key)?board.guess.delete(key):board.guess.add(key); beep('tap'); render();});
-  $('#clearGuessBtn').onclick=()=>{board.guess.clear(); board.feedback=null; beep(); render();};
-  $('#checkGuessBtn').onclick=()=>{const guess=[...board.guess].map(s=>s.split(',').map(Number)); if(shapeKey(guess)===shapeKey(board.secret)){board.won=true; board.feedback='ok'; beep('win');} else {board.feedback='wrong'; beep('tap');} render();};
+  $$('[data-scan]',app).forEach(b=>b.onclick=()=>{if(board.won||board.used.length>=d.cap)return;const [ax,iStr]=b.dataset.scan.split(':'),i=+iStr;if(board.used.some(u=>u.ax===ax&&u.i===i))return;const count=countIn(board.secret,ax,i);board.remain=board.remain.filter(s=>countIn(s,ax,i)===count);board.used.push({ax,i,count});board.feedback=null;beep();render()});
+  const grid=$('#paintGrid'); let dragging=false, drawValue=true, drawn=new Set();
+  const apply=(el)=>{if(!el||!el.classList||!el.classList.contains('scan-cell')||board.won)return;
+    const key=el.dataset.cell;if(drawn.has(key))return;drawn.add(key);
+    if(drawValue) board.guess.add(key);else board.guess.delete(key);
+    el.classList.toggle('on',drawValue);el.setAttribute('aria-pressed',String(drawValue));board.feedback=null;
+  };
+  grid.addEventListener('pointerdown',e=>{const el=e.target.closest('[data-cell]');if(!el||board.won)return;drawValue=!board.guess.has(el.dataset.cell);dragging=true;drawn.clear();apply(el);beep();grid.setPointerCapture?.(e.pointerId);e.preventDefault()});
+  grid.addEventListener('pointermove',e=>{if(!dragging)return;const el=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-cell]');if(el&&grid.contains(el))apply(el);e.preventDefault()});
+  const finish=()=>{if(!dragging)return;dragging=false;drawn.clear();render()};
+  grid.addEventListener('pointerup',finish);grid.addEventListener('pointercancel',finish);grid.addEventListener('lostpointercapture',()=>{if(dragging)finish()});
+  grid.addEventListener('keydown',e=>{const el=e.target.closest('[data-cell]');if(el&&(e.key==='Enter'||e.key===' ')){drawValue=!board.guess.has(el.dataset.cell);drawn.clear();apply(el);beep();render();e.preventDefault()}});
+  $('#clearGuessBtn').onclick=()=>{board.guess.clear();board.feedback=null;beep();render()};
+  $('#checkGuessBtn').onclick=()=>{const guess=[...board.guess].map(s=>s.split(',').map(Number));if(shapeKey(guess)===shapeKey(board.secret)){board.won=true;board.feedback='ok';beep('win')}else{board.feedback='wrong';beep()}render()};
 }
 function bindCut(){
-  $('#undoCutBtn').onclick=()=>{if(!board.history.length) return; board.cuts=board.history.pop(); board.feedback=null; beep(); render();};
-  $('#resetCutBtn').onclick=()=>{board.cuts.clear(); board.history=[]; board.won=false; board.feedback=null; beep(); render();};
-  const svg=$('#cutSvg');
-  const d=cutDefs[levels.cut];
-  const edgeData=d.edges.map(([a,b],i)=>{const p=d.nodes[a],q=d.nodes[b]; return {i,x1:p[0]*400,y1:p[1]*300,x2:q[0]*400,y2:q[1]*300};});
-  let active=false, doneInStroke=new Set();
-  const pt=(e)=>{const r=svg.getBoundingClientRect(); const touch=e.touches?e.touches[0]:e; return {x:(touch.clientX-r.left)*(400/r.width), y:(touch.clientY-r.top)*(300/r.height)};};
-  const dist=(p,e)=>{const A=p.x-e.x1, B=p.y-e.y1, C=e.x2-e.x1, D=e.y2-e.y1; const dot=A*C+B*D, len=C*C+D*D; let t=len?dot/len:0; t=Math.max(0,Math.min(1,t)); const x=e.x1+t*C, y=e.y1+t*D; return Math.hypot(p.x-x,p.y-y);};
-  function tryCut(p){for(const ed of edgeData){ if(doneInStroke.has(ed.i) || board.cuts.has(ed.i)) continue; if(board.cuts.size>=d.cap){ board.feedback='limit'; beep(); render(); return true; } if(dist(p,ed)<16){ board.history.push(new Set(board.cuts)); board.cuts.add(ed.i); doneInStroke.add(ed.i); const live=cutPower(d); board.won=Object.entries(d.nodes).every(([id,v])=> v[2]==='r' ? !live.has(id) : v[2]==='b' ? live.has(id) : true); board.feedback=null; beep(board.won?'win':'cut'); render(); return true; } } return false; }
-  const start=(e)=>{active=true; doneInStroke=new Set(); tryCut(pt(e)); e.preventDefault();};
-  const move=(e)=>{if(!active) return; tryCut(pt(e)); e.preventDefault();};
-  const end=()=>{active=false; doneInStroke.clear();};
-  svg.addEventListener('mousedown',start); svg.addEventListener('mousemove',move); window.addEventListener('mouseup',end,{once:true});
-  svg.addEventListener('touchstart',start,{passive:false}); svg.addEventListener('touchmove',move,{passive:false}); window.addEventListener('touchend',end,{once:true});
+  $('#undoCutBtn').onclick=()=>{if(!board.history.length)return;board.cuts=board.history.pop();board.won=false;board.feedback=null;beep();render()};
+  $('#resetCutBtn').onclick=()=>{board.cuts.clear();board.history=[];board.won=false;board.feedback=null;beep();render()};
+  const svg=$('#cutSvg'), d=cutDefs[levels.cut],blade=$('#cutStrokeline');
+  const edges=d.edges.map(([a,b],i)=>({i,p:{x:d.nodes[a][0]*400,y:d.nodes[a][1]*300},q:{x:d.nodes[b][0]*400,y:d.nodes[b][1]*300}}));
+  let tracking=false,start=null,current=null,pid=null;
+  const point=e=>{const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const mat=svg.getScreenCTM();return mat?pt.matrixTransform(mat.inverse()):{x:0,y:0}};
+  const cross=(a,b,c,d)=>{const rx=b.x-a.x,ry=b.y-a.y,sx=d.x-c.x,sy=d.y-c.y,det=rx*sy-ry*sx;if(Math.abs(det)<1e-8)return false;const ux=c.x-a.x,uy=c.y-a.y,t=(ux*sy-uy*sx)/det,u=(ux*ry-uy*rx)/det;return t>0&&t<1&&u>.12&&u<.88};
+  svg.addEventListener('pointerdown',e=>{if(board.won||tracking)return;tracking=true;pid=e.pointerId;start=point(e);current=start;blade.setAttribute('x1',start.x);blade.setAttribute('y1',start.y);blade.setAttribute('x2',start.x);blade.setAttribute('y2',start.y);blade.style.opacity='1';svg.setPointerCapture?.(pid);e.preventDefault()});
+  svg.addEventListener('pointermove',e=>{if(!tracking||e.pointerId!==pid)return;current=point(e);blade.setAttribute('x2',current.x);blade.setAttribute('y2',current.y);e.preventDefault()});
+  const end=e=>{if(!tracking||e.pointerId!==pid)return;tracking=false;blade.style.opacity='0';const finish=point(e);const distance=Math.hypot(finish.x-start.x,finish.y-start.y);if(e.type==='pointercancel'||distance<18)return;
+    const intersect=edges.find(x=>!board.cuts.has(x.i)&&cross(start,finish,x.p,x.q));
+    if(!intersect)return;
+    if(board.cuts.size>=d.cap){board.feedback='limit';beep();render();return}
+    board.history.push(new Set(board.cuts));board.cuts.add(intersect.i);const live=cutPower(d);
+    board.won=Object.entries(d.nodes).every(([id,v])=>v[2]==='r'?!live.has(id):v[2]==='b'?live.has(id):true);
+    board.feedback=null;beep(board.won?'win':'cut');render();
+  };
+  svg.addEventListener('pointerup',end);svg.addEventListener('pointercancel',end);
 }
 function bindTriad(){
-  const d=triadDefs[levels.triad];
-  $('#undoTriadBtn').onclick=()=>{if(!board.history.length) return; board.arr=board.history.pop(); board.lastGroup=null; board.won=false; beep(); render();};
-  $('#resetTriadBtn').onclick=()=>{board.arr=d.start.slice(); board.history=[]; board.lastGroup=null; board.won=false; beep(); render();};
-  $$('[data-triad]',app).forEach(b=>b.onclick=()=>{const i=+b.dataset.triad; if(board.history.length>=d.steps || board.won) return; board.history.push(board.arr.slice()); const [a,c,e]=board.arr.slice(i,i+3); board.arr.splice(i,3,e,a,c); board.lastGroup=i; board.won=board.arr.every((v,idx)=>v===idx+1); beep(board.won?'win':'rotate'); render();});
+  const d=triadDefs[levels.triad];let moving=false;
+  $('#undoTriadBtn').onclick=()=>{if(!board.history.length||moving)return;board.arr=board.history.pop();board.lastGroup=null;board.won=false;beep();render()};
+  $('#resetTriadBtn').onclick=()=>{if(moving)return;board.arr=d.start.slice();board.history=[];board.lastGroup=null;board.won=false;beep();render()};
+  const tiles=$$('#triadTiles .tile',app);
+  $$('[data-triad]',app).forEach(btn=>{
+    const index=+btn.dataset.triad;
+    const show=on=>{tiles.forEach((el,i)=>el.classList.toggle('spotlight',!!on&&i>=index&&i<index+3));btn.parentElement.classList.toggle('selected',!!on)};
+    btn.addEventListener('pointerdown',()=>show(true));btn.addEventListener('pointerleave',()=>show(false));btn.addEventListener('pointerup',()=>show(false));
+    btn.addEventListener('focus',()=>show(true));btn.addEventListener('blur',()=>show(false));
+    btn.addEventListener('click',async()=>{
+      if(moving||board.history.length>=d.steps||board.won)return;
+      moving=true;const original=board.arr.slice();const triple=tiles.slice(index,index+3);const rects=triple.map(el=>el.getBoundingClientRect());
+      const dx1=rects[1].left-rects[0].left,dx2=rects[2].left-rects[1].left,dxBack=rects[0].left-rects[2].left;
+      const duration=480;
+      beep('rotate');
+      const canAnimate=typeof triple[0].animate==='function'&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(canAnimate){
+        const animations=triple.map((el,i)=>{
+          el.classList.add('motion');
+          const dx=i===0?dx1:i===1?dx2:dxBack;
+          const curve=i===2?-16:-3;
+          return el.animate([{transform:'translate(0,0) scale(1)',offset:0},{transform:`translate(${dx*.53}px,${curve}px) scale(${i===2?.9:1})`,offset:.53},{transform:`translate(${dx}px,0px) scale(1)`,offset:1}],{duration,easing:'cubic-bezier(.18,.75,.21,1)',fill:'forwards'});
+        });
+        try{await Promise.all(animations.map(a=>a.finished))}catch{}
+        animations.forEach(a=>a.cancel());
+      }
+      board.history.push(original);const [a,b,c]=original.slice(index,index+3);board.arr.splice(index,3,c,a,b);board.lastGroup=index;
+      board.won=board.arr.every((v,j)=>v===j+1);
+      moving=false;if(board.won)beep('win');render();
+    });
+  });
 }
-
 $('#soundBtn').onclick=()=>{sound=!sound; save(); soundIcon(); if(sound) beep();};
 init(); render();
 })();
