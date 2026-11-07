@@ -4,67 +4,320 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#f7fbfc">
-<title>MATH MECHANICS LAB — Play to discover</title>
+<title>MATH MECHANICS LAB UI v3</title>
 <style>
-:root{--ink:#153645;--sub:#647f8a;--soft:#91a7ae;--cyan:#00a9c0;--cyan-deep:#008ca3;--pale:#e9f8fa;--line:#deebed;--bg:#f7fbfc;--white:#fff;--red:#eb686e;--red-pale:#fff0f0;--ok:#159d8e;--radius:23px}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html{background:var(--bg)}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none;min-height:100svh}button{font:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:3px solid #6fe5f3;outline-offset:2px}button:disabled{cursor:default} .shell{width:100%;max-width:510px;margin:auto;padding:calc(env(safe-area-inset-top) + 18px) 17px calc(env(safe-area-inset-bottom) + 30px)}
-.head{display:flex;align-items:center;gap:12px;margin-bottom:20px}.brand{flex:1;min-width:0}.brand-over{font-size:10px;letter-spacing:.23em;font-weight:850;color:var(--cyan-deep)}.brand-name{margin:3px 0 0;font-size:21px;letter-spacing:-.05em;font-weight:850;line-height:1.2}.headbtn{height:42px;width:42px;flex-shrink:0;border:1px solid var(--line);border-radius:14px;background:white;display:grid;place-items:center;color:var(--ink);box-shadow:0 3px 11px #224e5d08}.headbtn svg{width:19px;height:19px}.headbtn:active{transform:scale(.95)}
-.page{animation:fade .22s ease-out}.eyebrow{font-size:10px;letter-spacing:.17em;font-weight:850;color:var(--cyan-deep)}.intro-title{font-weight:840;font-size:30px;line-height:1.35;letter-spacing:-.065em;margin:4px 0 6px}.intro-body{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 20px}.game-card{display:flex;align-items:center;gap:15px;text-align:left;width:100%;background:white;border:1px solid var(--line);border-radius:22px;padding:17px 15px;margin:11px 0;box-shadow:0 8px 24px #123c4b07;transition:transform .15s,border-color .15s,box-shadow .15s;color:var(--ink)}.game-card:active{transform:scale(.985);border-color:#93d9e3}.visual{width:87px;height:91px;flex-shrink:0;display:grid;place-items:center;border-radius:17px;background:#eef9fb}.visual svg{width:79px;height:79px}.card-content{flex:1;min-width:0}.num{font-size:10px;color:var(--cyan-deep);font-weight:850;letter-spacing:.12em}.card-name{font-size:18px;letter-spacing:-.045em;font-weight:850;margin:3px 0 2px}.card-desc{font-size:12px;font-weight:750;line-height:1.6;margin:0}.card-extra{font-size:11px;color:var(--sub);line-height:1.6;margin-top:4px}.card-arrow{font-size:22px;color:var(--cyan);align-self:center;font-weight:300}.home-foot{font-size:11px;text-align:center;color:#99aeb7;line-height:1.8;margin:23px 0 0}
-.topnav{display:flex;align-items:center;gap:9px;margin:-3px 0 17px}.back{border:0;background:transparent;color:var(--ink);font-size:13px;font-weight:800;padding:8px 7px 8px 0;display:flex;align-items:center;gap:3px}.back svg{width:18px;height:18px}.nav-sep{color:#c0d4da}.nav-name{font-size:11px;letter-spacing:.07em;color:var(--sub);font-weight:800}.panel{border:1px solid #e0ecef;border-radius:26px;background:var(--white);box-shadow:0 10px 37px #265e6e0b;padding:21px 17px 15px;overflow:hidden}.game-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.stage-name{font-size:11px;color:var(--cyan-deep);font-weight:850;letter-spacing:.12em}.help-btn{border:1px solid var(--line);background:#fff;color:var(--sub);font-size:12px;border-radius:12px;padding:7px 11px;font-weight:780}.main-title{font-size:25px;letter-spacing:-.055em;line-height:1.3;margin:11px 0 8px;font-weight:850}.mission{display:flex;align-items:flex-start;gap:9px;margin:0 0 17px;font-size:14px;font-weight:750;line-height:1.65}.mission-mark{display:grid;place-items:center;flex:none;height:21px;width:21px;border-radius:50%;background:#dcf5f8;color:var(--cyan-deep);font-size:12px;font-weight:900;margin-top:1px}.hint{border:1px solid #d9eff2;background:#f0fafb;border-radius:16px;padding:12px 13px;margin-bottom:14px;display:flex;gap:9px;align-items:flex-start;font-size:12px;line-height:1.65;color:#2a6877}.hint svg{flex:none;width:16px;height:16px;margin-top:1px;stroke:var(--cyan-deep)}.hint b{color:var(--ink)}.hint:not(.show){display:none}.challenge-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0 13px}.challenge-label{font-weight:770;color:var(--sub);font-size:12px}.metric{font-size:12px;color:var(--cyan-deep);font-weight:830;background:#e9f8fa;border-radius:10px;padding:8px 10px;font-variant-numeric:tabular-nums}.metric.red{color:#d75b62;background:#fff2f2}.separator{height:1px;background:var(--line);margin:17px 0 14px}.bottom{display:flex;align-items:center;gap:10px;margin-top:17px}.plain-btn{height:46px;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--ink);font-size:12px;font-weight:820;display:flex;align-items:center;justify-content:center;gap:5px;flex:1}.plain-btn svg{width:16px;height:16px}.plain-btn:disabled{color:#bed0d7;background:#fafdfd}.plain-btn:active{background:var(--pale)}.stage-control{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 12px 0}.stage-num{font-size:12px;color:var(--sub);font-weight:800;min-width:34px;text-align:center;font-variant-numeric:tabular-nums}.progress{display:flex;gap:6px;margin:15px auto 0;justify-content:center}.progress span{height:5px;width:18px;background:#e2eef0;border-radius:10px;transition:background .15s}.progress span.active{background:var(--cyan);width:29px}.progress span.complete{background:#a7e0e5}.micro{margin:16px 5px 0;text-align:center;color:#94a9b1;font-size:10px;line-height:1.7}
-/* SCAN */
-.scan-primer{display:flex;align-items:center;gap:10px;margin:2px 0 16px;padding:10px 12px;background:#f6fbfc;border-radius:13px}.shape-pic{display:grid;gap:3px;flex:none}.shape-pic i{display:block;width:14px;height:14px;border-radius:3px;background:#e6eff1}.shape-pic i.on{background:#06aac0}.scan-primer p{font-size:11px;color:var(--sub);line-height:1.6;margin:0}.scan-primer strong{display:block;color:var(--ink);font-size:12px}.scan-wrap{width:100%;max-width:366px;margin:16px auto 5px;--count:3;display:grid;grid-template-columns:44px 1fr;grid-template-rows:44px 1fr;gap:7px}.scan-corner{grid-row:1;grid-column:1;display:grid;place-items:center;font-size:9px;font-weight:800;color:#abc0c7;text-align:center;line-height:1.35}.scan-x{grid-row:1;grid-column:2;display:grid;grid-template-columns:repeat(var(--count),1fr);gap:5px}.scan-y{grid-row:2;grid-column:1;display:grid;grid-template-rows:repeat(var(--count),1fr);gap:5px}.scan-trigger{border:1px solid #c9eaf0;background:#e8f8fa;border-radius:10px;color:#008fa5;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;font-size:17px;font-weight:850;box-shadow:0 2px 4px #00a9c005;transition:transform .12s,background .14s}.scan-trigger:active:not(:disabled){transform:scale(.93)}.scan-trigger[data-used="1"]{background:var(--cyan);border-color:var(--cyan);color:white;font-size:18px;box-shadow:0 3px 10px #00a9c02a}.scan-trigger:disabled:not([data-used="1"]){opacity:.35}.scan-trigger.prompt{animation:prompt 1.9s ease-in-out infinite}.scan-grid{grid-column:2;grid-row:2;display:grid;grid-template-columns:repeat(var(--count),1fr);grid-template-rows:repeat(var(--count),1fr);aspect-ratio:1;overflow:hidden;border:1px solid #dcebee;border-radius:14px;background:#f9fcfd}.scan-cell{border-right:1px solid #e1eced;border-bottom:1px solid #e1eced;display:grid;place-items:center;position:relative}.scan-cell::before{content:'';position:absolute;inset:8%;border-radius:7px;background:var(--cyan);opacity:var(--op,0);transition:opacity .25s ease}.scan-cell.sure::before{background:var(--cyan);opacity:1}.scan-cell.no::before{opacity:0}.scan-cell.sure::after{content:'✓';position:relative;color:white;font-size:17px;font-weight:850}.scan-legend{text-align:center;font-size:11px;line-height:1.5;color:var(--sub);min-height:20px;margin-top:14px}.feedback{margin:13px 0 0;padding:10px 13px;border-radius:12px;background:#f3fafb;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:40px;color:#547c88;font-size:11px;line-height:1.6}.feedback strong{font-size:12px;color:var(--ink)}.feedback.strong{background:#e6f8fa;color:#12697d}.feedback.warn{background:#fff1ee;color:#ad6860}
-/* CUT */
-.goals{display:flex;gap:8px;margin:3px 0 7px}.goal{display:flex;align-items:center;gap:8px;font-weight:790;font-size:12px;border-radius:11px;padding:9px 11px;background:#f8fcfd;flex:1;line-height:1.35}.goal .signal{height:14px;width:14px;flex:none;border-radius:50%}.signal.red{background:var(--red)}.signal.blue{background:var(--cyan)}.diagram{display:block;width:100%;height:auto;max-height:315px;max-width:430px;margin:0 auto;user-select:none;touch-action:none}.wire{stroke:#93b8c3;stroke-width:5.5;stroke-linecap:round;transition:stroke .18s}.wire.off{stroke:#dce8eb;stroke-width:3;stroke-dasharray:5 10}.wire-hit{stroke:transparent;stroke-width:29;cursor:pointer}.edge-pip{fill:white;stroke:#93b8c3;stroke-width:1.8;pointer-events:none}.edge-pip.off{stroke:var(--red);stroke-width:2.7}.node-ring{fill:#fff;stroke-width:2.5}.node-name{font-size:12px;letter-spacing:-.01em;text-anchor:middle;font-weight:850;pointer-events:none}.node-caption{font-size:10px;font-weight:780;text-anchor:middle;fill:#7897a3;pointer-events:none}.lamp{transition:opacity .15s}.cut-msg{min-height:29px;font-size:11px;color:var(--sub);line-height:1.6;text-align:center;margin:0}.red-text{color:#d95e65}.cyan-text{color:var(--cyan-deep)}
-/* TRIAD */
-.triad-work{margin:12px 0 15px;padding-top:9px}.triad-caption{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--sub);font-weight:720;margin-bottom:12px}.triad-row{display:grid;gap:5px}.triad-tile{aspect-ratio:1;display:grid;place-items:center;border:1px solid #e1ebee;background:#f7fcfd;border-radius:13px;font-size:clamp(19px,6.3vw,30px);color:var(--ink);font-weight:860;box-shadow:0 3px 0 #dfecef;transition:transform .16s,background .15s}.triad-tile.shade{background:#e9f8fa}.triad-tile.correct{border-color:#c7e9e8;background:#eefbfa}.triad-tile.flash{animation:tilepop .25s ease}.target-row{display:grid;gap:5px;margin:15px 0 11px}.target{display:grid;place-items:center;font-size:14px;font-weight:750;color:#9eb6be;border-bottom:2px solid #e6eff1;height:28px}.triad-arrows{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:5px;margin:8px 0 14px}.triad-btn{height:51px;background:#e9f8fa;border:1px solid #bfe7ec;color:#008fa5;border-radius:13px;font-size:22px;font-weight:800;box-shadow:0 3px 0 #d6ecef}.triad-btn:active{transform:translateY(2px);box-shadow:0 1px 0 #d6ecef}.triad-btn:disabled{opacity:.4}.triad-btn.feature{background:var(--cyan);color:white;border-color:var(--cyan);box-shadow:0 3px 0 #008a9d;animation:prompt 1.9s ease-in-out infinite}.triad-btn:not(.feature){grid-column:span 1}.triad-btn-wrap{display:flex;justify-content:center;position:relative}.triad-btn-wrap .triad-btn{width:52px}.triad-btn-wrap small{position:absolute;bottom:-16px;white-space:nowrap;font-size:9px;color:#87a9b2}.triad-step{color:var(--sub);font-size:12px;text-align:center;min-height:20px;margin-top:24px}.undo{padding:6px 8px;color:var(--cyan-deep);font-size:12px;background:transparent;border:0;font-weight:800}
-/* RESULT */
-.success{margin:17px 0 0;border-radius:18px;background:linear-gradient(140deg,#e9fbf8,#e7f9fc);border:1px solid #bfeae7;padding:19px 13px;text-align:center;animation:result .38s cubic-bezier(.18,.8,.25,1)}.success-icon{margin:0 auto 8px;background:var(--cyan);border-radius:50%;height:47px;width:47px;color:white;display:grid;place-items:center}.success-icon svg{width:25px;height:25px;stroke:white;stroke-width:3}.success h2{margin:0;font-weight:900;letter-spacing:-.05em;font-size:20px}.success p{color:#568690;font-size:12px;font-weight:700;line-height:1.6;margin:6px 0 13px}.next{width:100%;max-width:290px;border:0;background:var(--ink);border-radius:13px;height:49px;color:white;font-size:13px;font-weight:820;box-shadow:0 6px 14px #0a3b4e20}.success.last .next{background:var(--cyan-deep)}
-.overlay{position:fixed;inset:0;background:#0b2b36a1;display:flex;align-items:center;justify-content:center;padding:22px;z-index:4;animation:fade .16s ease}.dialog{max-width:420px;width:100%;background:white;border-radius:24px;padding:24px 22px;box-shadow:0 30px 80px #09233040}.dialog h2{font-size:22px;font-weight:850;letter-spacing:-.055em;margin:5px 0 10px}.dialog p{font-size:14px;color:#456776;line-height:1.85;margin:0 0 16px}.dialog-demo{background:#edf9fa;border-radius:14px;padding:14px;font-size:13px;font-weight:800;line-height:1.9;text-align:center;margin-bottom:20px}.dialog button{width:100%;border:0;background:var(--cyan);color:white;padding:14px;border-radius:13px;font-weight:830}.fade-up{animation:fade .25s ease}
-@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}@keyframes result{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}@keyframes prompt{0%,100%{box-shadow:0 0 0 0 #00a9c038}45%{box-shadow:0 0 0 6px #00a9c009}}@keyframes tilepop{0%{transform:translateY(6px) scale(.92)}100%{transform:translateY(0) scale(1)}}
-@media(max-height:870px){.shell{padding-top:calc(env(safe-area-inset-top) + 11px)}.head{margin-bottom:12px}.topnav{margin-bottom:11px}.panel{padding-top:15px;padding-bottom:12px}.main-title{font-size:23px;margin:7px 0 5px}.mission{font-size:12px;margin-bottom:11px}.hint{padding:9px 11px;margin-bottom:9px;font-size:11px}.scan-primer{margin-bottom:8px;padding:8px 11px}.challenge-header{margin:7px 0 7px}.scan-wrap{max-width:286px;grid-template-columns:39px 1fr;grid-template-rows:39px 1fr;margin-top:8px;margin-bottom:4px}.scan-legend{margin-top:8px}.feedback{margin-top:8px;padding:8px 10px}.bottom{margin-top:11px}.plain-btn{height:41px}.progress{margin-top:10px}.micro{margin-top:10px}.diagram{max-height:255px}.triad-work{margin:4px 0 8px}.triad-step{margin-top:17px}}
-@media(max-width:375px){.shell{padding-left:12px;padding-right:12px}.panel{padding-left:13px;padding-right:13px}.brand-name{font-size:19px}.scan-wrap{grid-template-columns:38px 1fr;grid-template-rows:38px 1fr;gap:5px}.scan-x,.scan-y{gap:3px}.goals{gap:4px}.goal{padding:8px;font-size:11px}.triad-btn-wrap .triad-btn{width:44px;height:46px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+:root{--bg:#f7fbfc;--card:#ffffff;--ink:#173746;--sub:#69818b;--soft:#95acb4;--line:#dbe8ec;--cyan:#00a9c0;--cyan2:#0c8ea2;--pale:#eaf8fa;--red:#eb6b71;--redp:#fff0f0;--blue:#1ea7d0;--bluep:#eef8ff;--ok:#159a8a;--okp:#ecfbf7;--shadow:0 8px 22px rgba(17,60,75,.06);--radius:22px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;overscroll-behavior-y:none}
+body{min-height:100svh}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+button:focus-visible{outline:3px solid #88e6f2;outline-offset:2px}
+.shell{max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 16px) 16px calc(env(safe-area-inset-bottom) + 28px)}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.brand{flex:1}
+.over{font-size:10px;font-weight:900;letter-spacing:.22em;color:var(--cyan2)}
+.logo{font-size:22px;font-weight:900;letter-spacing:-.05em;line-height:1.2;margin-top:4px}
+.iconbtn{width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;box-shadow:var(--shadow)}
+.page{animation:fade .18s ease-out}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.hero{padding:18px 18px 16px;margin-bottom:14px}
+.hero h1{font-size:28px;line-height:1.28;letter-spacing:-.06em;margin:4px 0 8px}
+.hero p{font-size:13px;line-height:1.75;color:var(--sub);margin:0}
+.menu-item{display:flex;gap:14px;align-items:center;padding:16px;margin:12px 0;text-align:left;width:100%}
+.menu-illust{width:84px;height:84px;border-radius:18px;background:#eef9fb;display:grid;place-items:center;flex:none}
+.menu-body{flex:1;min-width:0}
+.menu-no{font-size:10px;color:var(--cyan2);font-weight:900;letter-spacing:.14em}
+.menu-name{font-size:18px;font-weight:900;letter-spacing:-.04em;margin:3px 0}
+.menu-desc{font-size:12px;line-height:1.65;color:var(--sub)}
+.menu-tip{font-size:11px;line-height:1.55;color:#97acb4;margin-top:4px}
+.arrow{font-size:24px;color:var(--cyan)}
+.small{font-size:11px;color:#96acb4;line-height:1.7;text-align:center;margin:18px 8px 0}
+.header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.back{width:40px;height:40px;border-radius:13px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;box-shadow:var(--shadow);flex:none}
+.header-main{flex:1;min-width:0}
+.label{font-size:10px;font-weight:900;letter-spacing:.15em;color:var(--cyan2)}
+.title{font-size:24px;font-weight:900;letter-spacing:-.055em;line-height:1.25;margin:5px 0 6px}
+.sub{font-size:13px;line-height:1.7;color:var(--sub);margin:0}
+.row{display:flex;gap:10px}
+.toptools{display:flex;gap:8px;align-self:flex-start}
+.chipbtn{height:40px;padding:0 12px;border:1px solid var(--line);background:var(--card);border-radius:13px;display:grid;place-items:center;box-shadow:var(--shadow);font-weight:800;font-size:12px;color:var(--ink)}
+.stagebar{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 13px;margin:14px 0 12px;box-shadow:var(--shadow)}
+.stagebar strong{font-size:13px}
+.stagebar span{font-size:12px;color:var(--cyan2);font-weight:900}
+.boardcard{padding:16px;margin-bottom:12px}
+.section{padding:14px;border-radius:17px;background:#fbfeff;border:1px solid #e9f0f2;margin-bottom:12px}
+.section:last-child{margin-bottom:0}
+.step{font-size:10px;font-weight:900;letter-spacing:.14em;color:var(--cyan2);margin-bottom:6px}
+.section h3{font-size:18px;letter-spacing:-.04em;line-height:1.3;margin:0 0 6px}
+.section p{font-size:12px;color:var(--sub);line-height:1.65;margin:0 0 10px}
+.notice{font-size:12px;color:var(--sub);line-height:1.6;background:#f3fafb;border-radius:12px;padding:10px 12px}
+.meter{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.badge{padding:7px 10px;border-radius:999px;background:#eff8fa;color:var(--cyan2);font-weight:900;font-size:11px;border:1px solid #d4edf1}
+.badge.red{background:var(--redp);color:#c75661;border-color:#f5d4d9}
+.badge.blue{background:var(--bluep);color:#317fa4;border-color:#d6ebf8}
+.grid-wrap{margin-top:10px}
+.scan-area{display:grid;grid-template-columns:30px 1fr;grid-template-rows:30px 1fr;gap:6px;max-width:360px;margin:0 auto}
+.scan-top{grid-column:2;display:grid;gap:6px}
+.scan-side{grid-row:2;display:grid;gap:6px}
+.probe{border-radius:10px;background:#eef8fa;border:1px solid #d7edf1;min-height:30px;font-size:12px;font-weight:900;color:var(--cyan2)}
+.probe.used{background:var(--cyan);color:white;border-color:var(--cyan)}
+.probe.prompt{box-shadow:0 0 0 3px rgba(0,169,192,.16)}
+.answergrid,.heatgrid{display:grid;aspect-ratio:1;border:1px solid var(--line);border-radius:15px;overflow:hidden;background:var(--card)}
+.cell{border-right:1px solid #e7eef1;border-bottom:1px solid #e7eef1;display:grid;place-items:center}
+.ghost{width:68%;height:68%;border-radius:7px;background:var(--cyan)}
+.toggle{width:100%;height:100%;background:white}
+.toggle.on{background:var(--cyan)}
+.toggle.on::after{content:'';display:block;width:68%;height:68%;margin:auto;border-radius:7px;background:white}
+.shape-sample{display:flex;justify-content:center;gap:14px;align-items:center;margin:8px 0 2px}
+.sample-grid{display:grid;width:62px;height:62px;border-radius:12px;border:1px solid var(--line);overflow:hidden;background:white}
+.sample-grid div{border-right:1px solid #edf2f4;border-bottom:1px solid #edf2f4}
+.sample-grid div.on{background:var(--cyan)}
+.actions{display:flex;gap:10px;margin-top:12px}
+.action{flex:1;min-height:46px;border-radius:14px;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);font-size:13px;font-weight:900}
+.action.primary{background:var(--cyan);border-color:var(--cyan);color:white}
+.action:disabled{opacity:.42;box-shadow:none}
+.feedback{margin-top:10px;padding:11px 12px;border-radius:13px;font-size:12px;line-height:1.6}
+.feedback.ok{background:var(--okp);color:var(--ok)}
+.feedback.ng{background:#fff5ee;color:#bd6b3f}
+.feedback.info{background:#f2fafb;color:var(--sub)}
+.svgwrap{background:white;border:1px solid var(--line);border-radius:16px;padding:10px}
+svg{width:100%;height:auto;display:block;touch-action:none;user-select:none}
+.edge{stroke:#a4c3cd;stroke-width:7;stroke-linecap:round}
+.edge.cut{stroke:#e5ecef;stroke-width:4;stroke-dasharray:6 8}
+.edge-hit{stroke:transparent;stroke-width:26;stroke-linecap:round}
+.node{stroke:#fff;stroke-width:4}
+.node.s{fill:#ffd96f}.node.r.on{fill:var(--red)}.node.r.off{fill:#f3c5c8}.node.b.on{fill:var(--blue)}.node.b.off{fill:#d6e8f3}.node.n.on{fill:#5c8797}.node.n.off{fill:#d3dee2}
+.nlabel{font-size:13px;font-weight:900;fill:white;text-anchor:middle;dominant-baseline:middle}
+.nname{font-size:10px;font-weight:800;fill:#8ea5ad;text-anchor:middle}
+.cutguide{display:flex;gap:9px;align-items:center;padding:11px 12px;border-radius:13px;background:#f3fafb;font-size:12px;color:var(--sub);line-height:1.6;margin-top:10px}
+.scissor{font-size:20px;color:var(--cyan2)}
+.tiles-wrap{padding-top:8px}
+.tiles{display:grid;gap:6px;min-height:72px;align-items:stretch}
+.tile{background:#f7fbfc;border:1px solid #dcebef;border-radius:14px;display:grid;place-items:center;min-height:66px;font-size:28px;font-weight:900;letter-spacing:-.06em;transition:transform .16s ease, background .16s ease, box-shadow .16s ease}
+.tile.mark{background:#eaf8fa;border-color:#bbe5ec;box-shadow:0 0 0 3px rgba(0,169,192,.1) inset}
+.targetrow{display:grid;gap:6px;margin-top:9px}
+.targetcell{min-height:32px;border-radius:10px;background:#f5fafb;border:1px dashed #d7e8eb;display:grid;place-items:center;font-size:12px;font-weight:800;color:#8ca4ac}
+.triad-controls{display:grid;gap:10px;margin-top:12px}
+.group{background:#fbfeff;border:1px solid #e8f0f2;border-radius:15px;padding:10px 10px 11px}
+.group-top{font-size:11px;font-weight:800;color:#8fa5ad;margin-bottom:6px}
+.group-preview{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:16px;font-weight:900;margin-bottom:9px}
+.group-preview .mini{display:flex;gap:4px;align-items:center}
+.mtile{min-width:30px;height:30px;padding:0 6px;border-radius:9px;background:#f0f8fa;display:grid;place-items:center}
+.group button{width:100%;min-height:42px;border-radius:12px;background:#eaf8fa;color:var(--cyan2);font-weight:900;border:1px solid #d5eef2}
+.group button:active{transform:scale(.985)}
+.success{background:var(--okp);border:1px solid #cbeee6;padding:16px;border-radius:17px;text-align:center;margin-top:12px}
+.success strong{display:block;font-size:24px;line-height:1.3;margin-bottom:6px;color:var(--ok)}
+.dots{display:flex;justify-content:center;gap:7px;margin:16px 0 0}.dot{width:7px;height:7px;background:#d8e7eb;border-radius:999px}.dot.on{width:24px;background:var(--cyan)}
+.overlay{position:fixed;inset:0;background:rgba(16,36,45,.44);display:grid;place-items:center;padding:18px;z-index:50}
+.dialog{max-width:430px;width:100%;background:white;border-radius:24px;padding:18px;border:1px solid var(--line);box-shadow:0 20px 50px rgba(0,0,0,.15)}
+.dialog h2{font-size:22px;letter-spacing:-.05em;line-height:1.3;margin:5px 0 8px}.dialog p{font-size:13px;line-height:1.75;color:var(--sub);margin:0 0 10px}.dialog .demo{padding:12px;border-radius:14px;background:#f3fafb;font-size:12px;line-height:1.75;color:var(--ink);margin-bottom:12px}
+.dialog .demo strong{color:var(--cyan2)}
+.dialog button{width:100%;min-height:46px;background:var(--cyan);color:white;border-radius:14px;font-weight:900}
+.hidden{display:none!important}
+@keyframes fade{from{opacity:.35;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media (max-width:360px){.shell{padding-left:12px;padding-right:12px}.title{font-size:22px}.logo{font-size:20px}.hero h1{font-size:25px}.tile{min-height:58px;font-size:24px}.menu-illust{width:74px;height:74px}}
 </style>
-</head><body><div class="shell"><header class="head"><div class="brand"><div class="brand-over">ACORN / EXPERIMENTS</div><div class="brand-name">MATH MECHANICS <span style="color:var(--cyan)">LAB.</span></div></div><button class="headbtn" id="sound" aria-label="音のオン・オフ" title="サウンド"></button></header><div id="app"></div></div>
+</head>
+<body>
+<div class="shell">
+  <div class="top">
+    <div class="brand"><div class="over">EXPERIMENT / 2026.11.07</div><div class="logo">MATH MECHANICS</div></div>
+    <button id="soundBtn" class="iconbtn" aria-label="音のオンオフ">♫</button>
+  </div>
+  <div id="app"></div>
+</div>
 <script>
-(()=>{'use strict';
-const $=s=>document.querySelector(s);const app=$('#app');const ico={back:'<path d="m14 18-6-6 6-6"/>',vol:'<path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 9a5 5 0 0 1 0 6M18 6a9 9 0 0 1 0 12"/>',mute:'<path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m17 9 5 6m0-6-5 6"/>',light:'<path d="m9 18 1 2h4l1-2m-7-4a6 6 0 1 1 8 0l-1 2H9l-1-2Z"/>',refresh:'<path d="M3 12a9 9 0 1 0 3-6"/><path d="M3 3v6h6"/>',undo:'<path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12"/>',check:'<path d="m5 12 4 4L19 6"/>'};const icon=(name)=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ico[name]}</svg>`;
-const STORE='math_mechanics_lab_20261107',OLD='math_mechanics_lab_20261107';let prefs={};try{prefs=JSON.parse(localStorage.getItem(STORE)||'{}')}catch{};let page='home',game=prefs.game||'scan',levels={scan:0,cut:0,triad:0},help=false,sound=prefs.sound!==false,audio,board={},lastFlash=-1;
-const defs={
-scan:[{n:3,shape:[[0,0],[0,1],[1,0],[1,1]],rot:false,target:3,cap:2,title:'四角はどこ？',mission:'2×2の四角がどこに隠れているか、2回のスキャンで見つけよう。'},{n:4,shape:[[0,0],[0,1],[1,0],[1,1]],rot:false,target:6,cap:4,title:'9か所から見つけよう',mission:'かくれた四角を、4回以内のスキャンで見つけよう。'},{n:4,shape:[[0,0],[1,0],[2,0],[2,1]],rot:true,target:17,cap:4,title:'L字はどこ？',mission:'今度はL字。向きも場所も分からない。4回以内に見つけよう。'},{n:5,shape:[[0,0],[1,0],[2,0],[2,1]],rot:true,target:31,cap:4,title:'48通りのナゾ',mission:'48通りの候補から、たった4回のスキャンで見つけよう。'}],
-cut:[{title:'1本だけ切ってみよう',mission:'赤を消そう。ただし青は光らせたまま。',cap:1,nodes:{S:[.11,.53,'s'],A:[.43,.53,'n'],L:[.78,.23,'b'],R:[.80,.78,'r']},edges:[['S','A'],['A','L'],['A','R']]},{title:'電気は回り道する',mission:'1本だけでは電気が止まらない。赤だけを消す2本を見つけよう。',cap:2,nodes:{S:[.10,.5,'s'],A:[.48,.22,'b'],B:[.48,.78,'b'],R:[.88,.5,'r']},edges:[['S','A'],['S','B'],['A','R'],['B','R']]},{title:'2本で3つ消せる？',mission:'赤は3つ。でも切れるのは2本だけ。分かれ道に注目しよう。',cap:2,nodes:{S:[.08,.5,'s'],A:[.31,.26,'b'],B:[.31,.74,'b'],H:[.57,.5,'n'],R1:[.83,.16,'r'],R2:[.92,.5,'r'],R3:[.83,.84,'r']},edges:[['S','A'],['S','B'],['A','H'],['B','H'],['H','R1'],['H','R2'],['H','R3']]},{title:'そこは切っちゃダメ',mission:'赤を3つ消しながら、途中の青も守ろう。',cap:3,nodes:{S:[.07,.5,'s'],A:[.26,.24,'b'],B:[.26,.76,'b'],H:[.48,.5,'n'],T:[.69,.5,'b'],R1:[.90,.16,'r'],R2:[.92,.5,'r'],R3:[.90,.84,'r']},edges:[['S','A'],['S','B'],['A','H'],['B','H'],['H','T'],['T','R1'],['T','R2'],['T','R3']]}],
-triad:[{start:[2,3,1,4],steps:1,title:'3枚をくるっと回そう',mission:'左の3枚を右に1つずつ回して、1・2・3・4の順番にしよう。'},{start:[3,1,2,4],steps:2,title:'もう一度回そう',mission:'同じ3枚をもう一度。2手以内に順番どおりにしよう。'},{start:[4,3,2,1],steps:4,title:'逆さの並び',mission:'3枚ずつの回転だけで、逆さの数字を戻そう。'},{start:[5,4,3,2,1],steps:6,title:'5枚に挑戦',mission:'今度は5枚。どの3枚を回せば近づくか考えよう。'},{start:[6,2,4,3,5,1],steps:7,title:'6枚のからくり',mission:'6枚の数字を、少ない手数で順番に戻そう。'}]};
-const names={scan:'SCAN GRID',cut:'CUT CIRCUIT',triad:'TRIAD SHIFT'};const subtitles={scan:'隠れた形を、少ない手がかりで見抜く。',cut:'大事な電気を残して、赤いランプだけ消す。',triad:'3枚いっしょに回して、数字を順番にする。'};
-function save(){try{localStorage.setItem(STORE,JSON.stringify({game,stages:levels,sound}))}catch{}}
-function ping(kind){if(!sound)return;try{audio ||=new (window.AudioContext||window.webkitAudioContext)();audio.resume();const now=audio.currentTime,notes=kind==='win'?[523.25,659.25,783.99,1046.5]:kind==='cut'?[430,330]:kind==='rotate'?[392,523.25]:[620];notes.forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain(),t=now+i*(kind==='win'?.072:.024),dur=kind==='win'?.55:.12;o.type=i===0?'triangle':'sine';o.frequency.setValueAtTime(hz,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(kind==='win'?.045:.025,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g).connect(audio.destination);o.start(t);o.stop(t+dur+.025)})}catch{}}
-function shapeNorm(p){let my=Math.min(...p.map(z=>z[0])),mx=Math.min(...p.map(z=>z[1]));return p.map(([y,x])=>[y-my,x-mx]).sort((a,b)=>a[0]-b[0]||a[1]-b[1])}
-function shapeOptions(d){let cur=d.shape,seen=new Set(),out=[];for(let r=0;r<(d.rot?4:1);r++){let p=shapeNorm(cur),h=Math.max(...p.map(x=>x[0]))+1,w=Math.max(...p.map(x=>x[1]))+1;for(let y=0;y<=d.n-h;y++)for(let x=0;x<=d.n-w;x++){let points=p.map(([v,z])=>[v+y,z+x]);let key=points.map(x=>x.join(',')).sort().join('|');if(!seen.has(key)){seen.add(key);out.push(points)}}cur=cur.map(([y,x])=>[x,-y])}return out.sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)))}
+(()=>{
+'use strict';
+const $=(s,e=document)=>e.querySelector(s);
+const $$=(s,e=document)=>[...e.querySelectorAll(s)];
+const storeKey='math_mechanics_lab_ui_v3';
+let prefs={sound:true,page:'home',game:'scan',levels:{scan:0,cut:0,triad:0}};
+try{prefs=Object.assign(prefs,JSON.parse(localStorage.getItem(storeKey)||'{}'));prefs.levels=Object.assign({scan:0,cut:0,triad:0},prefs.levels||{})}catch{}
+let page=prefs.page||'home', game=prefs.game||'scan', sound=prefs.sound!==false, levels=prefs.levels;
+let board={}, audio;
+const app=$('#app');
+const scanDefs=[
+ {n:3,shape:[[0,0],[0,1],[1,0],[1,1]],rot:false,target:3,cap:2,title:'かくれた四角を見つけよう',sub:'まず矢印で行・列を調べよう。数字は「その行・列に、形のマスがいくつあるか」。最後は自分の指で形を置いて答える。'},
+ {n:4,shape:[[0,0],[0,1],[1,0],[1,1]],rot:false,target:6,cap:4,title:'9か所のどこ？',sub:'2×2の四角がどこかに隠れている。スキャンで集めた情報から、自分で予想して置こう。'},
+ {n:4,shape:[[0,0],[1,0],[2,0],[2,1]],rot:true,target:17,cap:4,title:'L字の向きも考える',sub:'今度はL字。場所だけでなく向きも変わる。'},
+ {n:5,shape:[[0,0],[1,0],[2,0],[2,1]],rot:true,target:31,cap:4,title:'48通りからしぼる',sub:'候補はたくさんある。でも調べる回数は4回まで。'}
+];
+const cutDefs=[
+ {title:'1本だけ切ろう',sub:'赤いランプを消し、青いランプは残す。線の上を指でスッとなぞると切れる。',cap:1,nodes:{S:[.11,.53,'s'],A:[.43,.53,'n'],L:[.78,.23,'b'],R:[.80,.78,'r']},edges:[['S','A'],['A','L'],['A','R']]},
+ {title:'回り道がある',sub:'1本切っても別の道からつながってしまう。どこを切ればいい？',cap:2,nodes:{S:[.10,.5,'s'],A:[.48,.22,'b'],B:[.48,.78,'b'],R:[.88,.5,'r']},edges:[['S','A'],['S','B'],['A','R'],['B','R']]},
+ {title:'3つの赤を2本で',sub:'2本しか切れない。ネットワーク全体を見て急所を探そう。',cap:2,nodes:{S:[.08,.5,'s'],A:[.31,.26,'b'],B:[.31,.74,'b'],H:[.57,.5,'n'],R1:[.83,.16,'r'],R2:[.92,.5,'r'],R3:[.83,.84,'r']},edges:[['S','A'],['S','B'],['A','H'],['B','H'],['H','R1'],['H','R2'],['H','R3']]},
+ {title:'青を守りながら切る',sub:'前と同じように見えても、青いランプの位置が変わると正解も変わる。',cap:3,nodes:{S:[.07,.5,'s'],A:[.26,.24,'b'],B:[.26,.76,'b'],H:[.48,.5,'n'],T:[.69,.5,'b'],R1:[.90,.16,'r'],R2:[.92,.5,'r'],R3:[.90,.84,'r']},edges:[['S','A'],['S','B'],['A','H'],['B','H'],['H','T'],['T','R1'],['T','R2'],['T','R3']]}
+];
+const triadDefs=[
+ {start:[2,3,1,4],steps:1,title:'まずは3枚だけ回す',sub:'ボタンの上の3枚が、右へ1マスずつずれる。どの3枚が動くのかを見てから押そう。'},
+ {start:[3,1,2,4],steps:2,title:'どの3枚が動く？',sub:'下のプレビューは「押す前 → 押した後」。操作前に結果を予想してみよう。'},
+ {start:[4,3,2,1],steps:4,title:'4枚の中で3枚を選ぶ',sub:'1回で変わるのは3枚だけ。動かない1枚にも注目。'},
+ {start:[5,4,3,2,1],steps:6,title:'5枚に広げる',sub:'今いる順番と、1手後の順番を見くらべよう。'},
+ {start:[6,2,4,3,5,1],steps:7,title:'6枚のからくり',sub:'最初の一手を見通せるかな？'}
+];
+const defs={scan:scanDefs,cut:cutDefs,triad:triadDefs};
+
+function save(){localStorage.setItem(storeKey,JSON.stringify({sound,page,game,levels}))}
+function beep(type='tap'){if(!sound) return; try{audio ||= new (window.AudioContext||window.webkitAudioContext)(); if(audio.state==='suspended') audio.resume(); const now=audio.currentTime; const notes=type==='win'?[523.25,659.25,783.99,1046.5]:type==='cut'?[280,360]:type==='rotate'?[360,480]:[520]; notes.forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain(),st=now+i*(type==='win'?0.06:0.01);o.type='sine';o.frequency.setValueAtTime(hz,st);g.gain.setValueAtTime(.0001,st);g.gain.exponentialRampToValueAtTime(type==='win'?0.075:0.04,st+.015);g.gain.exponentialRampToValueAtTime(.0001,st+(type==='win'?0.38:0.09)); o.connect(g).connect(audio.destination); o.start(st); o.stop(st+(type==='win'?0.42:0.1));});}catch(e){}}
+function normalize(shape){const minY=Math.min(...shape.map(v=>v[0])), minX=Math.min(...shape.map(v=>v[1])); return shape.map(([y,x])=>[y-minY,x-minX]).sort((a,b)=>a[0]-b[0]||a[1]-b[1]);}
+function scanCandidates(d){
+  let shapes=[], cur=d.shape;
+  for(let i=0;i<(d.rot?4:1);i++){shapes.push(normalize(cur));cur=cur.map(([y,x])=>[x,-y])}
+  let seen=new Set(), out=[];
+  for(const shp of shapes){const h=Math.max(...shp.map(v=>v[0]))+1, w=Math.max(...shp.map(v=>v[1]))+1; for(let dy=0;dy<=d.n-h;dy++)for(let dx=0;dx<=d.n-w;dx++){const coords=shp.map(([y,x])=>[y+dy,x+dx]); const key=coords.map(v=>v.join(',')).sort().join('|'); if(!seen.has(key)){seen.add(key); out.push(coords)}}}
+  return out.sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)));
+}
 function countIn(shape,ax,i){return shape.filter(([y,x])=>ax==='r'?y===i:x===i).length}
-function reset(){const d=defs[game][levels[game]];if(game==='scan'){let candidates=shapeOptions(d);board={secret:candidates[d.target%candidates.length],remain:candidates,used:[],won:false,failed:false,last:null}}else if(game==='cut')board={cuts:new Set(),won:false,last:null};else board={arr:d.start.slice(),history:[],won:false};lastFlash=-1}
-function openGame(g){game=g;page='game';levels[g]=Math.min(Math.max(0,levels[g]),defs[g].length-1);reset();save();ping();render()}
-function goStage(dir){levels[game]=Math.min(defs[game].length-1,Math.max(0,levels[game]+dir));reset();save();ping();render()}
-function soundButton(){$('#sound').innerHTML=icon(sound?'vol':'mute');$('#sound').setAttribute('aria-label',sound?'音を消す':'音を出す')}
-function preview(g){if(g==='scan')return `<svg viewBox="0 0 80 80" aria-hidden="true"><g fill="none" stroke="#c5e4e8" stroke-width="1.5"><path d="M15 14V66M31 14V66M47 14V66M63 14V66M15 14H63M15 30H63M15 46H63M15 62H63"/></g><rect x="31" y="30" width="32" height="32" rx="4" fill="#05afc5" opacity=".24"/><rect x="33" y="32" width="12" height="12" rx="3" fill="#03a8bf"/><rect x="49" y="32" width="12" height="12" rx="3" fill="#03a8bf"/><circle cx="39" cy="9" r="5" fill="#03a8bf"/></svg>`;
-if(g==='cut')return `<svg viewBox="0 0 80 80" aria-hidden="true"><path d="M14 40L42 19 65 40 43 63 14 40M42 19 43 63" fill="none" stroke="#96bdc6" stroke-width="4" stroke-linecap="round"/><circle cx="14" cy="40" r="8" fill="#173a49"/><circle cx="42" cy="19" r="9" fill="#03abc0"/><circle cx="65" cy="40" r="9" fill="#ec6f73"/><circle cx="43" cy="63" r="8" fill="#ec6f73"/><path d="m52 28 8 7" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>`;
-return `<svg viewBox="0 0 80 80" aria-hidden="true"><rect x="7" y="24" width="21" height="31" rx="6" fill="#b7e9ef"/><rect x="30" y="24" width="21" height="31" rx="6" fill="#06acc2"/><rect x="53" y="24" width="21" height="31" rx="6" fill="#b7e9ef"/><g fill="#164457" font-size="18" font-weight="800" text-anchor="middle"><text x="17.5" y="45">2</text><text x="40.5" y="45" fill="white">3</text><text x="63.5" y="45">1</text></g><path d="M25 16a19 19 0 0 1 31 0" fill="none" stroke="#02a8bf" stroke-width="2.5" stroke-linecap="round"/><path d="m52 11 5 5-7 1" fill="none" stroke="#02a8bf" stroke-width="2.5" stroke-linecap="round"/></svg>`}
-function home(){app.innerHTML=`<div class="page"><div class="eyebrow">THINK • TOUCH • DISCOVER</div><h1 class="intro-title">考えるって、<br>面白い。</h1><p class="intro-body">3つの数学パズルを遊び比べる、小さな研究所。<br>気になるゲームを選んで、指で触ってみよう。</p>${['scan','cut','triad'].map((g,i)=>`<button class="game-card" data-open="${g}"><span class="visual">${preview(g)}</span><span class="card-content"><span class="num">EXPERIMENT 0${i+1} · ${defs[g].length} STAGES</span><div class="card-name">${names[g]}</div><p class="card-desc">${subtitles[g]}</p><div class="card-extra">${['タテ・ヨコの矢印をタップ','線をタップして切断','↻をタップして3枚を回す'][i]}</div></span><span class="card-arrow">›</span></button>`).join('')}<div class="home-foot">音は右上で切り替えられます。進み具合はこの端末に保存。</div></div>`;
-app.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openGame(b.dataset.open))}
-function header(d){let no=levels[game]+1;return `<div class="topnav"><button class="back" id="back">${icon('back')} すべてのゲーム</button><span class="nav-sep">/</span><span class="nav-name">${names[game]}</span></div><main class="panel"><div class="game-head"><span class="stage-name">LEVEL ${String(no).padStart(2,'0')} / ${String(defs[game].length).padStart(2,'0')}</span><button class="help-btn" id="help">？ あそびかた</button></div><h1 class="main-title">${d.title}</h1><p class="mission"><span class="mission-mark">✓</span><span>${d.mission}</span></p>`}
-function hintText(){if(game==='scan')return `まずは<b>左はしの↓</b>をタップ！ そのタテ列・ヨコ行に隠れたマスが何個あるか分かるよ。`;if(game==='cut')return `まずは<b>道の線をタップ</b>して切ってみよう。赤は消して、青は消さないで。`;return `まずは<b>↻をタップ</b>。その真上の3枚が、右に1つずつ動くよ。`}
-function helpHtml(){return `<div class="hint show">${icon('light')}<div>${hintText()}</div></div>`}
-function scan(){const d=defs.scan[levels.scan],n=d.n,remain=board.remain;let cert=remain.length===1,used=board.used.length;let probs=Array(n*n).fill(0);for(const s of remain)for(const [r,c] of s)probs[r*n+c]++;const xbtn=Array.from({length:n},(_,i)=>{let q=board.used.find(v=>v.ax==='c'&&v.i===i);return `<button class="scan-trigger ${!used&&i===0?'prompt':''}" data-scan="c:${i}" data-used="${q?1:0}" ${q||cert||board.failed?'disabled':''} aria-label="${i+1}列目をスキャン">${q?q.count:'↓'}</button>`}).join(''),ybtn=Array.from({length:n},(_,i)=>{let q=board.used.find(v=>v.ax==='r'&&v.i===i);return `<button class="scan-trigger" data-scan="r:${i}" data-used="${q?1:0}" ${q||cert||board.failed?'disabled':''} aria-label="${i+1}行目をスキャン">${q?q.count:'→'}</button>`}).join(''),cells=probs.map((x,i)=>`<div class="scan-cell ${cert&&x?'sure':''} ${cert&&!x?'no':''}" style="--op:${cert?'0':used?Math.max(.04,.66*x/remain.length).toFixed(2):0}"></div>`).join('');let shape=d.shape,tw=Math.max(...shape.map(x=>x[1]))+1,th=Math.max(...shape.map(x=>x[0]))+1;let pic=`<div class="shape-pic" style="grid-template-columns:repeat(${tw},14px);grid-template-rows:repeat(${th},14px)">${Array.from({length:th*tw},(_,k)=>`<i class="${shape.some(([y,x])=>y===Math.floor(k/tw)&&x===k%tw)?'on':''}"></i>`).join('')}</div>`;
-return `${used===0?helpHtml():''}<div class="scan-primer">${pic}<p><strong>隠れている形</strong>${d.rot?'向きが変わっているかも':'この形がどこかにあるよ'}。場所はまだ分からない。</p></div><div class="challenge-header"><span class="challenge-label">見つかるまで、あと何通り？</span><span class="metric">候補 ${remain.length} 通り</span></div><div class="scan-wrap" style="--count:${n}"><div class="scan-corner">タップ<br>して調べる</div><div class="scan-x">${xbtn}</div><div class="scan-y">${ybtn}</div><div class="scan-grid">${cells}</div></div><div class="scan-legend">${!used?'上の↓か左の→で、気になる列を調べよう':cert?'すべての手がかりがつながって、形が見えた！':'色が濃いマスほど、そこに形がある候補が多いよ'}</div><div class="feedback ${board.failed?'warn':board.last?'strong':''}"><span>${board.failed?'回数を使い切ったよ。もう一度考えよう。':board.last?`${board.last.ax==='c'?'タテ':'ヨコ'}に ${board.last.count} マス！ ${board.last.before}通り → ${remain.length}通り`:'調べた列・行には数字が表示されるよ'}</span><strong>残り ${d.cap-used} 回</strong></div>`}
-function power(d){let adj={};d.edges.forEach(([a,b],i)=>{if(board.cuts.has(i))return;(adj[a]??=[]).push(b);(adj[b]??=[]).push(a)});let seen=new Set(['S']),stack=['S'];while(stack.length){let a=stack.pop();for(let b of adj[a]||[])if(!seen.has(b)){seen.add(b);stack.push(b)}}return seen}
-function cut(){const d=defs.cut[levels.cut],live=power(d);const red=Object.entries(d.nodes).filter(([_,x])=>x[2]==='r'),blue=Object.entries(d.nodes).filter(([_,x])=>x[2]==='b'),off=red.filter(([k])=>!live.has(k)).length,blueSafe=blue.every(([k])=>live.has(k)),ncut=board.cuts.size;let edges=d.edges.map(([a,b],i)=>{let p=d.nodes[a],q=d.nodes[b],x1=p[0]*400,y1=p[1]*320,x2=q[0]*400,y2=q[1]*320,isOff=board.cuts.has(i),cx=(x1+x2)/2,cy=(y1+y2)/2;return `<g data-edge="${i}" role="button" aria-label="線${i+1}を${isOff?'つなぐ':'切る'}"><line class="wire ${isOff?'off':''}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/><circle class="edge-pip ${isOff?'off':''}" cx="${cx}" cy="${cy}" r="${isOff?7:4}"/><line class="wire-hit" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/></g>`}).join('');let nodes=Object.entries(d.nodes).map(([id,[x,y,type]])=>{let xx=x*400,yy=y*320,on=live.has(id),c=type==='r'?'#ed7479':type==='b'?'#04aac0':type==='s'?'#194356':'#9dc3cb',label=type==='r'?'赤':type==='b'?'青':type==='s'?'電源':'';return `<g class="lamp" opacity="${on?1:.60}"><circle cx="${xx}" cy="${yy}" r="${type==='n'?11:21}" fill="${on?c:'#d9e5e9'}" stroke="#ffffff" stroke-width="3.2"/><circle cx="${xx}" cy="${yy}" r="${type==='n'?3:6}" fill="#fff" opacity="${on?.9:.45}"/><text class="node-caption" x="${xx}" y="${yy+36}">${label}${type==='r'&&!on?' ✓':type==='b'&&!on?' !':''}</text></g>`}).join('');const msg=board.last==='limit'?'これ以上は切れない。別の線をつなぎ直そう。':!blueSafe?'青いランプが消えちゃった！ 線を戻して守ろう。':board.last===null?'線をタップすると切れます。もう一度タップで戻せます。':`${off}個の赤いランプが消えた。次はどこを切る？`;
-return `${ncut===0?helpHtml():''}<div class="goals"><div class="goal"><span class="signal red"></span><span>赤は全部消す<br><span class="red-text">${off} / ${red.length} 消灯</span></span></div><div class="goal"><span class="signal blue"></span><span>青は守る<br><span class="cyan-text">${blueSafe?'点灯中 ✓':'消灯中 ✕'}</span></span></div></div><div class="challenge-header"><span class="challenge-label">線を切った数</span><span class="metric ${ncut>=d.cap?'red':''}">${ncut} / ${d.cap} 本</span></div><svg class="diagram" viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" aria-label="電源から伸びる線と、赤青ランプの図">${edges}${nodes}</svg><div class="cut-msg">${msg}</div>`}
-function triad(){let d=defs.triad[levels.triad],n=board.arr.length,steps=board.history.length,cols=`repeat(${n},minmax(0,1fr))`;let tiles=board.arr.map((v,i)=>`<div class="triad-tile ${v===i+1?'correct':'shade'} ${lastFlash===i?'flash':''}">${v}</div>`).join('');let target=board.arr.map((_,i)=>`<div class="target">${i+1}</div>`).join('');let moves=Array.from({length:n-2},(_,i)=>`<div class="triad-btn-wrap" style="grid-column:${i+1}/span 3;grid-row:1;justify-self:center"><button class="triad-btn ${i===0&&steps===0&&levels.triad===0?'feature':''}" data-triad="${i}" aria-label="${i+1}枚目から3枚を右に回転" ${steps>=d.steps||board.won?'disabled':''}>↻</button>${i===0&&steps===0&&levels.triad===0?'<small>ここを押してみよう</small>':''}</div>`).join('');return `${steps===0?helpHtml():''}<div class="challenge-header"><span class="challenge-label">目標：1から順番に並べる</span><span class="metric">${steps} / ${d.steps} 手</span></div><div class="triad-work"><div class="triad-caption"><span>いまの並び</span><span>数字をタップするのではなく、↻で回すよ</span></div><div class="triad-row" style="grid-template-columns:${cols}">${tiles}</div><div class="target-row" style="grid-template-columns:${cols}">${target}</div><div class="triad-caption"><span>▲ 上が数字／下が目標の位置</span></div><div class="triad-arrows" style="--n:${n}">${moves}</div></div><div class="triad-step">${steps>=d.steps&&!board.won?'手数がなくなった。1手もどしてみよう。':'↻を押すと、その真上にある3枚が右へ1つずつ動く'}</div>${steps&&!board.won?`<div style="display:flex;justify-content:center;margin:7px 0 0"><button class="undo" id="undo">↶ 1手もどす</button></div>`:''}`}
-function success(){let more=levels[game]+1<defs[game].length;return `<div class="success ${more?'':'last'}"><div class="success-icon">${icon('check')}</div><h2>できた！</h2><p>${game==='scan'?'少ない手がかりで、隠れた形を見つけた！':game==='cut'?'赤だけ消して、青を守れた！':'3枚ずつ回して、数字を順番に戻せた！'}</p><button class="next" id="next">${more?'次のステージへ →':'3ゲームの一覧へ →'}</button></div>`}
-function footer(){return `<div class="bottom"><button class="plain-btn" id="prev" ${levels[game]===0?'disabled':''}>← 前へ</button><button class="plain-btn" id="restart">${icon('refresh')} やり直す</button><button class="plain-btn" id="forward" ${levels[game]===defs[game].length-1?'disabled':''}>次へ →</button></div><div class="progress">${defs[game].map((_,i)=>`<span class="${i===levels[game]?'active':''} ${i<levels[game]?'complete':''}"></span>`).join('')}</div></main><div class="micro">RESEARCH BUILD 02 — まず、仕組みを楽しく理解できるか。</div>`}
-function dialog(){if(!help)return;let data=game==='scan'?['隠れた形を見つけよう','タテの↓、ヨコの→をタップすると、その列に隠れたマスが何個あるかが数字で現れます。分かった数から候補を絞り、最後の1通りを見つけよう。','↓ をタップ → 「2」なら、その列に2マス隠れている']:game==='cut'?['赤だけ消そう','電源から線をたどって、赤いランプをすべて消そう。青いランプは点いたままにしてね。線をタップして切り、もう一度タップすると元に戻せます。','赤＝消す　・　青＝守る　・　線をタップ＝切る']:['3枚ずつ回そう','↻ボタンを押すと、その真上の3枚が右に1マスずつずれます。数字を1、2、3…の順に並べよう。3枚のまとまりを見つけるのがコツ。','2 ｜ 3 ｜ 1　　↻　　1 ｜ 2 ｜ 3'];document.body.insertAdjacentHTML('beforeend',`<div class="overlay" id="modal"><div class="dialog" role="dialog" aria-modal="true" aria-label="あそびかた"><div class="eyebrow">HOW TO PLAY</div><h2>${data[0]}</h2><p>${data[1]}</p><div class="dialog-demo">${data[2]}</div><button id="closeHelp">わかった！遊んでみる</button></div></div>`);$('#closeHelp').onclick=()=>{help=false;$('#modal').remove()};$('#modal').addEventListener('click',e=>{if(e.target.id==='modal'){help=false;$('#modal').remove()}})}
-function render(){soundButton();if(page==='home'){home();return}let d=defs[game][levels[game]];app.innerHTML=`<div class="page">${header(d)}${game==='scan'?scan():game==='cut'?cut():triad()}${board.won?success():''}${footer()}</div>`;
-$('#back').onclick=()=>{page='home';ping();render()};$('#help').onclick=()=>{help=true;dialog()};$('#prev').onclick=()=>goStage(-1);$('#forward').onclick=()=>goStage(1);$('#restart').onclick=()=>{ping();reset();render()};$('#next')?.addEventListener('click',()=>{if(levels[game]===defs[game].length-1){page='home';render()}else goStage(1)});$('#undo')?.addEventListener('click',()=>{board.arr=board.history.pop();board.won=false;ping('rotate');render()});
-app.querySelectorAll('[data-scan]').forEach(b=>b.onclick=()=>{let [ax,index]=b.dataset.scan.split(':'),i=+index,d=defs.scan[levels.scan];if(board.won||board.failed||board.used.length>=d.cap)return;let count=countIn(board.secret,ax,i),before=board.remain.length;board.remain=board.remain.filter(s=>countIn(s,ax,i)===count);board.used.push({ax,i,count});board.last={ax,count,before};board.won=board.remain.length===1;board.failed=!board.won&&board.used.length===d.cap;ping(board.won?'win':'tap');render()});
-app.querySelectorAll('[data-edge]').forEach(b=>b.addEventListener('click',()=>{if(board.won)return;let i=+b.dataset.edge,d=defs.cut[levels.cut];if(board.cuts.has(i))board.cuts.delete(i);else{if(board.cuts.size>=d.cap){board.last='limit';ping();render();return}board.cuts.add(i)}const live=power(d);board.won=Object.entries(d.nodes).every(([id,x])=>x[2]==='r'?!live.has(id):x[2]==='b'?live.has(id):true);board.last=i;ping(board.won?'win':'cut');render()}));
-app.querySelectorAll('[data-triad]').forEach(b=>b.onclick=()=>{let i=+b.dataset.triad,d=defs.triad[levels.triad];if(board.won||board.history.length>=d.steps)return;board.history.push(board.arr.slice());let [a,c,e]=board.arr.slice(i,i+3);board.arr.splice(i,3,e,a,c);lastFlash=i+1;board.won=board.arr.every((v,j)=>v===j+1);ping(board.won?'win':'rotate');render()})}
-$('#sound').onclick=()=>{sound=!sound;save();soundButton();if(sound)ping()};if(prefs.stages)for(let g of ['scan','cut','triad']){let n=Number(prefs.stages[g]);if(Number.isInteger(n))levels[g]=Math.min(Math.max(n,0),defs[g].length-1)}render();
+function shapeKey(shape){return shape.map(v=>v.join(',')).sort().join('|')}
+function init(){
+  const d=defs[game][levels[game]];
+  if(game==='scan'){
+    const choices=scanCandidates(d), secret=choices[d.target % choices.length];
+    board={choices,secret,remain:choices.slice(),used:[],guess:new Set(),won:false,feedback:null};
+  } else if(game==='cut'){
+    board={cuts:new Set(),history:[],won:false,feedback:null};
+  } else {
+    board={arr:d.start.slice(),history:[],won:false,lastGroup:null,feedback:null};
+  }
+}
+function goHome(){page='home';save();render()}
+function openGame(g){game=g;page='game';save();init();render()}
+function step(delta){const n=defs[game].length; levels[game]=(levels[game]+delta+n)%n; save(); init(); render()}
+function soundIcon(){ $('#soundBtn').textContent=sound?'♫':'♪'; }
+
+function header(d){
+  const names={scan:'SCAN GRID',cut:'CUT CIRCUIT',triad:'TRIAD SHIFT'};
+  return `<div class="header"><button class="back" id="backBtn">←</button><div class="header-main"><div class="label">${names[game]}</div><div class="title">${d.title}</div><p class="sub">${d.sub}</p></div><div class="toptools"><button class="chipbtn" id="helpBtn">遊び方</button></div></div>`;
+}
+function stageDots(){return `<div class="dots">${defs[game].map((_,i)=>`<div class="dot ${i===levels[game]?'on':''}"></div>`).join('')}</div>`}
+function footer(){
+  return `<div class="actions"><button class="action" id="prevBtn">← 前へ</button><button class="action" id="resetBtn">↺ リセット</button><button class="action primary" id="nextStageBtn">次へ →</button></div>${stageDots()}`;
+}
+function success(){return `<div class="success"><strong>クリア！</strong><div>今のルールで、ちゃんと先読みできた？</div><div class="actions" style="margin-top:10px"><button class="action primary" id="clearNextBtn">次のステージへ</button></div></div>`}
+
+function renderHome(){
+  app.innerHTML=`<div class="page"><div class="hero card"><div class="over">THREE PROTOTYPES</div><h1>まずは、<br>何をするゲームかが
+すぐ伝わるように。</h1><p>今回は、3つの候補を<strong>UI重視</strong>で磨いた版です。まだ最終評価ではなく、まずは「何をさせられているのか分からない」をなくすことを目標にしています。</p></div>
+  ${gameCard('scan','01','SCAN GRID','矢印で行・列を調べて、最後は自分で形を置いて答える。','調べる → 予想する → 指で決める','<svg viewBox="0 0 80 80"><g fill="none" stroke="#cce9ee"><rect x="12" y="12" width="56" height="56" rx="12" fill="#fff"/><path d="M30 12v56M49 12v56M12 30h56M12 49h56"/></g><rect x="31" y="31" width="18" height="18" rx="5" fill="#00a9c0"/><path d="M30 5l-8 8h5v7h6v-7h5zM50 5l-8 8h5v7h6v-7h5z" fill="#94dfe9"/></svg>')}
+  ${gameCard('cut','02','CUT CIRCUIT','線をなぞって切り、赤いランプを消しながら青いランプを守る。','タップではなく、指でスパッと切る','<svg viewBox="0 0 80 80"><path d="M12 42h20L44 25h24" stroke="#9cc3cd" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="13" cy="42" r="8" fill="#ffd86f"/><circle cx="44" cy="25" r="8" fill="#4aa3bf"/><circle cx="68" cy="25" r="8" fill="#eb6b71"/><path d="M28 18l11 11M39 18L28 29" stroke="#00a9c0" stroke-width="4" stroke-linecap="round"/></svg>')}
+  ${gameCard('triad','03','TRIAD SHIFT','3枚ずつ右へ回す。どの3枚が動いて、どう変わるかを見ながら押す。','押す前に「前 → 後」の変化を見せる','<svg viewBox="0 0 80 80"><rect x="8" y="22" width="18" height="18" rx="6" fill="#eef9fb" stroke="#cde9ee"/><rect x="31" y="22" width="18" height="18" rx="6" fill="#eef9fb" stroke="#cde9ee"/><rect x="54" y="22" width="18" height="18" rx="6" fill="#eef9fb" stroke="#cde9ee"/><text x="17" y="35" font-size="10" font-weight="900" text-anchor="middle" fill="#173746">2</text><text x="40" y="35" font-size="10" font-weight="900" text-anchor="middle" fill="#173746">3</text><text x="63" y="35" font-size="10" font-weight="900" text-anchor="middle" fill="#173746">1</text><path d="M17 53c8 7 38 7 46 0" stroke="#00a9c0" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M59 47l8 6-8 6" fill="none" stroke="#00a9c0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>')}
+  <div class="small">これは「ゲームの核」を判断するための試遊研究版です。<br>まだ採用決定ではありません。</div></div>`;
+  $$('[data-open]').forEach(b=>b.onclick=()=>{beep(); openGame(b.dataset.open)});
+}
+function gameCard(id,no,name,desc,tip,svg){return `<button class="menu-item card" data-open="${id}"><div class="menu-illust">${svg}</div><div class="menu-body"><div class="menu-no">GAME ${no}</div><div class="menu-name">${name}</div><div class="menu-desc">${desc}</div><div class="menu-tip">${tip}</div></div><div class="arrow">→</div></button>`}
+
+function scanSample(shape){const n=Math.max(...shape.map(v=>v[0]),...shape.map(v=>v[1]))+1; let cells=''; for(let y=0;y<n;y++) for(let x=0;x<n;x++){ const on=shape.some(([yy,xx])=>yy===y&&xx===x); cells+=`<div class="${on?'on':''}"></div>`; } return `<div class="sample-grid" style="grid-template-columns:repeat(${n},1fr);grid-template-rows:repeat(${n},1fr)">${cells}</div>`;}
+function scanView(){
+  const d=scanDefs[levels.scan], n=d.n; const heat=[]; for(let y=0;y<n;y++)for(let x=0;x<n;x++){let c=0; for(const sh of board.remain) if(sh.some(([yy,xx])=>yy===y&&xx===x)) c++; heat.push(c);} 
+  const top=Array.from({length:n},(_,i)=>{const used=board.used.find(u=>u.ax==='c'&&u.i===i); return `<button class="probe ${used?'used':''} ${!used&&i===0&&board.used.length===0?'prompt':''}" ${used?'disabled':''} data-scan="c:${i}">${used?used.count:'↓'}</button>`}).join('');
+  const side=Array.from({length:n},(_,i)=>{const used=board.used.find(u=>u.ax==='r'&&u.i===i); return `<button class="probe ${used?'used':''} ${!used&&i===0&&board.used.length===0?'prompt':''}" ${used?'disabled':''} data-scan="r:${i}">${used?used.count:'→'}</button>`}).join('');
+  const heatCells=heat.map(v=>{const opacity=v?Math.min(.85,.10+.72*v/board.remain.length):0; return `<div class="cell"><div class="ghost" style="opacity:${opacity}"></div></div>`}).join('');
+  const guessCells=Array.from({length:n*n},(_,idx)=>{const y=Math.floor(idx/n),x=idx%n,key=`${y},${x}`;const on=board.guess.has(key); return `<button class="toggle ${on?'on':''}" data-cell="${y},${x}"></button>`}).join('');
+  let feedback=`<div class="feedback info">まずは矢印で<strong>行</strong>か<strong>列</strong>を調べよう。数字が出たら、その情報を手がかりに、下の予想グリッドで自分の答えを作る。</div>`;
+  if(board.feedback==='wrong') feedback=`<div class="feedback ng">まだちがうみたい。もう少し調べるか、予想を置きなおしてみよう。</div>`;
+  if(board.won) feedback=`<div class="feedback ok">ぴったり！ スキャンした情報から、自分で形を当てられた。</div>`;
+  return `<div class="stagebar"><strong>STAGE ${levels.scan+1} / ${scanDefs.length}</strong><span>候補 ${board.remain.length} 通り ・ スキャン ${board.used.length} / ${d.cap}</span></div>
+    <div class="boardcard card">
+      <div class="section"><div class="step">STEP 1</div><h3>矢印で、行や列を調べる</h3><p>押した行・列の中に、形のマスがいくつあるか分かる。</p>
+        <div class="shape-sample">${scanSample(normalize(d.shape))}<div class="notice">今回の形はこれ。<br>${d.rot?'向きも変わる。':'向きは固定。'}</div></div>
+        <div class="meter"><div class="badge">残り候補 ${board.remain.length}</div><div class="badge">スキャン残り ${d.cap-board.used.length}</div></div>
+        <div class="grid-wrap"><div class="scan-area"><div class="scan-top" style="grid-template-columns:repeat(${n},1fr)">${top}</div><div class="scan-side" style="grid-template-rows:repeat(${n},1fr)">${side}</div><div class="heatgrid" style="grid-template-columns:repeat(${n},1fr);grid-template-rows:repeat(${n},1fr)">${heatCells}</div></div></div>
+      </div>
+      <div class="section"><div class="step">STEP 2</div><h3>自分で形を置いて、答える</h3><p>下のマスをタップして、隠れていると思う場所に形を置こう。</p>
+        <div class="answergrid" style="grid-template-columns:repeat(${n},1fr);grid-template-rows:repeat(${n},1fr)">${guessCells}</div>
+        <div class="actions"><button class="action" id="clearGuessBtn">予想を消す</button><button class="action primary" id="checkGuessBtn">これで決定</button></div>
+        ${feedback}
+      </div>
+    </div>${board.won?success():''}${footer()}`;
+}
+function cutPower(d){const adj={}; d.edges.forEach(([a,b],i)=>{if(board.cuts.has(i)) return; (adj[a]??=[]).push(b); (adj[b]??=[]).push(a)}); const seen=new Set(['S']), q=['S']; while(q.length){ const cur=q.pop(); for(const nxt of (adj[cur]||[])) if(!seen.has(nxt)){seen.add(nxt);q.push(nxt)} } return seen; }
+function cutView(){
+  const d=cutDefs[levels.cut], live=cutPower(d);
+  const svgW=400, svgH=300;
+  const edges=d.edges.map(([a,b],i)=>{const p=d.nodes[a], q=d.nodes[b]; const x1=p[0]*svgW, y1=p[1]*svgH, x2=q[0]*svgW, y2=q[1]*svgH; return `<g data-edgeg="${i}"><line class="edge ${board.cuts.has(i)?'cut':''}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"></line><line class="edge-hit" data-edge="${i}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"></line></g>`}).join('');
+  const nodes=Object.entries(d.nodes).map(([id,[x,y,t]])=>{const on=live.has(id); return `<g><circle class="node ${t} ${on?'on':'off'}" cx="${x*svgW}" cy="${y*svgH}" r="18"></circle><text class="nlabel" x="${x*svgW}" y="${y*svgH+1}">${t==='s'?'⚡':t==='r'?'赤':t==='b'?'青':'・'}</text><text class="nname" x="${x*svgW}" y="${y*svgH+34}">${id==='S'?'電源':''}</text></g>`}).join('');
+  let feedback=`<div class="feedback info">線の上を指でスッとなぞると切れる。<strong>赤は消す</strong>、<strong>青は守る</strong>。</div>`;
+  if(board.feedback==='limit') feedback=`<div class="feedback ng">もう切れる本数の上限です。やり直すか、1手もどしてみよう。</div>`;
+  if(board.won) feedback=`<div class="feedback ok">条件達成！ 赤だけ消して、青は守れた。</div>`;
+  return `<div class="stagebar"><strong>STAGE ${levels.cut+1} / ${cutDefs.length}</strong><span>切った本数 ${board.cuts.size} / ${d.cap}</span></div>
+    <div class="boardcard card">
+      <div class="section"><div class="step">GOAL</div><h3>赤いランプを消して、青いランプを守る</h3><p>タップではなく、<strong>線を横切るようにスワイプ</strong>して切る。切った線は「1手もどす」や「リセット」で戻せる。</p>
+        <div class="meter"><div class="badge red">赤 = 消す</div><div class="badge blue">青 = 守る</div><div class="badge">残り ${d.cap-board.cuts.size} 本</div></div>
+        <div class="svgwrap"><svg id="cutSvg" viewBox="0 0 ${svgW} ${svgH}">${edges}${nodes}</svg></div>
+        <div class="cutguide"><div class="scissor">✂︎</div><div>線の上を指でスッとなぞると切れる。<br>今のステージでは <strong>${d.cap}本まで</strong> 切ってよい。</div></div>
+        ${feedback}
+        <div class="actions"><button class="action" id="undoCutBtn" ${board.history.length?'':'disabled'}>1手もどす</button><button class="action" id="resetCutBtn">最初から</button></div>
+      </div>
+    </div>${board.won?success():''}${footer()}`;
+}
+function triadView(){
+  const d=triadDefs[levels.triad], n=board.arr.length, groups=n-2;
+  const tiles=board.arr.map((v,i)=>`<div class="tile ${board.lastGroup!==null && i>=board.lastGroup && i<board.lastGroup+3?'mark':''}">${v}</div>`).join('');
+  const target=Array.from({length:n},(_,i)=>`<div class="targetcell">${i+1}</div>`).join('');
+  const controls=Array.from({length:groups},(_,i)=>{const a=board.arr[i],b=board.arr[i+1],c=board.arr[i+2]; return `<div class="group"><div class="group-top">左から ${i+1} 〜 ${i+3} 番目の3枚が動く</div><div class="group-preview"><div class="mini"><span class="mtile">${a}</span><span class="mtile">${b}</span><span class="mtile">${c}</span></div><div style="color:var(--cyan2);font-weight:900">→</div><div class="mini"><span class="mtile">${c}</span><span class="mtile">${a}</span><span class="mtile">${b}</span></div></div><button data-triad="${i}">この3枚を右へ1マス回す</button></div>`}).join('');
+  let feedback=`<div class="feedback info">ボタンを押す前に、<strong>どの3枚が動くか</strong>と、<strong>押した後どう並ぶか</strong>を下のプレビューで確認しよう。</div>`;
+  if(board.won) feedback=`<div class="feedback ok">きれいに並んだ！ どの3枚を選ぶかが分かってくると、見え方が変わる。</div>`;
+  return `<div class="stagebar"><strong>STAGE ${levels.triad+1} / ${triadDefs.length}</strong><span>手数 ${board.history.length} / ${d.steps}</span></div>
+    <div class="boardcard card">
+      <div class="section"><div class="step">NOW</div><h3>今のならび</h3><p>動くのは毎回<strong>3枚だけ</strong>。押すボタンごとに、動く範囲が決まっている。</p>
+        <div class="tiles-wrap"><div class="tiles" style="grid-template-columns:repeat(${n},1fr)">${tiles}</div><div class="targetrow" style="grid-template-columns:repeat(${n},1fr)">${target}</div></div>
+        ${feedback}
+        <div class="actions"><button class="action" id="undoTriadBtn" ${board.history.length?'':'disabled'}>1手もどす</button><button class="action" id="resetTriadBtn">最初から</button></div>
+      </div>
+      <div class="section"><div class="step">MOVE</div><h3>どの3枚を右へ回す？</h3><p>各ボタンの上にある「前 → 後」を見れば、押した瞬間にどう変わるか分かる。</p><div class="triad-controls">${controls}</div></div>
+    </div>${board.won?success():''}${footer()}`;
+}
+
+function dialog(){
+  const map={
+    scan:['SCAN GRID','矢印で行や列を調べて、その情報から最後は自分で形を置いて当てるゲーム。','<strong>1.</strong> 矢印を押す → 数字が出る<br><strong>2.</strong> 候補の濃さを見る<br><strong>3.</strong> 下の予想グリッドで自分の答えを作る'],
+    cut:['CUT CIRCUIT','赤いランプだけを消し、青いランプは残すゲーム。線はタップではなく、指でスパッと切る。','<strong>1.</strong> 線の上をスワイプする<br><strong>2.</strong> 電気の流れが変わる<br><strong>3.</strong> 赤は消灯、青は点灯のままを目指す'],
+    triad:['TRIAD SHIFT','3枚だけを右に回して、数字を順番どおりに並べるゲーム。','<strong>2 3 1</strong> に対応するボタンを押すと<br><strong>1 2 3</strong> に変わる。<br>どの3枚が動くかを、押す前に必ず見る']
+  };
+  const d=map[game];
+  document.body.insertAdjacentHTML('beforeend',`<div class="overlay" id="ov"><div class="dialog"><div class="over">HOW TO PLAY</div><h2>${d[0]}</h2><p>${d[1]}</p><div class="demo">${d[2]}</div><button id="closeOv">わかった！</button></div></div>`);
+  $('#closeOv').onclick=()=>$('#ov').remove(); $('#ov').onclick=e=>{if(e.target.id==='ov') $('#ov').remove()};
+}
+
+function render(){soundIcon(); if(page==='home'){renderHome(); return;} const d=defs[game][levels[game]]; app.innerHTML=`<div class="page">${header(d)}${game==='scan'?scanView():game==='cut'?cutView():triadView()}</div>`;
+  $('#backBtn').onclick=()=>{beep();goHome()}; $('#helpBtn').onclick=()=>dialog(); $('#prevBtn').onclick=()=>{beep(); step(-1)}; $('#resetBtn').onclick=()=>{beep(); init(); render()}; $('#nextStageBtn').onclick=()=>{beep(); step(1)}; $('#clearNextBtn')?.addEventListener('click',()=>{beep(); step(1)});
+  if(game==='scan') bindScan(); if(game==='cut') bindCut(); if(game==='triad') bindTriad();
+}
+
+function bindScan(){
+  const d=scanDefs[levels.scan];
+  $$('[data-scan]',app).forEach(b=>b.onclick=()=>{const [ax,iStr]=b.dataset.scan.split(':'), i=+iStr; const count=countIn(board.secret,ax,i); board.remain=board.remain.filter(s=>countIn(s,ax,i)===count); board.used.push({ax,i,count}); board.feedback=null; beep(); render();});
+  $$('[data-cell]',app).forEach(b=>b.onclick=()=>{const key=b.dataset.cell; board.guess.has(key)?board.guess.delete(key):board.guess.add(key); beep('tap'); render();});
+  $('#clearGuessBtn').onclick=()=>{board.guess.clear(); board.feedback=null; beep(); render();};
+  $('#checkGuessBtn').onclick=()=>{const guess=[...board.guess].map(s=>s.split(',').map(Number)); if(shapeKey(guess)===shapeKey(board.secret)){board.won=true; board.feedback='ok'; beep('win');} else {board.feedback='wrong'; beep('tap');} render();};
+}
+function bindCut(){
+  $('#undoCutBtn').onclick=()=>{if(!board.history.length) return; board.cuts=board.history.pop(); board.feedback=null; beep(); render();};
+  $('#resetCutBtn').onclick=()=>{board.cuts.clear(); board.history=[]; board.won=false; board.feedback=null; beep(); render();};
+  const svg=$('#cutSvg');
+  const d=cutDefs[levels.cut];
+  const edgeData=d.edges.map(([a,b],i)=>{const p=d.nodes[a],q=d.nodes[b]; return {i,x1:p[0]*400,y1:p[1]*300,x2:q[0]*400,y2:q[1]*300};});
+  let active=false, doneInStroke=new Set();
+  const pt=(e)=>{const r=svg.getBoundingClientRect(); const touch=e.touches?e.touches[0]:e; return {x:(touch.clientX-r.left)*(400/r.width), y:(touch.clientY-r.top)*(300/r.height)};};
+  const dist=(p,e)=>{const A=p.x-e.x1, B=p.y-e.y1, C=e.x2-e.x1, D=e.y2-e.y1; const dot=A*C+B*D, len=C*C+D*D; let t=len?dot/len:0; t=Math.max(0,Math.min(1,t)); const x=e.x1+t*C, y=e.y1+t*D; return Math.hypot(p.x-x,p.y-y);};
+  function tryCut(p){for(const ed of edgeData){ if(doneInStroke.has(ed.i) || board.cuts.has(ed.i)) continue; if(board.cuts.size>=d.cap){ board.feedback='limit'; beep(); render(); return true; } if(dist(p,ed)<16){ board.history.push(new Set(board.cuts)); board.cuts.add(ed.i); doneInStroke.add(ed.i); const live=cutPower(d); board.won=Object.entries(d.nodes).every(([id,v])=> v[2]==='r' ? !live.has(id) : v[2]==='b' ? live.has(id) : true); board.feedback=null; beep(board.won?'win':'cut'); render(); return true; } } return false; }
+  const start=(e)=>{active=true; doneInStroke=new Set(); tryCut(pt(e)); e.preventDefault();};
+  const move=(e)=>{if(!active) return; tryCut(pt(e)); e.preventDefault();};
+  const end=()=>{active=false; doneInStroke.clear();};
+  svg.addEventListener('mousedown',start); svg.addEventListener('mousemove',move); window.addEventListener('mouseup',end,{once:true});
+  svg.addEventListener('touchstart',start,{passive:false}); svg.addEventListener('touchmove',move,{passive:false}); window.addEventListener('touchend',end,{once:true});
+}
+function bindTriad(){
+  const d=triadDefs[levels.triad];
+  $('#undoTriadBtn').onclick=()=>{if(!board.history.length) return; board.arr=board.history.pop(); board.lastGroup=null; board.won=false; beep(); render();};
+  $('#resetTriadBtn').onclick=()=>{board.arr=d.start.slice(); board.history=[]; board.lastGroup=null; board.won=false; beep(); render();};
+  $$('[data-triad]',app).forEach(b=>b.onclick=()=>{const i=+b.dataset.triad; if(board.history.length>=d.steps || board.won) return; board.history.push(board.arr.slice()); const [a,c,e]=board.arr.slice(i,i+3); board.arr.splice(i,3,e,a,c); board.lastGroup=i; board.won=board.arr.every((v,idx)=>v===idx+1); beep(board.won?'win':'rotate'); render();});
+}
+
+$('#soundBtn').onclick=()=>{sound=!sound; save(); soundIcon(); if(sound) beep();};
+init(); render();
 })();
-</script></body></html>
+</script>
+</body>
+</html>
