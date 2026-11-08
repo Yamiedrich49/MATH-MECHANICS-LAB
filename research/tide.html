@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+<meta name="theme-color" content="#f5f6f2"/>
+<title>TIDE · MATH MECHANICS LAB</title>
+<style>
+:root{--bg:#f5f6f2;--paper:#fff;--ink:#1d3540;--sub:#73888e;--line:#dfebeb;--sea:#258e91;--shadow:0 16px 45px rgba(27,59,62,.055);--water:#dfe9e9}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;-webkit-font-smoothing:antialiased}
+body{min-height:100svh;overscroll-behavior-y:none}button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:3px solid #86d6d2;outline-offset:2px}a{color:inherit}
+.shell{max-width:530px;margin:auto;padding:calc(12px + env(safe-area-inset-top)) 18px calc(17px + env(safe-area-inset-bottom));min-height:100svh;display:flex;flex-direction:column}
+.nav{display:flex;align-items:center;gap:10px;min-height:39px}.back,.iconbtn{width:40px;height:40px;display:grid;place-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;text-decoration:none;font-size:22px;line-height:1;color:var(--ink)}.brand{flex:1;min-width:0}.brand-kicker{font-size:9px;letter-spacing:.2em;color:#408b8c;font-weight:850}.brand-name{font-size:13px;font-weight:830;letter-spacing:.1em;margin-top:2px}.iconbtn{font-size:17px}
+.hero{display:flex;align-items:end;gap:12px;justify-content:space-between;margin:23px 2px 14px}.hero-kicker{font-size:10px;color:#509194;letter-spacing:.2em;font-weight:900}.hero h1{font-size:52px;line-height:.98;letter-spacing:-.075em;font-weight:780;margin:6px 0 8px}.subtitle{font-size:13px;line-height:1.6;color:var(--sub);font-weight:590;margin:0}.stagewrap{text-align:right;align-self:center}.stage-index{font-size:12px;color:#3f7e80;font-weight:830;letter-spacing:.13em;white-space:nowrap}.stage-theme{font-size:11px;color:var(--sub);margin-top:5px;max-width:130px}
+.goal-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 11px 0;padding:13px 14px;border:1px solid #dce9e7;border-radius:17px;background:white}.goal-left{display:flex;align-items:center;gap:10px;min-width:0}.goal-caption{font-size:12px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}.goal-rings{display:flex;align-items:center;gap:7px}.goal-ring{height:25px;min-width:25px;padding:0 4px;display:grid;place-items:center;border-radius:50%;border:2px solid var(--target);color:var(--target);font-size:11px;font-weight:920;line-height:1;background:#fff}.goal-ring.reached{background:var(--target);color:white;border-color:var(--target)}.goal-ring.stolen{background:#f4e7e5;color:#ab6f70;border-color:#bd9a96}.moves{font-size:12px;font-weight:860;font-variant-numeric:tabular-nums;white-space:nowrap;color:#557c7e}.moves b{font-size:20px;letter-spacing:-.06em;color:var(--ink)}
+.board-frame{background:linear-gradient(155deg,#fff,#fcfdfc);border:1px solid #dae6e5;border-radius:28px;padding:13px;box-shadow:var(--shadow);position:relative}.board{--gap:5px;display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:var(--gap);background:#fff;border-radius:18px;padding:2px;isolation:isolate;touch-action:manipulation}.cell{position:relative;aspect-ratio:1;min-width:0;padding:0;border:0;border-radius:14px;background:#ecf2f1;display:flex;justify-content:center;align-items:center;z-index:1;overflow:visible;transition:filter .12s ease;user-select:none}.cell.blank{background:#edf3f2}.cell.owned{background:var(--tone);box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}.cell.owned:active{filter:brightness(1.12)}.cell:disabled{cursor:default}.cell.owned.can-grow{cursor:pointer}.cell.owned.no-grow{cursor:default}
+.cell .bridge-right,.cell .bridge-down{position:absolute;background:var(--tone);z-index:0;pointer-events:none}.cell .bridge-right{right:calc(-1 * var(--gap));width:calc(var(--gap) + 1px);height:41%;top:29.5%}.cell .bridge-down{bottom:calc(-1 * var(--gap));height:calc(var(--gap) + 1px);width:41%;left:29.5%}
+.cell .source-icon{position:relative;z-index:2;width:38%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.76);color:white;display:grid;place-items:center;font-size:clamp(14px,4.3vw,21px);font-weight:820;line-height:1}.cell.owned.amber .source-icon{color:#513e2f;border-color:#775d42;background:rgba(255,255,255,.28)}
+.cell .target-ring{position:absolute;z-index:3;width:47%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.7);border:3px solid var(--target);color:var(--target);font-size:clamp(13px,3.5vw,17px);font-weight:860;line-height:1;box-shadow:0 0 0 3px rgba(255,255,255,.36)}
+.cell.owned.goal-good .target-ring{background:transparent;color:white;border-color:rgba(255,255,255,.92);box-shadow:none}.cell.owned.goal-bad .target-ring{background:rgba(15,27,31,.35);border:3px dashed rgba(255,255,255,.85);color:white;box-shadow:none}.cell.owned.goal-bad{filter:saturate(.64)}
+.cell.born{animation:expand .42s cubic-bezier(.17,.8,.22,1) both;animation-delay:var(--delay)}.cell.born:after{content:'';position:absolute;inset:5%;border-radius:20px;border:2px solid rgba(255,255,255,.52);pointer-events:none;animation:ripples .6s cubic-bezier(.19,.73,.25,1) both;animation-delay:var(--delay)}
+.cell.coach{animation:coach-pulse 1.8s ease-in-out infinite}.cell.coach:before{content:'';position:absolute;inset:-4px;border:2px solid var(--tone);border-radius:17px;opacity:.48;animation:guide-pulse 1.8s ease-in-out infinite;pointer-events:none}.coach-tag{position:absolute;z-index:8;top:5px;left:50%;transform:translateX(-50%);border-radius:999px;background:#fff;border:1px solid #cde6e4;color:#2d8888;padding:6px 13px;font-size:12px;font-weight:850;white-space:nowrap;pointer-events:none;box-shadow:0 5px 14px #0f3e4510;animation:hint-breathe 1.8s ease-in-out infinite}
+.banner{min-height:49px;padding:9px 12px;margin-top:12px;border-radius:15px;background:#eaf4f2;display:flex;justify-content:center;align-items:center;gap:10px;text-align:center}.banner .symbol{width:28px;height:28px;border:1.5px solid #b6d7d3;border-radius:9px;display:grid;place-items:center;color:#2a8d8d;font-size:16px;flex:none}.banner .txt{font-size:12px;line-height:1.5;color:#497a7b;font-weight:690}.banner .txt b{font-weight:900;color:#287e80}.banner.loss{background:#faf0e8}.banner.loss .txt{color:#9d684f}.banner.loss .symbol{color:#a67253;border-color:#dec2aa}.banner.win{background:#e6f6ef}.banner.win .txt{color:#398273}
+.control{display:flex;gap:9px;margin-top:13px}.ctl{height:46px;flex:1;border:1px solid var(--line);border-radius:15px;background:#fff;font-size:13px;font-weight:780;display:flex;align-items:center;justify-content:center;gap:5px}.ctl:disabled{opacity:.37}.ctl.primary{background:#236f74;color:white;border-color:#236f74}.ctl.primary:disabled{opacity:.45}.ctl .icon{font-size:18px;line-height:1}
+.levels{display:flex;justify-content:center;align-items:center;gap:8px;padding:17px 0 0}.leveldot{width:8px;height:8px;border:0;background:#d6e4e1;border-radius:20px;padding:0;transition:width .24s ease,background .24s ease}.leveldot.active{width:26px;background:#2c9292}.leveldot.cleared:not(.active){background:#80c4b2}
+.note{font-size:10px;color:#98a9ab;text-align:center;margin:14px 0 0;line-height:1.5}
+.win-overlay{position:absolute;inset:13px;border-radius:18px;display:grid;align-items:center;justify-items:center;pointer-events:none;z-index:9;animation:celebrate .58s both}.win-glass{padding:15px 22px;border:1px solid #bddbd3;border-radius:22px;background:rgba(255,255,255,.95);box-shadow:0 10px 27px rgba(15,46,44,.13);text-align:center}.win-glass strong{font-size:25px;letter-spacing:.03em;color:#237e7b}.win-glass small{display:block;margin-top:3px;font-size:11px;color:#598780;font-weight:710}
+.dialog-bg{position:fixed;inset:0;background:rgba(9,35,42,.48);z-index:99;display:flex;align-items:center;justify-content:center;padding:20px}.dialog{width:100%;max-width:400px;background:white;border-radius:26px;padding:24px;box-shadow:0 24px 65px rgba(5,30,35,.17)}.dialog small{font-size:10px;letter-spacing:.16em;font-weight:850;color:#438e8c}.dialog h2{font-size:25px;letter-spacing:-.05em;margin:7px 0 14px}.dialog p{font-size:14px;line-height:1.8;color:#546d74}.dialog button{width:100%;height:48px;border-radius:14px;background:#236f74;color:white;border:0;font-weight:850;margin-top:12px}
+@keyframes expand{0%{opacity:.12;transform:scale(.48);filter:brightness(1.2)}68%{opacity:1;transform:scale(1.065)}100%{transform:scale(1);filter:brightness(1);opacity:1}}@keyframes ripples{0%{transform:scale(.4);opacity:.8}100%{transform:scale(1.35);opacity:0}}@keyframes coach-pulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.12)}}@keyframes guide-pulse{0%,100%{opacity:0;transform:scale(.92)}50%{opacity:.9;transform:scale(1.03)}}@keyframes hint-breathe{0%,100%{opacity:.73}50%{opacity:1}}@keyframes celebrate{0%{opacity:0;transform:scale(.85)}65%{opacity:1;transform:scale(1.045)}100%{opacity:1;transform:scale(1)}}
+@media(max-width:370px){.shell{padding-left:11px;padding-right:11px}.board-frame{padding:10px}.hero{margin-top:14px;margin-bottom:11px}.hero h1{font-size:45px}.goal-strip{padding:10px}.board{--gap:4px}.cell{border-radius:11px}.ctl{height:44px}}
+@media(max-height:755px){.shell{padding-top:calc(7px + env(safe-area-inset-top))}.hero{margin-top:12px;margin-bottom:9px}.hero h1{font-size:43px;margin:4px 0}.goal-strip{margin-bottom:8px;padding:10px 12px}.board-frame{padding:9px}.banner{margin-top:8px;min-height:38px;padding:5px 10px}.control{margin-top:9px}.levels{padding-top:12px}.note{margin-top:9px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="nav"><a class="back" href="../" aria-label="研究所に戻る">‹</a><div class="brand"><div class="brand-kicker">MATH MECHANICS LAB / 06</div><div class="brand-name">NEW RESEARCH</div></div><button class="iconbtn" id="help" aria-label="遊び方">?</button><button class="iconbtn" id="sound" aria-label="音を切り替える">♫</button></header>
+<div class="hero"><div><div class="hero-kicker">THINK BEFORE THE WAVE</div><h1>TIDE<span style="color:#32948f">.</span></h1><p class="subtitle" id="subtitle">色をタップすると、陣地が広がる。</p></div><div class="stagewrap"><div class="stage-index" id="stage">01 / 08</div><div class="stage-theme" id="theme">はじめの一滴</div></div></div>
+<div class="goal-strip"><div class="goal-left"><div class="goal-caption">同じ色の輪へ</div><div class="goal-rings" id="goalrings"></div></div><div class="moves" id="moveCounter"><b>0</b> / 1 手</div></div>
+<section class="board-frame"><div class="board" id="board" role="group" aria-label="色の陣地が広がる盤面"></div><div id="winOverlay"></div></section>
+<div class="banner" id="banner" role="status" aria-live="polite"><div class="symbol">↗</div><div class="txt">色のマスに触れると、周りへ広がる。</div></div>
+<div class="control"><button id="undo" class="ctl"><span class="icon">↶</span> 1手戻す</button><button id="reset" class="ctl"><span class="icon">⟲</span> やり直す</button><button id="next" class="ctl primary">次の問題 <span class="icon">→</span></button></div>
+<div class="levels" id="levels" aria-label="問題の選択"></div><div class="note">RESEARCH BUILD · 少数問題でゲーム性を検証中</div>
+</main>
+<div id="modal"></div>
+<script>
+(()=>{'use strict';
+const COLORS=[{hex:'#218e91',key:'teal',label:'A'},{hex:'#dca667',key:'amber',label:'B'},{hex:'#8c88bf',key:'violet',label:'C'}];
+// Each test puzzle was independently solved by exhaustive breadth-first search.
+// The best number of moves and uniqueness refer to the fixed growth rule implemented below.
+const LEVELS=[
+ {n:3,seeds:[4],goals:[1],best:1,solution:[0],title:'はじめの一滴',subtitle:'色のかたまりを、タップ。'},
+ {n:3,seeds:[3,5],goals:[4,2],best:2,solution:[0,1],title:'早いもの勝ち',subtitle:'同じ色の輪へ、先に届けよう。'},
+ {n:3,seeds:[2,3],goals:[0,6],best:3,solution:[0,0,1],title:'一本道ではない',subtitle:'一度取られたマスは、取り返せない。'},
+ {n:4,seeds:[8,4],goals:[5,1],best:4,solution:[0,0,1,1],title:'広がりを読む',subtitle:'色を伸ばす順番で、未来が変わる。'},
+ {n:4,seeds:[6,10,3],goals:[9,15,7],best:5,solution:[2,0,0,1,1],title:'3つの色',subtitle:'ゴールをふさがないように広げよう。'},
+ {n:4,seeds:[0,3,12],goals:[2,6,4],best:6,solution:[2,2,0,0,1,1],title:'せめぎあい',subtitle:'3つの陣地が、道を奪い合う。'},
+ {n:4,seeds:[10,5,1],goals:[13,0,7],best:7,solution:[0,1,1,2,2,2,0],title:'遠回りの正解',subtitle:'遠いゴールほど、先に考えよう。'},
+ {n:4,seeds:[11,15,13],goals:[6,9,4],best:8,solution:[1,1,0,0,1,2,2,2],title:'潮目を読む',subtitle:'最初の一手が、最後まで響く。'}
+];
+const $=id=>document.getElementById(id);const SAVE='mm_tide_trial_v1';
+let level=0,state=[],history=[],won=false,failed=false,newborn=[],lastColor=-1,lang='ja',sound=true,completed=[],audio=null,winTimer=null,animBusy=false;
+try{const st=JSON.parse(localStorage.getItem(SAVE)||'{}');level=Math.max(0,Math.min(LEVELS.length-1,Number(st.level)||0));sound=st.sound!==false;completed=Array.isArray(st.completed)?st.completed.filter(i=>Number.isInteger(i)):[]}catch{}
+function persist(){try{localStorage.setItem(SAVE,JSON.stringify({level,sound,completed}))}catch{}}
+function neighbors(index,n){let y=Math.floor(index/n),x=index%n;return [[y-1,x],[y+1,x],[y,x-1],[y,x+1]].filter(([r,c])=>r>=0&&r<n&&c>=0&&c<n).map(([r,c])=>r*n+c)}
+function advance(arr,c,n){const owned=arr.map((v,i)=>v===c?i:-1).filter(x=>x>=0),added=new Set();for(const idx of owned)for(const nn of neighbors(idx,n))if(arr[nn]===-1)added.add(nn);if(!added.size)return null;const next=arr.slice();for(const idx of added)next[idx]=c;return {next,added:[...added]}}
+function reached(arr,p){return p.goals.every((pos,c)=>arr[pos]===c)}
+function stolen(arr,p){return p.goals.some((pos,c)=>arr[pos]!==-1&&arr[pos]!==c)}
+function canGrow(c){return advance(state,c,LEVELS[level].n)!==null}
+function setLevel(i){level=Math.max(0,Math.min(LEVELS.length-1,i));const p=LEVELS[level];state=new Array(p.n*p.n).fill(-1);p.seeds.forEach((index,c)=>state[index]=c);history=[];won=false;failed=false;newborn=[];lastColor=-1;animBusy=false;clearTimeout(winTimer);persist();render()}
+function tone(type='tap'){if(!sound)return;try{audio||=new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();const now=audio.currentTime;const sounds=type==='win'?[392,493.9,587.3,783.99]:type==='grow'?[262,392]:type==='undo'?[392]:type==='fail'?[220,196]:[360];sounds.forEach((f,i)=>{const osc=audio.createOscillator(),g=audio.createGain(),t=now+i*(type==='win'?.066:.027);osc.type='sine';osc.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(type==='win'?.058:.032,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+(type==='win'?.35:.12));osc.connect(g).connect(audio.destination);osc.start(t);osc.stop(t+(type==='win'?.38:.14))});}catch{}}
+function touchCell(i){if(won||failed||animBusy)return;const c=state[i];if(c<0){const target=LEVELS[level].goals.indexOf(i);if(target>=0){pulseSeed(target);return;}return;}const p=LEVELS[level];const op=advance(state,c,p.n);if(!op){return;}
+ history.push(state.slice());state=op.next;newborn=op.added;lastColor=c;won=reached(state,p);failed=stolen(state,p)||(history.length>=p.best&&!won);
+ if(won){if(!completed.includes(level))completed.push(level);persist()}
+ tone(won?'win':failed?'fail':'grow');render();if(won){winTimer=setTimeout(()=>{showWin();},430)};
+}
+function pulseSeed(c){const p=LEVELS[level];const el=$('board').querySelector(`[data-i="${p.seeds[c]}"]`);if(!el)return;el.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:330,easing:'ease-out'});tone('tap')}
+function undo(){if(!history.length)return;state=history.pop();won=false;failed=false;newborn=[];lastColor=-1;clearTimeout(winTimer);tone('undo');render()}
+function showWin(){if(!won)return;$('winOverlay').innerHTML=`<div class="win-overlay"><div class="win-glass"><strong>PERFECT.</strong><small>すべての色が届いた</small></div></div>`}
+function render(){const p=LEVELS[level];const n=p.n;$('stage').textContent=`${String(level+1).padStart(2,'0')} / ${String(LEVELS.length).padStart(2,'0')}`;$('theme').textContent=p.title;$('subtitle').textContent=p.subtitle;$('moveCounter').innerHTML=`<b>${history.length}</b> / ${p.best} 手`;
+ $('goalrings').innerHTML=p.goals.map((idx,c)=>`<div class="goal-ring ${state[idx]===c?'reached':state[idx]>=0?'stolen':''}" style="--target:${COLORS[c].hex}">${state[idx]>=0&&state[idx]!==c?'×':COLORS[c].label}</div>`).join('');
+ const born=new Set(newborn);
+ $('board').style.setProperty('--n',n);
+ $('board').innerHTML=state.map((owner,i)=>{
+ const c=owner>=0?COLORS[owner]:null,goalColor=p.goals.indexOf(i),isSeed=p.seeds.indexOf(i),isGoal=goalColor>=0,
+ good=isGoal&&owner===goalColor,bad=isGoal&&owner>=0&&owner!==goalColor,
+ r=Math.floor(i/n),col=i%n,can=owner>=0?canGrow(owner):false;
+ const cls=['cell',c?'owned':'blank',c?c.key:'',born.has(i)?'born':'',good?'goal-good':'',bad?'goal-bad':'',level===0&&!history.length&&i===p.seeds[0]?'coach':'',can?'can-grow':'no-grow'].join(' ');
+ // Draw narrow connectors between adjacent squares of the same color; this makes connected territories read as a single shape.
+ const br=owner>=0&&col<n-1&&state[i+1]===owner,bd=owner>=0&&r<n-1&&state[i+n]===owner;
+ const target=isGoal?`<div class="target-ring" style="--target:${COLORS[goalColor].hex}">${bad?'×':COLORS[goalColor].label}</div>`:'';
+ const seed=isSeed>=0?`<div class="source-icon">${COLORS[isSeed].label}</div>`:'';
+ return `<button class="${cls}" data-i="${i}" aria-label="${isSeed>=0?'色'+COLORS[isSeed].label+'の出発点':owner>=0?'色'+COLORS[owner].label+'の陣地':'空きマス'}${isGoal?'、色'+COLORS[goalColor].label+'のゴール':''}" style="${c?'--tone:'+c.hex+';':''}--delay:${born.has(i)? Math.floor((Math.abs(r-Math.floor(p.seeds[owner]/n))+Math.abs(col-p.seeds[owner]%n))*19):0}ms">${br?'<span class="bridge-right"></span>':''}${bd?'<span class="bridge-down"></span>':''}${seed}${target}</button>`;
+ }).join('');
+ $('board').querySelectorAll('.cell').forEach(b=>b.onclick=()=>touchCell(+b.dataset.i));
+ $('winOverlay').innerHTML='';
+ const banner=$('banner');banner.className='banner'+(won?' win':failed?' loss':'');
+ let icon='↗',copy='色のマスをタップすると、周りへ広がる。';
+ if(level===0&&!history.length){icon='◉';copy='<b>色のマスに触れる。</b> 輪まで届けよう。'}
+ else if(won){icon='✓';copy='<b>すべて到着。</b> 次は、色がぶつかる。'}
+ else if(failed){icon='↶';copy=stolen(state,p)?'<b>ゴールがふさがれた。</b> 1手戻してみよう。':'<b>手数が足りない。</b> 1手戻して考えよう。';}
+ else if(history.length===0){icon='↗';copy='先に広げた色が、場所を取る。'}
+ else{icon='↗';copy='広がった場所は、ほかの色に渡せない。'}
+ banner.innerHTML=`<div class="symbol">${icon}</div><div class="txt">${copy}</div>`;
+ $('undo').disabled=!history.length;$('next').disabled=!won||level===LEVELS.length-1;
+ $('next').innerHTML=level===LEVELS.length-1?'全問題クリア ✓':'次の問題 <span class="icon">→</span>';
+ $('next').classList.toggle('primary',won&&level<LEVELS.length-1);
+ $('levels').innerHTML=LEVELS.map((_,i)=>`<button class="leveldot ${i===level?'active':''} ${completed.includes(i)?'cleared':''}" data-lev="${i}" aria-label="問題 ${i+1}" title="問題 ${i+1}"></button>`).join('');
+ $('levels').querySelectorAll('button').forEach(b=>b.onclick=()=>{tone('tap');setLevel(+b.dataset.lev)});
+ $('sound').textContent=sound?'♫':'♪̸';
+}
+$('undo').onclick=undo;$('reset').onclick=()=>{tone('undo');setLevel(level)};$('next').onclick=()=>{if(!won||level===LEVELS.length-1)return;tone('tap');setLevel(level+1)};
+$('sound').onclick=()=>{sound=!sound;persist();$('sound').textContent=sound?'♫':'♪̸';if(sound)tone('tap')};
+$('help').onclick=()=>{$('modal').innerHTML=`<div class="dialog-bg"><div class="dialog"><small>HOW TO PLAY</small><h2>タップして、広げる。</h2><p>色のかたまりに触れると、隣の空きマスへ一斉に<strong>1マスずつ</strong>広がる。<br>同じ色の輪に、全部の色を届けたらクリア。<br>ほかの色が先に取ったマスは奪えない。だから<strong>広げる順番</strong>が大切。</p><button id="closeHelp">遊んでみる</button></div></div>`; const close=()=>{$('modal').innerHTML=''};$('closeHelp').onclick=close;$('modal').querySelector('.dialog-bg').onclick=e=>{if(e.target.classList.contains('dialog-bg'))close()}};
+window.__tideTest={LEVELS,get:()=>({level,board:state.slice(),history:history.length,won,failed}),setLevel,act:(color)=>{const pos=state.findIndex(v=>v===color);if(pos!==-1)touchCell(pos)},undo};
+setLevel(level);
+})();
+</script>
+</body></html>
