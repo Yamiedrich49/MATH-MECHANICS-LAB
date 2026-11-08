@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#101e32"><title>CHECKSUM · Math Mechanics Lab</title>
+<style>
+:root{--bg:#101e32;--deep:#15253b;--ink:#ebf4f5;--sub:#a0b1c1;--line:#2b4258;--sea:#53c5c1;--sea2:#98ddd4;--red:#f08c82;--gold:#e9c27c;--tile:#1d3147;--accent:#4aa7b9;--shadow:0 20px 48px rgba(5,11,23,.19)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif}body{min-height:100svh;overscroll-behavior-y:none}button{color:inherit;font:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:3px solid #9cd9de;outline-offset:2px}.shell{max-width:520px;margin:auto;padding:calc(14px + env(safe-area-inset-top)) 17px calc(env(safe-area-inset-bottom) + 25px)}
+.top{display:flex;align-items:center;gap:10px}.back{height:40px;width:40px;border:1px solid var(--line);border-radius:13px;background:var(--deep);display:grid;place-items:center;text-decoration:none;font-size:22px;color:var(--ink)}.brand{flex:1;min-width:0}.brand small{display:block;color:var(--sea2);font-size:9px;letter-spacing:.22em;font-weight:900}.brand strong{font-size:18px;letter-spacing:-.05em}.sound{height:40px;width:40px;border:1px solid var(--line);border-radius:13px;background:var(--deep)}
+.copy{margin:17px 2px 13px;display:flex;align-items:end;justify-content:space-between;gap:14px}.copy h1{font-size:30px;letter-spacing:-.06em;margin:4px 0 6px;line-height:1.15}.eyebrow{font-size:10px;font-weight:900;color:var(--sea2);letter-spacing:.15em}.desc{font-size:12px;line-height:1.65;color:var(--sub);margin:0}.level{font-size:12px;color:var(--sea2);font-weight:900;white-space:nowrap;margin-bottom:6px}.levelnote{font-size:11px;color:var(--sub);white-space:nowrap}
+.boardbox{border-radius:26px;padding:16px;background:linear-gradient(155deg,#1b3045,#14253b);border:1px solid #2c4456;box-shadow:var(--shadow)}
+.boadtop{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:12px}.boadtop strong{font-size:12px}.boadtop span{font-size:11px;color:var(--sea2);font-weight:850}
+.board-rails{display:grid;grid-template-columns:35px 1fr;grid-template-rows:35px 1fr;gap:7px;max-width:398px;margin:0 auto}
+.toprails{grid-column:2;grid-row:1;display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.siderails{grid-column:1;grid-row:2;display:grid;grid-template-rows:repeat(4,1fr);gap:7px}
+.sensor{border-radius:10px;display:grid;place-items:center;background:#1b3147;border:1px solid #325166;position:relative}.sensor.hot{background:#563943;border-color:#a35f61}.sensor .led{width:10px;height:10px;border-radius:50%;background:#5c7685;box-shadow:0 0 0 2px rgba(130,175,194,.08)}.sensor.hot .led{background:#f6a299;box-shadow:0 0 0 4px rgba(240,140,130,.1)}
+.boardmain{position:relative;grid-column:2;grid-row:2;aspect-ratio:1;width:100%;background:#102237;border:1px solid #3b5266;border-radius:16px;overflow:hidden;touch-action:manipulation}
+.cells{position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:6px;padding:7px}.cell{border-radius:11px;background:var(--tile);border:1px solid #2f485e;position:relative;display:grid;place-items:center;transition:background .14s,transform .14s}.cell:active{transform:scale(.96)}.cell .metal{width:14px;height:14px;border:2px solid #3a586e;border-radius:5px;transform:rotate(45deg);opacity:.65;pointer-events:none}.cell.mark{background:#2b6265;border-color:#7bcbc1}.cell.mark .metal{background:var(--sea2);border-color:var(--sea2);opacity:1}.cell.fixed{background:#27665d;border-color:#58ac9e}.cell.fixed .metal{transform:none;border-radius:50%;background:#a3e4d7;border-color:#a3e4d7}.cell .spark{font-size:24px;color:#cdf2e4;font-weight:850;pointer-events:none}
+.diag-overlay{position:absolute;inset:0;pointer-events:none;width:100%;height:100%;}.diag-overlay .line{stroke:var(--gold);stroke-width:4;stroke-linecap:round;stroke-dasharray:6 8;opacity:.72}.diag-overlay .scanline{stroke:var(--sea2);stroke-width:6;stroke-linecap:round;opacity:.7;animation:sweep .47s ease-out}
+.tips{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:11px 3px 5px}.legend{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--sub)}.legend .red{width:9px;height:9px;border-radius:50%;background:var(--red)}.legend .gray{width:9px;height:9px;border-radius:50%;background:#718b98}
+.count{font-size:12px;color:var(--sea2);font-weight:900}.inspector{margin:13px 0 0;background:#14263c;border-radius:18px;border:1px solid #2b4359;padding:13px}.inspector-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}.inspector h3{font-size:13px;font-weight:850;margin:0}.inspector small{font-size:11px;color:var(--sub)}
+.scanner{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-bottom:12px}.channel{height:38px;border:1px solid #375267;background:#1c334b;border-radius:11px;display:grid;place-items:center;position:relative;padding:0;color:#7299ad;font-size:17px;font-weight:800;overflow:hidden}.channel.active{background:#24475c;border-color:#c9b17c;color:#f0cb8f}.channel svg{width:29px;height:29px;display:block;pointer-events:none}.channel.read.hot{border-color:#bc7970}.channel.read.hot:after{content:"";position:absolute;width:5px;height:5px;border-radius:50%;background:var(--red);right:4px;top:3px}.channel.read:not(.hot):after{content:"";position:absolute;width:5px;height:5px;border-radius:50%;background:#83d4c8;right:4px;top:3px}
+.scanrow{display:flex;gap:9px;align-items:center;min-height:44px}.scanbutton{flex:1;min-height:44px;border:1px solid #4e7b83;background:#277679;border-radius:13px;font-size:12px;font-weight:900;color:white}.scanbutton:disabled{opacity:.42}.readout{flex:1;font-size:12px;font-weight:750;color:var(--sub);text-align:center}.readout .odd{color:#ffb3aa}.readout .even{color:#95d8ca}
+.prompt{margin:12px 0 0;padding:9px 12px;min-height:43px;line-height:1.6;border-radius:13px;font-size:12px;color:var(--sub);background:#172a40;border:1px solid #284058}.prompt.good{color:#abeee0;border-color:#377c72;background:#163a3c}.prompt.bad{color:#e7bc93;border-color:#69523c}
+.actions{display:flex;gap:9px;margin-top:12px}.action{height:46px;flex:1;border-radius:13px;border:1px solid #385365;background:#1c3248;font-size:12px;font-weight:850}.action.primary{background:#56c2bb;border:1px solid #56c2bb;color:#103041}.action:disabled{opacity:.35}
+.stepper{display:flex;justify-content:center;gap:7px;margin-top:15px}.stepper button{width:8px;height:8px;background:#38536a;padding:0;border:0;border-radius:99px}.stepper button.current{width:25px;background:#69cfbf}
+.bottom{display:flex;gap:8px;margin-top:11px}.bottom button{background:none;border:0;color:#899fb2;font-size:11px;padding:8px 12px}.footnote{text-align:center;color:#5f788d;font-size:10px;margin:13px 0 0;line-height:1.5}
+.wintitle{font-size:19px;font-weight:850;color:#a6e5d8;line-height:1.25;margin-bottom:6px}.wininfo{color:#a6d6ca;font-size:12px;line-height:1.65}
+@keyframes sweep{from{opacity:0;stroke-width:13}to{opacity:.7;stroke-width:6}}
+@media(max-width:370px){.shell{padding-left:12px;padding-right:12px}.copy h1{font-size:27px}.boardbox{padding:10px}.board-rails{grid-template-columns:30px 1fr;grid-template-rows:30px 1fr;gap:5px}.toprails,.siderails{gap:5px}.cells{gap:4px;padding:5px}.cell{border-radius:8px}.scanner{gap:4px}.channel{height:36px}}
+@media(max-height:820px){.copy{margin:10px 2px 9px}.boardbox{padding:10px}.inspector{padding:10px;margin-top:9px}.prompt{margin-top:8px}.actions{margin-top:9px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
+</style></head><body><div class="shell">
+<header class="top"><a class="back" href="../" aria-label="研究所へ戻る">‹</a><div class="brand"><small>MATH MECHANICS LAB / 05</small><strong>CHECKSUM</strong></div><button id="sound" class="sound" aria-label="音のオンオフ">♫</button></header>
+<div class="copy"><div><div class="eyebrow">HIDDEN ERRORS</div><h1 id="title">壊れたマスを、見抜く。</h1><p class="desc" id="desc">周囲のセンサーを読み、故障したマスを修復する。</p></div><div><div id="level" class="level">01 / 06</div><div id="countNote" class="levelnote">故障 1個</div></div></div>
+<section class="boardbox"><div class="boadtop"><strong>故障を特定する</strong><span id="selCount">0 / 1</span></div>
+ <div class="board-rails"><div class="toprails" id="cols"></div><div class="siderails" id="rows"></div>
+ <div class="boardmain" id="mainboard"><div class="cells" id="cells"></div><svg class="diag-overlay" id="beam" viewBox="0 0 400 400"></svg></div></div>
+ <div class="tips"><div class="legend"><i class="red"></i>奇数個 <i class="gray"></i>偶数個</div><div class="count" id="scanLeft">斜め検査 0 / 0</div></div>
+ <div class="prompt" id="prompt" role="status">赤いセンサーの行と列を見よう。</div>
+</section>
+<section class="inspector" id="inspector"><div class="inspector-head"><h3>斜めを調べる <small>↘</small></h3><small>選んだ線が盤面に重なる</small></div>
+ <div class="scanner" id="scanner"></div>
+ <div class="scanrow"><button class="scanbutton" id="scanBtn">この斜めを検査</button><div class="readout" id="readout">検査線を選択</div></div>
+</section>
+<div class="actions"><button class="action" id="reset">やり直す</button><button class="action primary" id="repair">選んだマスを修復する</button></div>
+<div class="actions"><button class="action" id="prev">← 前へ</button><button class="action" id="next">次へ →</button></div>
+<div class="stepper" id="stepper"></div><div class="bottom"><button id="clear">選択を消す</button><button id="help">遊び方</button></div>
+<div class="footnote">研究試作版 · 情報を選び、故障を特定する楽しさを検証中</div>
+</div>
+<script>
+(()=>{'use strict';
+const puzzles=[
+ {faults:[6],scans:0,choose:-1,title:'最初の故障',desc:'赤い行と列が交わるところを修復する。'},
+ {faults:[0,5],scans:1,choose:-1,title:'2個の故障',desc:'行と列だけでは、2通りある。斜めを一度調べて見抜こう。'},
+ {faults:[0,1],scans:2,choose:0,title:'4つの場所',desc:'今度は故障が同じ行にあるかも。斜めの調べ方が鍵。'},
+ {faults:[5,10],scans:1,choose:-1,title:'交差する可能性',desc:'2つの組み合わせ。どの斜めを調べれば区別できる？'},
+ {faults:[0,5,11],scans:3,choose:0,title:'3つ目の故障',desc:'センサーは同じでも、候補はいくつもある。'},
+ {faults:[0,1,7],scans:4,choose:0,title:'最後のシグナル',desc:'遠回りに見える検査が、最後の一手になるかもしれない。'}
+];
+const $=id=>document.getElementById(id);const saveKey='mm_checksum_v1';let level=0,sound=true,marked=new Set(),readings={},selected=0,used=0,won=false,message='',messageType='',ctx=null;
+try{const p=JSON.parse(localStorage.getItem(saveKey)||'{}');level=Math.min(puzzles.length-1,Math.max(0,Number(p.level)||0));sound=p.sound!==false}catch(e){}
+function save(){try{localStorage.setItem(saveKey,JSON.stringify({level,sound}))}catch(e){}}
+function tune(kind='tap'){if(!sound)return;try{ctx ||= new (window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();const now=ctx.currentTime,notes=kind==='win'?[440,554,659,880]:kind==='scan'?[262,392]:kind==='wrong'?[290]:[560];notes.forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain(),t=now+i*(kind==='win'?.07:.02);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(kind==='win'?.048:.027,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+(kind==='win'?.35:.09));o.connect(g).connect(ctx.destination);o.start(t);o.stop(t+(kind==='win'?.39:.12))});}catch(e){}}
+function rowOdd(r){return puzzles[level].faults.filter(z=>Math.floor(z/4)===r).length%2===1}
+function colOdd(c){return puzzles[level].faults.filter(z=>z%4===c).length%2===1}
+function diagonalOdd(d){return puzzles[level].faults.filter(z=>z%4-Math.floor(z/4)===d).length%2===1}
+function setLevel(l){level=(l+puzzles.length)%puzzles.length;marked=new Set();readings={};used=0;won=false;selected=puzzles[level].scans?puzzles[level].choose:null;message='';messageType='';save();render()}
+function beamPath(d){const pts=[];for(let y=0;y<4;y++){const x=y+d;if(x>=0&&x<4)pts.push({x:50+100*x,y:50+100*y})}if(pts.length<=1){const p=pts[0];return`<circle cx="${p.x}" cy="${p.y}" r="35" fill="none" stroke="#e6c17a" stroke-width="4" stroke-dasharray="6 6"/>`;}return `<path d="M${pts[0].x} ${pts[0].y} L${pts[pts.length-1].x} ${pts[pts.length-1].y}" class="line"/>`;}
+function tinyDiag(d){
+ let c='';
+ for(let y=0;y<4;y++)for(let x=0;x<4;x++){
+   const on=x-y===d;
+   c+=`<circle cx="${6+x*8}" cy="${6+y*8}" r="${on?3:1.3}" fill="${on?'currentColor':'#52718a'}" />`;
+ }
+ return `<svg viewBox="0 0 36 36" aria-hidden="true">${c}</svg>`;
+}
+function render(){const p=puzzles[level];$('title').textContent=p.title;$('desc').textContent=p.desc;$('level').textContent=String(level+1).padStart(2,'0')+' / '+String(puzzles.length).padStart(2,'0');$('countNote').textContent=`故障 ${p.faults.length}個`;$('selCount').textContent=`${marked.size} / ${p.faults.length} マス選択`;$('scanLeft').textContent=`斜め検査 ${used} / ${p.scans}`;
+ $('cols').innerHTML=Array.from({length:4},(_,c)=>`<div class="sensor ${colOdd(c)?'hot':''}" aria-label="列${c+1}は${colOdd(c)?'奇数':'偶数'}"><div class="led"></div></div>`).join('');
+ $('rows').innerHTML=Array.from({length:4},(_,r)=>`<div class="sensor ${rowOdd(r)?'hot':''}" aria-label="行${r+1}は${rowOdd(r)?'奇数':'偶数'}"><div class="led"></div></div>`).join('');
+ $('cells').innerHTML=Array.from({length:16},(_,i)=>`<button class="cell ${marked.has(i)?'mark':''} ${won && marked.has(i)?'fixed':''}" data-cell="${i}" aria-label="${Math.floor(i/4)+1}行${i%4+1}列のマス" aria-pressed="${marked.has(i)}">${won && marked.has(i)?'<span class="spark">✓</span>':'<i class="metal"></i>'}</button>`).join('');
+ $('beam').innerHTML=selected!==null?beamPath(selected):'';
+ $('scanner').innerHTML=Array.from({length:7},(_,i)=>{const d=i-3,seen=Object.prototype.hasOwnProperty.call(readings,d),hot=seen&&readings[d];return `<button data-diag="${d}" class="channel ${selected===d?'active':''} ${seen?'read':''} ${hot?'hot':''}" aria-label="斜めの線${i+1}${seen?(hot?'奇数':'偶数'):''}" aria-pressed="${selected===d}">${tinyDiag(d)}</button>`}).join('');
+ $('inspector').style.display=p.scans?'block':'none';$('scanBtn').disabled=won||used>=p.scans||Object.prototype.hasOwnProperty.call(readings,selected);
+ let read=Object.prototype.hasOwnProperty.call(readings,selected)?(readings[selected]?'<span class="odd">奇数個</span>':'<span class="even">偶数個</span>'):'未検査';$('readout').innerHTML=read;
+ $('repair').disabled=won||marked.size!==p.faults.length;$('repair').textContent=won?'修復完了 ✓':'このマスを修復する';
+ $('stepper').innerHTML=puzzles.map((_,i)=>`<button data-level="${i}" class="${i===level?'current':''}" aria-label="問題${i+1}"></button>`).join('');
+ $('prompt').className='prompt '+messageType;
+ if(won)$('prompt').innerHTML=`<div class="wintitle">REPAIRED ✓</div><div class="wininfo">すべての故障を修復。斜め検査は ${used} 回。</div>`;
+ else if(message)$('prompt').textContent=message;
+ else $('prompt').textContent=level===0?'赤いセンサーが交わるマスを選ぼう。':p.scans>used?'まず赤いセンサーを手掛かりに。斜めを選んで検査できる。':'故障だと思うマスを選んで修復しよう。';
+ $('sound').textContent=sound?'♫':'♪̸';
+ $('scanner').querySelectorAll('[data-diag]').forEach(b=>b.onclick=()=>{selected=+b.dataset.diag;message='';tune('tap');render()});
+ $('cells').querySelectorAll('[data-cell]').forEach(b=>b.onclick=()=>{if(won)return;const k=+b.dataset.cell;if(marked.has(k))marked.delete(k);else{if(marked.size>=p.faults.length){tune('wrong');message=`選べるのは${p.faults.length}マス。別の場所を選ぶなら、一度外そう。`;messageType='bad';render();return;}marked.add(k)}message='';messageType='';tune('tap');render()});
+ $('stepper').querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>setLevel(+b.dataset.level));
+}
+function scan(){const p=puzzles[level];if(won||used>=p.scans||Object.prototype.hasOwnProperty.call(readings,selected))return;readings[selected]=diagonalOdd(selected);used++;message='';messageType='';tune('scan');render()}
+function repair(){const p=puzzles[level];if(marked.size!==p.faults.length||won)return;const ok=p.faults.every(v=>marked.has(v));if(ok){won=true;message='';messageType='good';tune('win')}else{message='ここではないようだ。センサーを見直して、別の組み合わせを試そう。';messageType='bad';tune('wrong')}render()}
+$('scanBtn').onclick=scan;$('repair').onclick=repair;$('reset').onclick=()=>{setLevel(level);tune()};$('prev').onclick=()=>{setLevel(level-1);tune()};$('next').onclick=()=>{setLevel(level+1);tune()};$('clear').onclick=()=>{marked.clear();message='';messageType='';tune();render()};$('sound').onclick=()=>{sound=!sound;save();render();if(sound)tune()};
+$('help').onclick=()=>{message='左右と上のランプは各行・列の故障数の偶奇を表す。赤は奇数、灰は偶数。斜めの線を選んで検査し、最後に壊れたマスを直接選ぼう。';messageType='';render()};
+window.__checksumTest={get:()=>({level,marked:[...marked],readings:{...readings},used,won,selected}),setLevel,choose(d){selected=d;render()},scan,mark(i){if(marked.has(i))marked.delete(i);else marked.add(i);render()},repair,puzzles};
+setLevel(level);
+})();
+</script></body></html>
