@@ -5,6 +5,22 @@
 **試遊URL：** https://yamiedrich49.github.io/MATH-MECHANICS-LAB/  
 **GitHub Pages設定：** https://github.com/Yamiedrich49/MATH-MECHANICS-LAB/settings/pages
 
+## NEW RESEARCH / 2026-11-08
+
+新しい数学ゲーム候補2作品を**既存の3作品とは独立した試遊ページ**として追加。ゲーム性を評価するため、少数の入門・上級問題を先に実装。
+
+| 作品 | プレイ | 実装内容 | 検証 |
+| --- | --- | --- | --- |
+| RIBBON REWIRE | [遊ぶ](https://yamiedrich49.github.io/MATH-MECHANICS-LAB/research/ribbon-rewire.html) | 紐の両端を隣接ノードにつなぎ直し、目標の両端位置に到達する。3×3～4×4、6問 | 各問題の最短解の存在・最短手数・一意性を全探索。全6問をブラウザのドラッグ操作でクリア |
+| CHECKSUM | [遊ぶ](https://yamiedrich49.github.io/MATH-MECHANICS-LAB/research/checksum.html) | 行・列の故障数の偶奇を読み、斜め検査を選んで故障マスを修復する。4×4、6問 | 故障パターン全列挙。各問題は定めた検査回数以内に一意特定可能。全6問をブラウザ操作でクリア |
+
+どちらも単一HTMLで動作。390px幅・320px幅のChromiumで描画と主要操作を確認済み。iPhone Safari実機での操作感、音、7歳の子どもによる試遊は未検証。
+
+### 試遊で重点的に評価したいこと
+
+- RIBBON REWIRE：つなぎ替えた結果を予測できるか、深い先読みが必要になるか、それとも端を適当に動かすだけになるか。
+- CHECKSUM：故障箇所を自分で発見している実感があるか、斜め検査を選ぶ判断が楽しいか、それとも計算教材に感じるか。
+
 ## UI Build v4 — 2026-11-07
 
 | ゲーム | 問題数 | 今回の改善 |
