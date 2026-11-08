@@ -54,6 +54,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Protect unpublished ideas in public repositories
+        env:
+          IS_PRIVATE: ${{ github.event.repository.private }}
+          PUBLIC_OK: ${{ vars.AUTOLAB_PUBLIC_OK }}
+          IS_DEMO: ${{ inputs.demo }}
+          TRIGGER: ${{ github.event_name }}
+        run: |
+          if [ "$IS_PRIVATE" != 'true' ] && [ "$PUBLIC_OK" != 'true' ]; then
+            if [ "$TRIGGER" != 'workflow_dispatch' ] || [ "$IS_DEMO" != 'true' ]; then
+              echo "::error::Live research blocked: repository is PUBLIC. Use a private repo, or explicitly set AUTOLAB_PUBLIC_OK=true."
+              exit 1
+            fi
+          fi
       - name: Run independent agents
         id: lab
         env:
