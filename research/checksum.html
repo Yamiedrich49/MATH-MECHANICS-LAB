@@ -48,12 +48,13 @@
 .boardbox .boadtop strong{font-size:12px}
 .boadtop{margin-bottom:9px}.tips{margin:9px 3px 4px}
 .actions + .actions{margin-top:8px}
+.action:disabled{opacity:.28}.actions .action.primary{background:#56c2bb;color:#103041;border-color:#56c2bb}
 @keyframes sensorBreath{0%,100%{box-shadow:0 0 0 0 rgba(236,144,136,.02)}50%{box-shadow:0 0 0 4px rgba(236,144,136,.2)}}
 @keyframes breakbreath{0%,100%{filter:brightness(1)}50%{filter:brightness(1.15)}}
 @keyframes crossbreath{0%,100%{opacity:.65}50%{opacity:1}}
 @keyframes repairFlash{from{background:#f1deae;transform:scale(.94)}to{background:#27665d;transform:scale(1)}}
 @keyframes beamDraw{to{stroke-dashoffset:0}}
-@media(max-height:860px){.copy{margin:8px 2px 7px}.boardbox{padding:9px}.board-rails{max-width:321px}.tips{margin:5px 2px 3px}.prompt{margin-top:7px;padding:7px;min-height:35px}.inspector{padding-top:8px;margin-top:8px}.inspector-head{margin-bottom:6px}.scanner{margin-bottom:6px}.channel{height:34px}.repairrow{margin-top:7px}.repairrow .action{height:41px}.actions{margin-top:8px}.stepper{margin-top:9px}.bottom{margin-top:2px}.footnote{margin-top:3px}}
+@media(max-height:860px){.footnote{display:none}.board-rails{max-width:296px}.copy{margin:8px 2px 7px}.boardbox{padding:9px}.board-rails{max-width:321px}.tips{margin:5px 2px 3px}.prompt{margin-top:7px;padding:7px;min-height:35px}.inspector{padding-top:8px;margin-top:8px}.inspector-head{margin-bottom:6px}.scanner{margin-bottom:6px}.channel{height:34px}.repairrow{margin-top:7px}.repairrow .action{height:41px}.actions{margin-top:8px}.stepper{margin-top:9px}.bottom{margin-top:2px}.footnote{margin-top:3px}}
 @media(max-width:360px){.boardbox{padding:8px}.board-rails{grid-template-columns:28px 1fr;grid-template-rows:28px 1fr;gap:5px}.sensor{border-radius:8px}.legend{font-size:10px}.scanbutton{min-height:38px}}
 </style></head><body><div class="shell">
 <header class="top"><a class="back" href="../" aria-label="研究所へ戻る">‹</a><div class="brand"><small>MATH MECHANICS LAB / 05</small><strong>CHECKSUM</strong></div><button id="sound" class="sound" aria-label="音のオンオフ">♫</button></header>
@@ -76,9 +77,9 @@
 <script>
 (()=>{'use strict';
 const puzzles=[
- {faults:[6],scans:0,choose:-1,title:'触れると、直る。',desc:'光っている赤い線。その先の割れたマスを触ってみよう。',intro:true},
- {faults:[6],scans:0,choose:-1,title:'見えない故障',desc:'今度は故障が見えない。赤い光が交わる場所を探そう。'},
- {faults:[0,5],scans:1,choose:-1,title:'2個の故障',desc:'行と列だけでは、2通りある。斜めを一度調べて見抜こう。'},
+ {faults:[6],scans:0,choose:-1,title:'触れると、直る。',desc:'ひびの入ったマスを、指で直してみよう。',intro:true},
+ {faults:[6],scans:0,choose:-1,title:'見えない故障',desc:'今度は見えない。光が交わる場所を探そう。'},
+ {faults:[0,5],scans:1,choose:-1,title:'2個の故障',desc:'2つの候補。斜めの検査で見抜こう。'},
  {faults:[0,1],scans:2,choose:0,title:'4つの場所',desc:'今度は故障が同じ行にあるかも。斜めの調べ方が鍵。'},
  {faults:[5,10],scans:1,choose:-1,title:'交差する可能性',desc:'2つの組み合わせ。どの斜めを調べれば区別できる？'},
  {faults:[0,5,11],scans:3,choose:0,title:'3つ目の故障',desc:'センサーは同じでも、候補はいくつもある。'},
@@ -126,8 +127,9 @@ function render(){const p=puzzles[level],intro=!!p.intro; $('title').textContent
  $('inspector').style.display=p.scans?'block':'none';$('scanBtn').disabled=won||used>=p.scans||selected===null||Object.prototype.hasOwnProperty.call(readings,selected);
  $('probeCount').textContent=`残り ${Math.max(0,p.scans-used)}回`;
  $('readout').innerHTML=selected===null?'線を選ぶ':Object.prototype.hasOwnProperty.call(readings,selected)?(readings[selected]?'<span class="odd">● 奇数</span>':'<span class="even">○ 偶数</span>'):'未検査';
- $('repair').style.display=intro?'none':'block';$('reset').textContent=intro?'最初から':'↶ やり直す';$('repair').disabled=won||marked.size!==p.faults.length;
+ $('repair').parentElement.style.display=intro?'none':'flex';$('reset').textContent='↶ やり直す';$('repair').disabled=won||marked.size!==p.faults.length;
  $('repair').textContent=won?'修復完了 ✓':`選んだ${p.faults.length}マスを修復`;
+ $('prev').disabled=level===0;$('next').disabled=intro&&!won;$('next').textContent=intro&&won?'故障を隠す →':'次へ →';$('next').classList.toggle('primary',intro&&won);
  $('stepper').innerHTML=puzzles.map((_,i)=>`<button data-level="${i}" class="${i===level?'current':''}" aria-label="問題${i+1}"></button>`).join('');
  $('prompt').className='prompt '+messageType;
  if(won){ $('prompt').innerHTML=intro?'<div class="wintitle">光が消えた ✓</div><div class="wininfo">1枚直すと、行と列の赤い光も消える。次は故障が見えない。</div>':`<div class="wintitle">REPAIRED ✓</div><div class="wininfo">すべて修復。検査は ${used} 回。</div>`; }
