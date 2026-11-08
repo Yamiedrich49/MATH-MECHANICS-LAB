@@ -5,6 +5,15 @@
 **試遊URL：** https://yamiedrich49.github.io/MATH-MECHANICS-LAB/  
 **GitHub Pages設定：** https://github.com/Yamiedrich49/MATH-MECHANICS-LAB/settings/pages
 
+## UI v5 / 2026-11-08 — First gesture onboarding
+
+「初めて開いても何をするゲームか分からない」という試遊フィードバックを受け、**説明文を追加するのではなく、最初に触る体験から再設計**。
+
+- **RIBBON REWIRE**：初級1問目に盤面内のドラッグ誘導を追加。端をつかんだ瞬間に接続可能箇所を示し、つなぎ替え後の変化をアニメーションで伝える。残りの問題には答えを先出ししない。
+- **CHECKSUM**：故障が見える1問を導入し、まず直す操作を体験。続いて故障を隠し、行・列センサーと斜め検査から推理するステージへ自然に移行。
+- Playwright + Chromiumによる操作試験：RIBBON全6問・CHECKSUM導入含む全7問をクリア。320px幅で横はみ出しなし、JavaScriptの実行時エラーなし。
+- **未検証**：iPhone Safari実機の指の感触、音質、7歳児の初見操作、面白さの実プレイ評価。これらは完成判定の前に確認する。
+
 ## NEW RESEARCH / 2026-11-08
 
 新しい数学ゲーム候補2作品を**既存の3作品とは独立した試遊ページ**として追加。ゲーム性を評価するため、少数の入門・上級問題を先に実装。
