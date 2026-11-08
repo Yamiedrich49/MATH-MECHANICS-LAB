@@ -27,20 +27,48 @@
 @media(max-height:820px){.copy{margin:10px 2px 9px}.boardbox{padding:10px}.inspector{padding:10px;margin-top:9px}.prompt{margin-top:8px}.actions{margin-top:9px}}
 @media(max-height:870px){.board-rails{max-width:315px}.copy{margin:9px 2px 8px}.boardbox{padding:10px}.tips{margin:7px 2px 4px}.inspector{margin-top:8px;padding:10px}.inspector-head{margin-bottom:7px}.scanner{margin-bottom:8px}.actions{margin-top:7px}.action{height:43px}.bottom{margin-top:4px}.footnote{margin-top:5px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
+
+/* v5: teach the mechanic through one tactile action, not a wall of instructions */
+.boardbox{position:relative;overflow:hidden;background:linear-gradient(155deg,#192e44,#12263c)}
+.cell.broken{border-color:#d17d78;background:#633f49;box-shadow:inset 0 0 0 2px rgba(244,158,140,.22);animation:breakbreath 1.85s ease-in-out infinite}
+.cell.broken .metal{display:none}.cell.broken svg{width:40px;height:40px;pointer-events:none;filter:drop-shadow(0 0 10px rgba(243,167,143,.19))}
+.cell.fixed{animation:repairFlash .58s ease-out}
+.sensor.coach{animation:sensorBreath 1.8s ease-in-out infinite}
+.cell.crossing:not(.broken):not(.fixed){border-color:#d8ba7c;box-shadow:inset 0 0 0 2px rgba(224,187,124,.35);animation:crossbreath 1.7s ease-in-out infinite}
+.board-rails{max-width:366px}.boardmain{isolation:isolate}
+.diag-overlay .focusbeam{stroke:#7bd4cb;stroke-width:9;stroke-linecap:round;opacity:.72;stroke-dasharray:420;stroke-dashoffset:420;animation:beamDraw .47s cubic-bezier(.2,.8,.2,1) forwards;filter:drop-shadow(0 0 4px rgba(84,209,193,.32))}
+.diag-overlay .focusring{stroke:#e9cb91;stroke-width:5;fill:none;stroke-dasharray:5 7;animation:crossbreath 1.6s ease-in-out infinite}
+.diag-overlay .line{stroke-width:5;opacity:.78;animation:beamDraw .5s ease-out both}
+.inspector{background:transparent;border:0;border-top:1px solid #33495c;border-radius:0;padding:11px 0 0;margin-top:12px}
+.inspector-head{margin-bottom:9px}.inspector h3{font-size:12px}.inspector-head small{font-size:11px}.diag-pip{color:var(--gold)}
+.scanner{gap:7px;margin-bottom:8px}.channel{height:38px;border-radius:10px}
+.scanbutton{min-height:40px}.scanrow{min-height:40px}
+.repairrow{margin-top:10px}.repairrow .action{height:46px}
+.prompt{margin-top:11px;text-align:center;font-size:12px;font-weight:680;min-height:40px;padding:9px}
+.boardbox .boadtop strong{font-size:12px}
+.boadtop{margin-bottom:9px}.tips{margin:9px 3px 4px}
+.actions + .actions{margin-top:8px}
+@keyframes sensorBreath{0%,100%{box-shadow:0 0 0 0 rgba(236,144,136,.02)}50%{box-shadow:0 0 0 4px rgba(236,144,136,.2)}}
+@keyframes breakbreath{0%,100%{filter:brightness(1)}50%{filter:brightness(1.15)}}
+@keyframes crossbreath{0%,100%{opacity:.65}50%{opacity:1}}
+@keyframes repairFlash{from{background:#f1deae;transform:scale(.94)}to{background:#27665d;transform:scale(1)}}
+@keyframes beamDraw{to{stroke-dashoffset:0}}
+@media(max-height:860px){.copy{margin:8px 2px 7px}.boardbox{padding:9px}.board-rails{max-width:321px}.tips{margin:5px 2px 3px}.prompt{margin-top:7px;padding:7px;min-height:35px}.inspector{padding-top:8px;margin-top:8px}.inspector-head{margin-bottom:6px}.scanner{margin-bottom:6px}.channel{height:34px}.repairrow{margin-top:7px}.repairrow .action{height:41px}.actions{margin-top:8px}.stepper{margin-top:9px}.bottom{margin-top:2px}.footnote{margin-top:3px}}
+@media(max-width:360px){.boardbox{padding:8px}.board-rails{grid-template-columns:28px 1fr;grid-template-rows:28px 1fr;gap:5px}.sensor{border-radius:8px}.legend{font-size:10px}.scanbutton{min-height:38px}}
 </style></head><body><div class="shell">
 <header class="top"><a class="back" href="../" aria-label="研究所へ戻る">‹</a><div class="brand"><small>MATH MECHANICS LAB / 05</small><strong>CHECKSUM</strong></div><button id="sound" class="sound" aria-label="音のオンオフ">♫</button></header>
 <div class="copy"><div><div class="eyebrow">HIDDEN ERRORS</div><h1 id="title">壊れたマスを、見抜く。</h1><p class="desc" id="desc">周囲のセンサーを読み、故障したマスを修復する。</p></div><div><div id="level" class="level">01 / 06</div><div id="countNote" class="levelnote">故障 1個</div></div></div>
-<section class="boardbox"><div class="boadtop"><strong>故障を特定する</strong><span id="selCount">0 / 1</span></div>
+<section class="boardbox"><div class="boadtop"><strong id="boardHeading">赤い光は、壊れた場所の手がかり</strong><span id="selCount">0 / 1</span></div>
  <div class="board-rails"><div class="toprails" id="cols"></div><div class="siderails" id="rows"></div>
  <div class="boardmain" id="mainboard"><div class="cells" id="cells"></div><svg class="diag-overlay" id="beam" viewBox="0 0 400 400"></svg></div></div>
- <div class="tips"><div class="legend"><i class="red"></i>奇数個 <i class="gray"></i>偶数個</div><div class="count" id="scanLeft">斜め検査 0 / 0</div></div>
- <div class="prompt" id="prompt" role="status">赤いセンサーの行と列を見よう。</div>
-</section>
-<section class="inspector" id="inspector"><div class="inspector-head"><h3>斜めを調べる <small>↘</small></h3><small>選んだ線が盤面に重なる</small></div>
+ <div class="tips"><div class="legend"><i class="red"></i>赤：1・3…個 <i class="gray"></i>暗：0・2…個</div><div class="count" id="scanLeft">斜め検査 0 / 0</div></div>
+ <div class="prompt" id="prompt" role="status">赤い光をタップしてみよう</div>
+ <div class="inspector" id="inspector"><div class="inspector-head"><h3><span class="diag-pip">↘</span> 斜めの線を、1本だけ調べる</h3><small id="probeCount">残り 1回</small></div>
  <div class="scanner" id="scanner"></div>
- <div class="scanrow"><button class="scanbutton" id="scanBtn">この斜めを検査</button><div class="readout" id="readout">検査線を選択</div></div>
+ <div class="scanrow"><button class="scanbutton" id="scanBtn">この線を検査</button><div class="readout" id="readout">線をタップして選ぶ</div></div>
+ </div>
+ <div class="actions repairrow"><button class="action" id="reset">↶ やり直す</button><button class="action primary" id="repair">このマスを修復</button></div>
 </section>
-<div class="actions"><button class="action" id="reset">やり直す</button><button class="action primary" id="repair">選んだマスを修復する</button></div>
 <div class="actions"><button class="action" id="prev">← 前へ</button><button class="action" id="next">次へ →</button></div>
 <div class="stepper" id="stepper"></div><div class="bottom"><button id="clear">選択を消す</button><button id="help">遊び方</button></div>
 <div class="footnote">研究試作版 · 情報を選び、故障を特定する楽しさを検証中</div>
@@ -48,19 +76,20 @@
 <script>
 (()=>{'use strict';
 const puzzles=[
- {faults:[6],scans:0,choose:-1,title:'最初の故障',desc:'赤い行と列が交わるところを修復する。'},
+ {faults:[6],scans:0,choose:-1,title:'触れると、直る。',desc:'光っている赤い線。その先の割れたマスを触ってみよう。',intro:true},
+ {faults:[6],scans:0,choose:-1,title:'見えない故障',desc:'今度は故障が見えない。赤い光が交わる場所を探そう。'},
  {faults:[0,5],scans:1,choose:-1,title:'2個の故障',desc:'行と列だけでは、2通りある。斜めを一度調べて見抜こう。'},
  {faults:[0,1],scans:2,choose:0,title:'4つの場所',desc:'今度は故障が同じ行にあるかも。斜めの調べ方が鍵。'},
  {faults:[5,10],scans:1,choose:-1,title:'交差する可能性',desc:'2つの組み合わせ。どの斜めを調べれば区別できる？'},
  {faults:[0,5,11],scans:3,choose:0,title:'3つ目の故障',desc:'センサーは同じでも、候補はいくつもある。'},
  {faults:[0,1,7],scans:4,choose:0,title:'最後のシグナル',desc:'遠回りに見える検査が、最後の一手になるかもしれない。'}
 ];
-const $=id=>document.getElementById(id);const saveKey='mm_checksum_v1';let level=0,sound=true,marked=new Set(),readings={},selected=0,used=0,won=false,focusRow=null,focusCol=null,message='',messageType='',ctx=null;
-try{const p=JSON.parse(localStorage.getItem(saveKey)||'{}');level=Math.min(puzzles.length-1,Math.max(0,Number(p.level)||0));sound=p.sound!==false}catch(e){}
-function save(){try{localStorage.setItem(saveKey,JSON.stringify({level,sound}))}catch(e){}}
+const $=id=>document.getElementById(id);const saveKey='mm_checksum_v1';let level=0,sound=true,marked=new Set(),readings={},selected=0,used=0,won=false,focusRow=null,focusCol=null,message='',messageType='',ctx=null,legacyLevel=0;
+try{const p=JSON.parse(localStorage.getItem(saveKey)||'{}');sound=p.sound!==false;legacyLevel=p.v===2?(Number(p.legacyLevel)||0):(Number(p.level)||0);level=p.v===2?Math.min(puzzles.length-1,Math.max(0,Number(p.level)||0)):0;}catch(e){}
+function save(){try{localStorage.setItem(saveKey,JSON.stringify({level,sound,v:2,legacyLevel}))}catch(e){}}
 function tune(kind='tap'){if(!sound)return;try{ctx ||= new (window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();const now=ctx.currentTime,notes=kind==='win'?[440,554,659,880]:kind==='scan'?[262,392]:kind==='wrong'?[290]:[560];notes.forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain(),t=now+i*(kind==='win'?.07:.02);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(kind==='win'?.048:.027,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+(kind==='win'?.35:.09));o.connect(g).connect(ctx.destination);o.start(t);o.stop(t+(kind==='win'?.39:.12))});}catch(e){}}
-function rowOdd(r){return puzzles[level].faults.filter(z=>Math.floor(z/4)===r).length%2===1}
-function colOdd(c){return puzzles[level].faults.filter(z=>z%4===c).length%2===1}
+function rowOdd(r){if(puzzles[level].intro&&won)return false;return puzzles[level].faults.filter(z=>Math.floor(z/4)===r).length%2===1}
+function colOdd(c){if(puzzles[level].intro&&won)return false;return puzzles[level].faults.filter(z=>z%4===c).length%2===1}
 function diagonalOdd(d){return puzzles[level].faults.filter(z=>z%4-Math.floor(z/4)===d).length%2===1}
 function setLevel(l){level=(l+puzzles.length)%puzzles.length;marked=new Set();readings={};used=0;won=false;selected=puzzles[level].scans?puzzles[level].choose:null;focusRow=null;focusCol=null;message='';messageType='';save();render()}
 function beamPath(d){const pts=[];for(let y=0;y<4;y++){const x=y+d;if(x>=0&&x<4)pts.push({x:50+100*x,y:50+100*y})}if(pts.length<=1){const p=pts[0];return`<circle cx="${p.x}" cy="${p.y}" r="35" fill="none" stroke="#e6c17a" stroke-width="4" stroke-dasharray="6 6"/>`;}return `<path d="M${pts[0].x} ${pts[0].y} L${pts[pts.length-1].x} ${pts[pts.length-1].y}" class="line"/>`;}
@@ -72,31 +101,58 @@ function tinyDiag(d){
  }
  return `<svg viewBox="0 0 36 36" aria-hidden="true">${c}</svg>`;
 }
-function render(){const p=puzzles[level];$('title').textContent=p.title;$('desc').textContent=p.desc;$('level').textContent=String(level+1).padStart(2,'0')+' / '+String(puzzles.length).padStart(2,'0');$('countNote').textContent=`故障 ${p.faults.length}個`;$('selCount').textContent=`${marked.size} / ${p.faults.length} マス選択`;$('scanLeft').textContent=`斜め検査 ${used} / ${p.scans}`;
- $('cols').innerHTML=Array.from({length:4},(_,c)=>`<button class="sensor ${colOdd(c)?'hot':''} ${focusCol===c?'active':''}" data-col="${c}" aria-label="${c+1}列目は${colOdd(c)?'奇数':'偶数'}のセンサー。押すと列を強調" aria-pressed="${focusCol===c}"><div class="led"></div></button>`).join('');
- $('rows').innerHTML=Array.from({length:4},(_,r)=>`<button class="sensor ${rowOdd(r)?'hot':''} ${focusRow===r?'active':''}" data-row="${r}" aria-label="${r+1}行目は${rowOdd(r)?'奇数':'偶数'}のセンサー。押すと行を強調" aria-pressed="${focusRow===r}"><div class="led"></div></button>`).join('');
- $('cells').innerHTML=Array.from({length:16},(_,i)=>`<button class="cell ${marked.has(i)?'mark':''} ${won && marked.has(i)?'fixed':''} ${focusRow===Math.floor(i/4)?'rowhint':''} ${focusCol===i%4?'colhint':''}" data-cell="${i}" aria-label="${Math.floor(i/4)+1}行${i%4+1}列のマス" aria-pressed="${marked.has(i)}">${won && marked.has(i)?'<span class="spark">✓</span>':'<i class="metal"></i>'}</button>`).join('');
- $('beam').innerHTML=selected!==null?beamPath(selected):'';
- $('scanner').innerHTML=Array.from({length:7},(_,i)=>{const d=i-3,seen=Object.prototype.hasOwnProperty.call(readings,d),hot=seen&&readings[d];return `<button data-diag="${d}" class="channel ${selected===d?'active':''} ${seen?'read':''} ${hot?'hot':''}" aria-label="斜めの線${i+1}${seen?(hot?'奇数':'偶数'):''}" aria-pressed="${selected===d}">${tinyDiag(d)}</button>`}).join('');
- $('inspector').style.display=p.scans?'block':'none';$('scanBtn').disabled=won||used>=p.scans||Object.prototype.hasOwnProperty.call(readings,selected);
- let read=Object.prototype.hasOwnProperty.call(readings,selected)?(readings[selected]?'<span class="odd">奇数個</span>':'<span class="even">偶数個</span>'):'未検査';$('readout').innerHTML=read;
- $('repair').disabled=won||marked.size!==p.faults.length;$('repair').textContent=won?'修復完了 ✓':'このマスを修復する';
+function lineFocusSvg(){let out='';
+ if(focusRow!==null){const y=50+100*focusRow;out+=`<line class="focusbeam" x1="6" y1="${y}" x2="394" y2="${y}"/>`}
+ if(focusCol!==null){const x=50+100*focusCol;out+=`<line class="focusbeam" x1="${x}" y1="6" x2="${x}" y2="394"/>`}
+ if(focusRow!==null && focusCol!==null){const x=50+100*focusCol,y=50+100*focusRow;out+=`<circle class="focusring" cx="${x}" cy="${y}" r="38"/>`}
+ return out;
+}
+function brokenChip(){return `<svg viewBox="0 0 50 50" aria-hidden="true"><rect x="10" y="10" width="30" height="30" rx="7" fill="#cf8e89" stroke="#f9c2a7" stroke-width="2"/><path d="M28 10L19 23L29 27L22 40" fill="none" stroke="#472f44" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 23L12 26M29 27L38 24" fill="none" stroke="#5b3c4b" stroke-width="2.5" stroke-linecap="round"/></svg>`}
+function render(){const p=puzzles[level],intro=!!p.intro; $('title').textContent=p.title;$('desc').textContent=p.desc;
+ $('level').textContent=String(level+1).padStart(2,'0')+' / '+String(puzzles.length).padStart(2,'0');$('countNote').textContent=`故障 ${p.faults.length}個`;
+ $('boardHeading').textContent=intro?'赤い光をたどり、割れたマスを直す':level===1?'赤い行と列の交差点を探す':'赤・暗の手がかりから、故障を探す';
+ $('selCount').textContent=intro?'DEMO / TOUCH':`${marked.size} / ${p.faults.length} 選択`;
+ const tutorialFocus=intro&&!won;const shownRow=tutorialFocus?Math.floor(p.faults[0]/4):focusRow,shownCol=tutorialFocus?p.faults[0]%4:focusCol;
+ $('cols').innerHTML=Array.from({length:4},(_,c)=>`<button class="sensor ${colOdd(c)?'hot':''} ${shownCol===c?'active':''} ${!won&&(intro||level===1)&&colOdd(c)?'coach':''}" data-col="${c}" aria-label="${c+1}列目：${colOdd(c)?'故障が奇数個':'故障が偶数個'}" aria-pressed="${shownCol===c}"><div class="led"></div></button>`).join('');
+ $('rows').innerHTML=Array.from({length:4},(_,r)=>`<button class="sensor ${rowOdd(r)?'hot':''} ${shownRow===r?'active':''} ${!won&&(intro||level===1)&&rowOdd(r)?'coach':''}" data-row="${r}" aria-label="${r+1}行目：${rowOdd(r)?'故障が奇数個':'故障が偶数個'}" aria-pressed="${shownRow===r}"><div class="led"></div></button>`).join('');
+ $('cells').innerHTML=Array.from({length:16},(_,i)=>{
+  const broken=intro&&!won&&p.faults.includes(i), selected=marked.has(i),fixed=won&&p.faults.includes(i),cross=!won&&!intro&&shownRow===Math.floor(i/4)&&shownCol===i%4;
+  const markCls=[selected?'mark':'',fixed?'fixed':'',broken?'broken':'',cross?'crossing':'',shownRow===Math.floor(i/4)?'rowhint':'',shownCol===i%4?'colhint':''].join(' ');
+  return `<button class="cell ${markCls}" data-cell="${i}" aria-label="${Math.floor(i/4)+1}行${i%4+1}列のマス${broken?'、ひびが入っている':''}" aria-pressed="${selected}">${fixed?'<span class="spark">✓</span>':broken?brokenChip():'<i class="metal"></i>'}</button>`
+ }).join('');
+ $('beam').innerHTML=(selected!==null&&!intro?beamPath(selected):'')+ (tutorialFocus?`<line class="focusbeam" x1="6" y1="${50+100*shownRow}" x2="394" y2="${50+100*shownRow}"/><line class="focusbeam" x1="${50+100*shownCol}" y1="6" x2="${50+100*shownCol}" y2="394"/><circle class="focusring" cx="${50+100*shownCol}" cy="${50+100*shownRow}" r="38"/>`:lineFocusSvg());
+ $('scanLeft').textContent=p.scans?`斜め検査 ${used} / ${p.scans}`:'斜め検査 なし';
+ $('scanner').innerHTML=Array.from({length:7},(_,i)=>{const d=i-3,seen=Object.prototype.hasOwnProperty.call(readings,d),hot=seen&&readings[d];return `<button data-diag="${d}" class="channel ${selected===d?'active':''} ${seen?'read':''} ${hot?'hot':''}" aria-label="斜めの線${i+1}${seen?(hot?'故障が奇数個':'故障が偶数個'):''}" aria-pressed="${selected===d}">${tinyDiag(d)}</button>`}).join('');
+ $('inspector').style.display=p.scans?'block':'none';$('scanBtn').disabled=won||used>=p.scans||selected===null||Object.prototype.hasOwnProperty.call(readings,selected);
+ $('probeCount').textContent=`残り ${Math.max(0,p.scans-used)}回`;
+ $('readout').innerHTML=selected===null?'線を選ぶ':Object.prototype.hasOwnProperty.call(readings,selected)?(readings[selected]?'<span class="odd">● 奇数</span>':'<span class="even">○ 偶数</span>'):'未検査';
+ $('repair').style.display=intro?'none':'block';$('reset').textContent=intro?'最初から':'↶ やり直す';$('repair').disabled=won||marked.size!==p.faults.length;
+ $('repair').textContent=won?'修復完了 ✓':`選んだ${p.faults.length}マスを修復`;
  $('stepper').innerHTML=puzzles.map((_,i)=>`<button data-level="${i}" class="${i===level?'current':''}" aria-label="問題${i+1}"></button>`).join('');
  $('prompt').className='prompt '+messageType;
- if(won)$('prompt').innerHTML=`<div class="wintitle">REPAIRED ✓</div><div class="wininfo">すべての故障を修復。斜め検査は ${used} 回。</div>`;
+ if(won){ $('prompt').innerHTML=intro?'<div class="wintitle">光が消えた ✓</div><div class="wininfo">1枚直すと、行と列の赤い光も消える。次は故障が見えない。</div>':`<div class="wintitle">REPAIRED ✓</div><div class="wininfo">すべて修復。検査は ${used} 回。</div>`; }
  else if(message)$('prompt').textContent=message;
- else $('prompt').textContent=level===0?'赤いセンサーを触って、行と列の交点を探そう。':p.scans>used?'まず赤いセンサーを手掛かりに。斜めを選んで検査できる。':'故障だと思うマスを選んで修復しよう。';
+ else if(intro)$('prompt').innerHTML='<strong style="color:#f2b4a1">ひびの入ったマス</strong>を、直接タップ';
+ else if(level===1){if(focusRow===null||focusCol===null)$('prompt').textContent='赤い光を2つタップすると、線が交差する'; else $('prompt').textContent='光が交差したマスをタップして、修復';}
+ else if(p.scans>used)$('prompt').textContent='赤は奇数、暗は偶数。必要なら斜めを検査';
+ else $('prompt').textContent='故障したと思うマスを選んで、修復';
  $('sound').textContent=sound?'♫':'♪̸';
- $('rows').querySelectorAll('[data-row]').forEach(b=>b.onclick=()=>{const v=+b.dataset.row;focusRow=focusRow===v?null:v;message='';tune('tap');render()});
- $('cols').querySelectorAll('[data-col]').forEach(b=>b.onclick=()=>{const v=+b.dataset.col;focusCol=focusCol===v?null:v;message='';tune('tap');render()});
- $('scanner').querySelectorAll('[data-diag]').forEach(b=>b.onclick=()=>{selected=+b.dataset.diag;message='';tune('tap');render()});
- $('cells').querySelectorAll('[data-cell]').forEach(b=>b.onclick=()=>{if(won)return;const k=+b.dataset.cell;if(marked.has(k))marked.delete(k);else{if(marked.size>=p.faults.length){tune('wrong');message=`選べるのは${p.faults.length}マス。別の場所を選ぶなら、一度外そう。`;messageType='bad';render();return;}marked.add(k)}message='';messageType='';tune('tap');render()});
+ $('rows').querySelectorAll('[data-row]').forEach(b=>b.onclick=()=>{const v=+b.dataset.row;focusRow=focusRow===v?null:v;message='';messageType='';tune();render()});
+ $('cols').querySelectorAll('[data-col]').forEach(b=>b.onclick=()=>{const v=+b.dataset.col;focusCol=focusCol===v?null:v;message='';messageType='';tune();render()});
+ $('scanner').querySelectorAll('[data-diag]').forEach(b=>b.onclick=()=>{selected=+b.dataset.diag;focusRow=null;focusCol=null;message='';messageType='';tune();render()});
+ $('cells').querySelectorAll('[data-cell]').forEach(b=>b.onclick=()=>{
+  if(won)return;const k=+b.dataset.cell;
+  if(intro){if(p.faults.includes(k)){marked.add(k);won=true;message='';messageType='good';tune('win');render()}else{message='ひびの入ったマスを触ってみよう';messageType='bad';tune('wrong');render()}return;}
+  if(marked.has(k))marked.delete(k);else{if(marked.size>=p.faults.length){tune('wrong');message=`${p.faults.length}マスまで。選び直すにはもう一度触ろう。`;messageType='bad';render();return;}marked.add(k)}
+  message='';messageType='';tune('tap');render();
+ });
  $('stepper').querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>setLevel(+b.dataset.level));
 }
+
 function scan(){const p=puzzles[level];if(won||used>=p.scans||Object.prototype.hasOwnProperty.call(readings,selected))return;readings[selected]=diagonalOdd(selected);used++;message='';messageType='';tune('scan');render()}
 function repair(){const p=puzzles[level];if(marked.size!==p.faults.length||won)return;const ok=p.faults.every(v=>marked.has(v));if(ok){won=true;message='';messageType='good';tune('win')}else{message='ここではないようだ。センサーを見直して、別の組み合わせを試そう。';messageType='bad';tune('wrong')}render()}
 $('scanBtn').onclick=scan;$('repair').onclick=repair;$('reset').onclick=()=>{setLevel(level);tune()};$('prev').onclick=()=>{setLevel(level-1);tune()};$('next').onclick=()=>{setLevel(level+1);tune()};$('clear').onclick=()=>{marked.clear();message='';messageType='';tune();render()};$('sound').onclick=()=>{sound=!sound;save();render();if(sound)tune()};
-$('help').onclick=()=>{message='左右と上のランプは各行・列の故障数の偶奇を表す。赤は奇数、灰は偶数。斜めの線を選んで検査し、最後に壊れたマスを直接選ぼう。';messageType='';render()};
+$('help').onclick=()=>{message=level===0?'ひびの入ったマスをタップすると修復できる。赤い行・列の光が消えるのを見よう。':'赤=故障が奇数（1・3…）個、暗=偶数（0・2…）個。行・列、必要なら斜めを調べて、故障マスを当てよう。';messageType='';render()};
 window.__checksumTest={get:()=>({level,marked:[...marked],readings:{...readings},used,won,selected}),setLevel,choose(d){selected=d;render()},scan,mark(i){if(marked.has(i))marked.delete(i);else marked.add(i);render()},repair,puzzles};
 setLevel(level);
 })();
