@@ -166,6 +166,7 @@ svg{width:100%;height:auto;display:block;touch-action:none;user-select:none}
 .fadegame{opacity:.68;pointer-events:none}
 @keyframes pulsehalo{0%,100%{box-shadow:0 0 0 2px rgba(0,169,192,.10)}50%{box-shadow:0 0 0 6px rgba(0,169,192,.20)}}
 @media (prefers-reduced-motion:reduce){.probe.prompt{animation:none}}
+.research-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:17px 2px 11px}.research-heading span{font-size:10px;letter-spacing:.14em;color:#0c9a9f;font-weight:900}.research-heading strong{font-size:14px;color:#244a56;letter-spacing:-.025em}.research-link{display:flex;align-items:center;gap:12px;margin:9px 0;padding:15px 13px;border-radius:17px;border:1px solid #d7e8e6;background:#fff;text-decoration:none;color:#1f4350;box-shadow:0 5px 20px rgba(30,80,81,.04)}.research-number{height:52px;width:52px;display:grid;place-items:center;border-radius:14px;font-size:20px;font-weight:900;flex:none}.research-number.ribbon{background:#e6f4f0;color:#087e7b}.research-number.checksum{background:#162f48;color:#9eddd3}.research-text{flex:1;display:flex;flex-direction:column;min-width:0;gap:4px}.research-text b{font-size:15px;letter-spacing:-.035em}.research-text small{font-size:11px;line-height:1.5;color:#708c96}.research-arr{font-size:21px;color:#0e9baa}.research-caption{text-align:center;font-size:10px;line-height:1.65;color:#91a7af;margin:10px 8px 2px}
 </style>
 </head>
 <body>
@@ -250,10 +251,14 @@ function footer(){
 function success(){return `<div class="success"><strong>クリア！</strong><div>今のルールで、ちゃんと先読みできた？</div><div class="actions" style="margin-top:10px"><button class="action primary" id="clearNextBtn">次のステージへ</button></div></div>`}
 
 function renderHome(){
-  app.innerHTML=`<div class="page"><div class="hero card"><div class="over">THREE PROTOTYPES</div><h1>さわって、<br>発見する。</h1><p>3つの数学パズルの「面白さの核」を研究中。まずは、直感的に遊べることから。</p></div>
+  app.innerHTML=`<div class="page"><div class="hero card"><div class="over">THREE PROTOTYPES</div><h1>さわって、<br>発見する。</h1><p>5つの数学パズルの「面白さの核」を研究中。新作2つは、まず触って体験してみよう。</p></div>
   ${gameCard('scan','01','SCAN GRID','同じ盤面で、スキャンも答えも。','矢印で調べる・マスを塗る','<svg viewBox="0 0 80 80"><g fill="none" stroke="#cce9ee"><rect x="12" y="12" width="56" height="56" rx="12" fill="#fff"/><path d="M30 12v56M49 12v56M12 30h56M12 49h56"/></g><rect x="31" y="31" width="18" height="18" rx="5" fill="#00a9c0"/><path d="M30 5l-8 8h5v7h6v-7h5zM50 5l-8 8h5v7h6v-7h5z" fill="#94dfe9"/></svg>')}
   ${gameCard('cut','02','CUT CIRCUIT','青を守りながら赤を消す。最初から上級の勝負へ。','まずは全体の急所を見抜く','<svg viewBox="0 0 80 80"><path d="M12 42h20L44 25h24" stroke="#9cc3cd" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="13" cy="42" r="8" fill="#ffd86f"/><circle cx="44" cy="25" r="8" fill="#4aa3bf"/><circle cx="68" cy="25" r="8" fill="#eb6b71"/><path d="M28 18l11 11M39 18L28 29" stroke="#00a9c0" stroke-width="4" stroke-linecap="round"/></svg>')}
   ${gameCard('triad','03','TRIAD SHIFT','3枚ずつ右へ回して順番に並べる。','範囲を示す矢印から動かそう','<svg viewBox="0 0 80 80"><rect x="8" y="22" width="18" height="18" rx="6" fill="#eef9fb" stroke="#cde9ee"/><rect x="31" y="22" width="18" height="18" rx="6" fill="#eef9fb" stroke="#cde9ee"/><rect x="54" y="22" width="18" height="18" rx="6" fill="#eef9fb" stroke="#cde9ee"/><text x="17" y="35" font-size="10" font-weight="900" text-anchor="middle" fill="#173746">2</text><text x="40" y="35" font-size="10" font-weight="900" text-anchor="middle" fill="#173746">3</text><text x="63" y="35" font-size="10" font-weight="900" text-anchor="middle" fill="#173746">1</text><path d="M17 53c8 7 38 7 46 0" stroke="#00a9c0" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M59 47l8 6-8 6" fill="none" stroke="#00a9c0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>')}
+  <div class="research-heading"><span>NEW RESEARCH / 02</span><strong>新しい2作品を試遊する</strong></div>
+  <a class="research-link" href="research/ribbon-rewire.html"><span class="research-number ribbon">04</span><span class="research-text"><b>RIBBON REWIRE</b><small>紐の端をつかみ、つなぎ替える。6問。</small></span><span class="research-arr">→</span></a>
+  <a class="research-link" href="research/checksum.html"><span class="research-number checksum">05</span><span class="research-text"><b>CHECKSUM</b><small>センサーから故障を見抜き、修復する。6問。</small></span><span class="research-arr">→</span></a>
+  <div class="research-caption">※新作はゲーム性検証用の試遊版。従来の3作品も引き続き遊べます。</div>
   <div class="small">これは「ゲームの核」を判断するための試遊研究版です。<br>まだ採用決定ではありません。</div></div>`;
   $$('[data-open]').forEach(b=>b.onclick=()=>{beep(); openGame(b.dataset.open)});
 }
