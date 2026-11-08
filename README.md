@@ -5,6 +5,11 @@
 **試遊URL：** https://yamiedrich49.github.io/MATH-MECHANICS-LAB/  
 **GitHub Pages設定：** https://github.com/Yamiedrich49/MATH-MECHANICS-LAB/settings/pages
 
+## CURRENT RESEARCH STATUS — 2026-11-08
+
+- **RIBBON REWIRE（条件付き継続）**：ユーザー初見では「何をさせられているか分からない」。v6では最初の1手を実際の線のつなぎ替えと切断を含めて盤面上でデモし、金の輪に置かれた端の数を可視化した。ただしUI・ゲーム性が合格したとは判断しない。全6問のドラッグ最短クリア、320px表示、JSエラーなしをChromiumで検証。実機・初見ユーザー評価は未検証。
+- **CHECKSUM（研究凍結）**：行列の偶奇から故障マスを推理する設計だが、現行UIでは誤答に実質的コストがなく、適当な組合せの反復が戦略として成立してしまう。SCAN GRIDと推理体験の重複も大きい。ページは研究記録として残し、ゲーム性の根本再発明がない限り改修・問題追加を行わない。
+
 ## UI v5 / 2026-11-08 — First gesture onboarding
 
 「初めて開いても何をするゲームか分からない」という試遊フィードバックを受け、**説明文を追加するのではなく、最初に触る体験から再設計**。
