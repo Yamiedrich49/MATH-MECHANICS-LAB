@@ -1,0 +1,51 @@
+name: AUTOLAB nightly research
+on:
+  workflow_dispatch:
+    inputs:
+      demo:
+        description: 'Run no-cost demo only (no API call)'
+        type: boolean
+        required: true
+        default: true
+  schedule:
+    - cron: '43 0 * * *'
+      timezone: 'Asia/Tokyo'
+permissions:
+  contents: write
+concurrency:
+  group: autolab-nightly
+  cancel-in-progress: false
+jobs:
+  research:
+    if: github.event_name == 'workflow_dispatch' || vars.AUTOLAB_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run unit tests (no API usage)
+        run: python -m unittest discover -s autolab/tests -v
+      - name: Run independent-agent research
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.demo }}" = "true" ]; then
+            python autolab/run.py --demo
+          else
+            python autolab/run.py --live
+          fi
+      - name: Save and publish research evidence (not existing game)
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add autolab/output/
+          if ! git diff --cached --quiet; then
+            git commit -m "AUTOLAB research run ${{ github.run_id }}"
+            git push
+          fi

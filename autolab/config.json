@@ -1,0 +1,11 @@
+{
+  "min_score": 78,
+  "max_calls": 10,
+  "max_total_tokens": 90000,
+  "max_estimated_usd": 1.5,
+  "idea_model": "gpt-6.1-terra",
+  "judge_model": "gpt-6.1-sol",
+  "build_model": "gpt-6.1-terra",
+  "revision_rounds": 2,
+  "max_html_chars": 58000
+}
