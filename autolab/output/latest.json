@@ -1,0 +1,22 @@
+{
+  "status": "DEMO",
+  "title": "No-cost demo — Make 9",
+  "date": "2026-11-08",
+  "reason": "This is a smoke-test interaction, NOT an AI invented game. Nightly live research is disabled until configured.",
+  "api_calls": 0,
+  "tokens": 0,
+  "estimated_usd": 0,
+  "ideas": [
+    {
+      "title": "Make 9",
+      "hook": "Test touch input and success feedback without API costs."
+    }
+  ],
+  "recent_titles": [],
+  "events": [
+    {
+      "stage": "initial setup",
+      "result": "Not yet live"
+    }
+  ]
+}

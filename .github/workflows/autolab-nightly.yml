@@ -1,9 +1,17 @@
 name: AUTOLAB nightly research
 on:
+  pull_request:
+    paths:
+      - 'autolab/**'
+      - '.github/workflows/autolab-nightly.yml'
+  push:
+    paths:
+      - 'autolab/**'
+      - '.github/workflows/autolab-nightly.yml'
   workflow_dispatch:
     inputs:
       demo:
-        description: 'Run no-cost demo only (no API call)'
+        description: 'No-cost demo (true) or paid live run (false)'
         type: boolean
         required: true
         default: true
@@ -12,12 +20,30 @@ on:
       timezone: 'Asia/Tokyo'
 permissions:
   contents: write
+  pages: write
+  id-token: write
 concurrency:
-  group: autolab-nightly
+  group: autolab-${{ github.ref }}
   cancel-in-progress: false
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Unit tests (0 API calls)
+        run: python -m unittest discover -s autolab/tests -v
+      - name: Demo smoke test (0 API calls)
+        run: python autolab/run.py --demo
   research:
-    if: github.event_name == 'workflow_dispatch' || vars.AUTOLAB_ENABLED == 'true'
+    needs: check
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'schedule' && vars.AUTOLAB_ENABLED == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 110
     steps:
@@ -28,9 +54,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Run unit tests (no API usage)
-        run: python -m unittest discover -s autolab/tests -v
-      - name: Run independent-agent research
+      - name: Run independent agents
+        id: lab
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
@@ -39,8 +64,8 @@ jobs:
           else
             python autolab/run.py --live
           fi
-      - name: Save and publish research evidence (not existing game)
-        if: success()
+      - name: Commit research logs and optional prototype (only AUTOLAB files)
+        if: always() && steps.lab.outcome != 'skipped'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -49,3 +74,19 @@ jobs:
             git commit -m "AUTOLAB research run ${{ github.run_id }}"
             git push
           fi
+      - name: Prepare static Pages site (opt-in)
+        if: success() && vars.AUTOLAB_PAGES_ENABLED == 'true'
+        run: |
+          mkdir -p /tmp/autolab-pages/autolab/output
+          cp index.html /tmp/autolab-pages/
+          cp autolab/output/* /tmp/autolab-pages/autolab/output/
+          touch /tmp/autolab-pages/.nojekyll
+      - uses: actions/configure-pages@v5
+        if: success() && vars.AUTOLAB_PAGES_ENABLED == 'true'
+      - uses: actions/upload-pages-artifact@v3
+        if: success() && vars.AUTOLAB_PAGES_ENABLED == 'true'
+        with:
+          path: /tmp/autolab-pages
+      - name: Deploy Pages (opt-in, preserves existing root game)
+        if: success() && vars.AUTOLAB_PAGES_ENABLED == 'true'
+        uses: actions/deploy-pages@v4
