@@ -33,29 +33,47 @@
 @keyframes coachHand{0%,100%{opacity:.8;transform:translate(0,0)}50%{opacity:1;transform:translate(0,3px)}}
 @keyframes tipPop{from{opacity:.96;stroke-width:4;transform:scale(.65);transform-origin:center}to{opacity:0;stroke-width:1;transform:scale(1.75);transform-origin:center}}
 @media(max-height:740px){.tactile-banner{margin-top:6px;padding:5px 8px;min-height:29px}}
+
+/* v6: physical 'cut + reconnect' demonstration and two-socket objective */
+.goalbar{background:#fdfcf9;border-color:#ece7db}
+.goalbar .counter{font-variant-numeric:tabular-nums}
+.board .target-halo{fill:rgba(220,174,96,.09);stroke:#c99e54;stroke-width:4;stroke-dasharray:4 6}
+.board .target-filled{fill:#f3e2be;stroke:#bf9450;stroke-width:3}
+.board .endpoint{stroke-width:6}
+.board .preview-cut-ground{stroke:#fffdf8;stroke-width:25;stroke-linecap:round;fill:none;pointer-events:none}
+.board .preview-cut-x{stroke:#b88769;stroke-width:5;stroke-linecap:round;pointer-events:none}
+.board .demo-stamp{font-size:13px;fill:#c29853;font-weight:900;letter-spacing:.18em}
+.board .demo-pointer{fill:#ffffff;stroke:#cc9954;stroke-width:3;pointer-events:none}
+.board .demo-pointer-core{fill:#d4a66a;pointer-events:none}
+.board .demo-path{stroke:#dbac64;stroke-width:5;stroke-linecap:round;stroke-dasharray:8 8;fill:none;pointer-events:none}
+.board .new-end-label{fill:#ae873c;font-weight:900;font-size:15px}
+.board .demo-next{fill:none;stroke:#cfaa67;stroke-width:5;stroke-linecap:round;stroke-dasharray:4 7;pointer-events:none}
+#helper{font-weight:830}
+#helper .sign{color:#a88344}
+@media(max-width:360px){.goalbar .left{font-size:11px}.goalbar .counter{font-size:11px}}
 </style></head><body><div class="shell">
  <header class="top"><a href="../" class="nav" aria-label="研究所に戻る">‹</a><div class="brand"><small>MATH MECHANICS LAB / 04</small><strong>RIBBON REWIRE</strong></div><button id="sound" class="sound" aria-label="音を切り替え">♫</button></header>
  <div class="topcopy"><div><div class="eyebrow">A SINGLE THREAD</div><h1 id="puzzleTitle">端を、つなぎ替える。</h1><p class="desc" id="puzzleDesc">紐の端をつまんで、隣の点へつなぐ。</p></div><div><div id="level" class="levelnum">01 / 06</div><div id="best" class="little">最短 1手</div></div></div>
- <div class="goalbar"><div class="left"><i class="gold-dot"></i><span>紐の両端を、金色の2点へ</span></div><div id="moves" class="counter">0 手</div></div>
+ <div class="goalbar"><div class="left"><i class="gold-dot"></i><span>金の輪に2つの端をのせる</span></div><div id="moves" class="counter">1 / 2</div></div>
  <section class="boardframe"><svg id="board" class="board" viewBox="0 0 420 420" aria-label="紐の盤面"></svg></section>
  <div class="tactile-banner" id="helper"><span class="sign">◉</span><span>色のついた<strong>端</strong>を、光る<strong>接続点</strong>へ引っぱる</span></div>
  <div class="status" id="status" role="status"></div>
  <div class="footer"><button id="prev">← 前へ</button><button id="reset">やり直す</button><button class="next" id="next">次へ →</button></div>
  <div class="utility"><button class="textbtn" id="undo">↶ 1手もどす</button><button class="textbtn" id="hint">小さなヒント</button></div>
  <div class="levels" id="levels"></div>
- <p class="tips">研究試作版 · 指先の動きと先読みの面白さを検証中</p>
+ <p class="tips">試遊研究版 · まずは動きの意味が自然に伝わるかを検証中</p>
 </div>
 <script>
 (()=>{'use strict';
 const defs=[
- {n:3,path:[0,1,2,5,4,3,6,7,8],goal:[4,8],best:1,title:'ひと結び',desc:'金の2点を紐の両端に。端を隣の点へ。'},
+ {n:3,path:[0,1,2,5,4,3,6,7,8],goal:[4,8],best:1,title:'1手の練習',desc:'緑の端をつなぐと、別の場所が新しい端になる。'},
  {n:3,path:[0,1,2,5,4,3,6,7,8],goal:[2,8],best:2,title:'もう一つ先へ',desc:'つなぐと、別の場所が端になる。'},
  {n:4,path:[0,1,2,3,7,6,5,4,8,9,10,11,15,14,13,12],goal:[7,12],best:3,title:'長い紐の一手',desc:'全体がつながっていることを忘れずに。'},
  {n:4,path:[0,1,2,3,7,6,5,4,8,12,13,14,15,11,10,9],goal:[9,15],best:4,title:'ひっくり返る道',desc:'変わるのは一か所。でも、次の端は遠くに現れる。'},
  {n:4,path:[5,6,7,3,2,1,0,4,8,9,10,11,15,14,13,12],goal:[4,13],best:5,title:'二つの端の作戦',desc:'どちらの端を動かすかが分かれ道。'},
  {n:4,path:[2,3,7,6,5,9,10,11,15,14,13,12,8,4,0,1],goal:[8,9],best:6,title:'リボン・マスター',desc:'手探りでは遠回り。紐のつながりを読み切る。'}
 ];
-const $=id=>document.getElementById(id);let level=0,sound=true,history=[],path=[],won=false,drag=null,armed=null,lock=false,oldPath=null,highlight=null,hint=null,animTimer=null,ctx=null,lastTip=null; const saveKey='mm_ribbon_rewire_v1';
+const $=id=>document.getElementById(id);let level=0,sound=true,history=[],path=[],won=false,drag=null,armed=null,lock=false,oldPath=null,highlight=null,hint=null,animTimer=null,ctx=null,lastTip=null,demoPhase=0,demoActive=false,demoSeen=false,demoTimers=[]; const saveKey='mm_ribbon_rewire_v1';
 try{const p=JSON.parse(localStorage.getItem(saveKey)||'{}'); level=Math.max(0,Math.min(defs.length-1,parseInt(p.level)||0));sound=p.sound!==false}catch(e){}
 function save(){try{localStorage.setItem(saveKey,JSON.stringify({level,sound}))}catch(e){}}
 function tone(kind='tap'){if(!sound)return;try{ctx ||= new (window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();const t=ctx.currentTime,ns=kind==='win'?[523,659,784,1047]:kind==='join'?[349,466]:[550];ns.forEach((hz,i)=>{const o=ctx.createOscillator(),g=ctx.createGain(),st=t+i*(kind==='win'?.075:.035);o.type='sine';o.frequency.value=hz;g.gain.setValueAtTime(.0001,st);g.gain.exponentialRampToValueAtTime(kind==='win'?.055:.026,st+.012);g.gain.exponentialRampToValueAtTime(.0001,st+(kind==='win'?.43:.12));o.connect(g).connect(ctx.destination);o.start(st);o.stop(st+(kind==='win'?.45:.14))})}catch(e){}}
@@ -69,8 +87,9 @@ function draw(){
  const def=defs[level],n=def.n,p=path,svg=$('board');let content='';
  // The board is the whole interface: grid, goals, valid touch points, and rope.
  for(let y=0;y<n;y++)for(let x=0;x<n;x++){const id=y*n+x,{x:px,y:py}=coords(id);if(x<n-1)content+=`<path class="gridline" d="M${px} ${py} H${coords(id+1).x}"/>`;if(y<n-1)content+=`<path class="gridline" d="M${px} ${py} V${coords(id+n).y}"/>`;}
- def.goal.forEach(id=>{const q=coords(id);content+=`<circle class="target" cx="${q.x}" cy="${q.y}" r="24"/><circle cx="${q.x}" cy="${q.y}" r="3" fill="#d5a751"/>`});
  content+=`<path class="rope-shadow" d="${dpath(p)}"/><path class="rope" d="${dpath(p)}"/><path class="rope-gloss" d="${dpath(p)}"/>`;
+ // Gold socket marks stay ABOVE the rope, so goal positions cannot disappear beneath it.
+ def.goal.forEach(id=>{const q=coords(id),reached=(id===p[0]||id===p[p.length-1]);content+=`<circle class="${reached?'target-filled':'target-halo'}" cx="${q.x}" cy="${q.y}" r="26"/>`;});
  if(oldPath){
    const key=(a,b)=>[Math.min(a,b),Math.max(a,b)].join(':');
    const prev=new Set(oldPath.slice(1).map((v,i)=>key(oldPath[i],v)));
@@ -89,11 +108,11 @@ function draw(){
      // Only after the user is actively dragging do we show the piece of ribbon that will disconnect.
      if(nearCandidate && nearCandidate.delta<57){
        const src=active===0?p:p.slice().reverse(),j=src.indexOf(nearCandidate.id),cut=coords(src[j-1]),dest=coords(src[j]),from=coords(ends[active]);
-       content+=`<path class="preview-break" d="M${cut.x} ${cut.y}L${dest.x} ${dest.y}"/>`;
+       content+=`<path class="preview-cut-ground" d="M${cut.x} ${cut.y}L${dest.x} ${dest.y}"/><path class="preview-break" d="M${cut.x} ${cut.y}L${dest.x} ${dest.y}"/>`; 
        content+=`<path class="preview-link" d="M${from.x} ${from.y}L${dest.x} ${dest.y}"/>`;
      }
    }
- }else if(level===0 && history.length===0 && !won){
+ }else if(level===0 && history.length===0 && !won && !demoActive){
    // On the first puzzle, the gesture is taught once, without a separate screen or text overlay.
    const start=coords(p[0]),target=coords(neighbors(0)[0].id);
    content+=`<path class="coach-line" d="M${start.x} ${start.y}L${target.x} ${target.y}"/>`;
@@ -104,27 +123,52 @@ function draw(){
    // Quietly reveal what can be grabbed; not the result of the move.
    ends.forEach((id,side)=>{if(neighbors(side).length){const q=coords(id);content+=`<circle class="glow" cx="${q.x}" cy="${q.y}" r="29"/>`}});
  }
+ if(demoActive){
+   const original=defs[0].path,from=coords(original[0]),to=coords(3);
+   content+=`<text class="demo-stamp" x="42" y="31">DEMO · 1手</text>`;
+   if(demoPhase===1){
+      content+=`<path class="demo-path" d="M${from.x} ${from.y}L${to.x} ${to.y}"/><circle class="demo-pointer" cx="${to.x}" cy="${to.y}" r="19"/><circle class="demo-pointer-core" cx="${to.x}" cy="${to.y}" r="5"/>`;
+   }else{
+      const newTip=coords(4);
+      content+=`<circle class="new-tip-pulse" cx="${newTip.x}" cy="${newTip.y}" r="28"/><text class="new-end-label" x="${newTip.x+28}" y="${newTip.y-19}">新しい端</text>`;
+   }
+ }
  if(hint!==null){const q=coords(ends[hint]);content+=`<circle cx="${q.x}" cy="${q.y}" r="29" fill="none" stroke="#d5a751" stroke-width="2" stroke-dasharray="4 5"/>`}
  ends.forEach((id,side)=>{const q=coords(id);content+=`<circle class="endpoint ${side===0?'origin':''}" cx="${q.x}" cy="${q.y}" r="15" style="${side===1?'stroke:#2d565c':''}"/>`;if(lastTip===id)content+=`<circle class="new-tip-pulse" cx="${q.x}" cy="${q.y}" r="22"/>`;content+=`<circle cx="${q.x}" cy="${q.y}" r="33" fill="transparent" class="handle" data-side="${side}"/>`});
  if(won){content+=`<rect x="93" y="181" width="234" height="58" rx="18" fill="#ffffff" stroke="#c5e3d6" stroke-width="1.5"/><text x="210" y="217" text-anchor="middle" style="font-size:19px;font-weight:850;fill:#088b8a">つながった ✓</text>`}
  svg.innerHTML=content;
- $('level').textContent=String(level+1).padStart(2,'0')+' / '+String(defs.length).padStart(2,'0');$('best').textContent=`最短 ${def.best}手`;$('moves').textContent=history.length+' 手';$('puzzleTitle').textContent=def.title;$('puzzleDesc').textContent=def.desc;
+ $('level').textContent=String(level+1).padStart(2,'0')+' / '+String(defs.length).padStart(2,'0');$('best').textContent=`最短 ${def.best}手`;$('moves').textContent=def.goal.filter(v=>v===p[0]||v===p[p.length-1]).length+' / 2  ·  '+history.length+'手';$('puzzleTitle').textContent=def.title;$('puzzleDesc').textContent=def.desc;
  $('status').className=won?'status won':'status';$('status').textContent=won?`${history.length===def.best?'最短手数でクリア。':'クリア！ さらに短い道もある。'}`:'';
  const helper=$('helper');
- if(won)helper.innerHTML='<span class="sign">✓</span><span>金色の2つの輪に、両端が到着</span>';
+ if(demoActive)helper.innerHTML=demoPhase===1?'<span class="sign">↗</span><span>緑の端を、となりの紐にくっつける</span>':'<span class="sign">✂</span><span>前のつながりが外れ、<b>新しい端</b>ができた！</span>';
+ else if(won)helper.innerHTML='<span class="sign">✓</span><span>金色の2つの輪に、両端が到着</span>';
  else if(drag!==null)helper.innerHTML='<span class="sign">↗</span><span>光る点で指を離すと、<b>紐が組み替わる</b></span>';
  else if(armed!==null)helper.innerHTML='<span class="sign">◎</span><span>光る点を<strong>タップ</strong>してもつなぎ替えられる</span>';
  else if(lastTip!==null)helper.innerHTML='<span class="sign">↶</span><span>つなぎ目が変わり、<b>別の場所が端になった</b></span>';
  else helper.innerHTML=level===0?'<span class="sign">☝</span><span><b>緑の端</b>をつかみ、点線の先へ滑らせる</span>':'<span class="sign">◉</span><span>紐の<b>端</b>をつかむと、つなげる点が光る</span>';
- $('undo').disabled=history.length===0||lock;$('hint').disabled=lock||won;
+ $('undo').disabled=history.length===0||lock;$('hint').disabled=lock||won||demoActive;$('hint').textContent=level===0?'▶ 1手の動きを見る':'小さなヒント';
  $('levels').innerHTML=defs.map((_,i)=>`<button data-lvl="${i}" class="${i===level?'active':''}" aria-label="問題${i+1}"></button>`).join('');$('levels').querySelectorAll('button').forEach(b=>b.onclick=()=>setLevel(+b.dataset.lvl));
 }
 
-function setLevel(n){if(lock)return;level=(n+defs.length)%defs.length;history=[];path=defs[level].path.slice();won=false;drag=null;armed=null;oldPath=null;hint=null;lastTip=null;save();draw();}
+function cancelDemo(redraw=true){demoTimers.forEach(clearTimeout);demoTimers=[];if(demoActive){demoActive=false;demoPhase=0;oldPath=null;lastTip=null;path=defs[level].path.slice();}if(redraw)draw();}
+function playDemo(){
+  if(level!==0 || lock || history.length || won || drag!==null || armed!==null)return;
+  cancelDemo(false);
+  demoActive=true;demoPhase=1;drag=null;armed=null;lastTip=null;oldPath=null;path=defs[0].path.slice();draw();
+  const original=defs[0].path.slice();
+  demoTimers.push(setTimeout(()=>{
+    if(!demoActive)return;
+    oldPath=original;path=changes(0,3);lastTip=4;demoPhase=2;draw();
+  },1150));
+  demoTimers.push(setTimeout(()=>{
+    if(!demoActive)return;cancelDemo(false);draw();
+  },3200));
+}
+function setLevel(n){if(lock)return;cancelDemo(false);level=(n+defs.length)%defs.length;history=[];path=defs[level].path.slice();won=false;drag=null;armed=null;oldPath=null;hint=null;lastTip=null;save();draw();if(level===0 && !demoSeen){demoSeen=true;demoTimers.push(setTimeout(playDemo,650));}}
 function toPoint(e){let r=$('board').getBoundingClientRect(),size=Math.min(r.width,r.height);return{x:(e.clientX-r.left)*420/size,y:(e.clientY-r.top)*420/size}}
 function near(a,b,d){return Math.hypot(a.x-b.x,a.y-b.y)<d}
 function commit(side,dest){const next=changes(side,dest);if(!next)return false;history.push(path.slice());oldPath=path;path=next;lastTip=side===0?path[0]:path[path.length-1];armed=null;drag=null;lock=true;won=isWin();draw();tone(won?'win':'join');clearTimeout(animTimer);animTimer=setTimeout(()=>{oldPath=null;lock=false;if(!won){lastTip=null}draw()},650);return true}
-function start(e){if(lock||won)return;const pt=toPoint(e);
+function start(e){if(demoActive){cancelDemo();}if(lock||won)return;const pt=toPoint(e);
  if(armed!==null){const selected=neighbors(armed).find(({id})=>near(coords(id),pt,38));if(selected){commit(armed,selected.id);e.preventDefault();return}}
  const ends=[path[0],path[path.length-1]],side=ends.findIndex(v=>near(coords(v),pt,35));if(side<0){armed=null;draw();return}
  drag={side,x:pt.x,y:pt.y,ox:pt.x,oy:pt.y};armed=null;hint=null;$('board').setPointerCapture?.(e.pointerId);tone('tap');draw();e.preventDefault();}
@@ -158,7 +202,7 @@ function solveHint(){
    }
  }
 }
-$('board').addEventListener('pointerdown',start);$('board').addEventListener('pointermove',move);$('board').addEventListener('pointerup',end);$('board').addEventListener('pointercancel',()=>{drag=null;armed=null;draw()});$('undo').addEventListener('click',undo);$('hint').addEventListener('click',()=>{if(!won&&!lock){solveHint();tone('tap')}});$('reset').addEventListener('click',()=>{setLevel(level);tone('tap')});$('prev').addEventListener('click',()=>{setLevel(level-1);tone('tap')});$('next').addEventListener('click',()=>{setLevel(level+1);tone('tap')});$('sound').addEventListener('click',()=>{sound=!sound;$('sound').textContent=sound?'♫':'♪̸';save();if(sound)tone()});$('sound').textContent=sound?'♫':'♪̸';setLevel(level);
+$('board').addEventListener('pointerdown',start);$('board').addEventListener('pointermove',move);$('board').addEventListener('pointerup',end);$('board').addEventListener('pointercancel',()=>{drag=null;armed=null;draw()});$('undo').addEventListener('click',undo);$('hint').addEventListener('click',()=>{if(!won&&!lock){if(level===0)playDemo();else{solveHint();tone('tap')}}});$('reset').addEventListener('click',()=>{setLevel(level);tone('tap')});$('prev').addEventListener('click',()=>{setLevel(level-1);tone('tap')});$('next').addEventListener('click',()=>{setLevel(level+1);tone('tap')});$('sound').addEventListener('click',()=>{sound=!sound;$('sound').textContent=sound?'♫':'♪̸';save();if(sound)tone()});$('sound').textContent=sound?'♫':'♪̸';setLevel(level);
 window.__ribbonTest={get:()=>({path:path.slice(),level,won,history:history.length}),move:(side,dest)=>{const next=changes(side,dest);if(!next)return false;history.push(path.slice());path=next;won=isWin();draw();return true},levels:defs};
 })();
 </script></body></html>
