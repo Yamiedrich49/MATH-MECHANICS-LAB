@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "output"
 CONFIG = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
 CONSTITUTION = (ROOT / "constitution.md").read_text(encoding="utf-8")
+FEEDBACK = json.loads((ROOT / "feedback.json").read_text(encoding="utf-8"))
 PRICES = {"gpt-6.1-sol": (2, 10), "gpt-6.1-terra": (1, 5), "gpt-6-luna": (.1, .5)}
 def obj(props):
     return {"type":"object","properties":props,"required":list(props),"additionalProperties":False}
@@ -43,7 +44,9 @@ class LabClient:
             raise RuntimeError("OPENAI_API_KEY is required for live mode")
         instructions = ("You are an INDEPENDENT " + role + " in a game invention laboratory. "
                         "Do not flatter the user; challenge the idea. Output only valid JSON for the schema. "
-                        "Your job is not to agree with any preceding agent.\n" + CONSTITUTION)
+                        "Your job is not to agree with any preceding agent.\n" + CONSTITUTION
+                        + "\n\nCALIBRATION — historical accept/reject feedback, not game rules:\n"
+                        + json.dumps(FEEDBACK,ensure_ascii=False)[:5500])
         payload = {"model":model,"instructions":instructions,"input":task,
                    "max_output_tokens":max_out,
                    "text":{"format":{"type":"json_schema","name":"lab_"+role.replace("-","_"),"strict":True,"schema":schema}}}

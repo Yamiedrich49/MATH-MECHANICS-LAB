@@ -45,3 +45,4 @@ python autolab/run.py --demo
 
 ### Next iteration
 Add browser-automation screenshot tests; calibrate critic against the owner's accept/reject examples; add candidate collision/search checks; add explicit human feedback as evaluations rather than silently assuming the AI can predict subjective fun.
+\n## Preference calibration\nThe engine loads `autolab/feedback.json` for every independent agent call. This currently stores concise positive, negative, and mixed examples from prior game design reviews. It is deliberately NOT a direct connection to ChatGPT private memory. Update that file after real playtests. Autonomous AI scoring should never replace the user's acceptance test.\n

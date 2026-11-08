@@ -8,6 +8,9 @@ lab=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(lab)
 
 class LabTests(unittest.TestCase):
+    def test_calibration_loaded(self):
+        self.assertGreaterEqual(len(lab.FEEDBACK["examples"]), 8)
+        self.assertTrue(any(x["verdict"]=="rejected" for x in lab.FEEDBACK["examples"]))
     def test_demo_html(self):
         source=lab.demo_game()
         self.assertEqual(lab.validate_html(source),[])

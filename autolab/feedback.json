@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "description": "Small explicitly labeled calibration set, curated from prior game evaluations. Update labels/reasons after real playtests; it is not automatically synced from ChatGPT.",
+  "examples": [
+    {
+      "game": "LASER CUBE",
+      "verdict": "promising",
+      "reason": "Intuitive spatial action, clear impacts and sequential victories. Keep reducing ambiguity between launching and powering."
+    },
+    {
+      "game": "SQUARE SNAP",
+      "verdict": "promising",
+      "reason": "Direct finger gestures on geometric structure can be delightful; rare false negative recognition is unacceptable, and hints must guide without spoiling."
+    },
+    {
+      "game": "FLOW SPLITTER",
+      "verdict": "promising_unproven",
+      "reason": "Original flow branching affords some structure; risks becoming repetitive arrow flipping without deeper constraints."
+    },
+    {
+      "game": "DICE ROUTE",
+      "verdict": "promising_with_critique",
+      "reason": "Rolling a physical die is intuitive; repeated three-roll paths create sameness. Depth must come from geometry and inference, not move count."
+    },
+    {
+      "game": "DIMENSION rotation explorations",
+      "verdict": "rejected",
+      "reason": "Beautiful mathematical transformations alone were not a satisfying strategic game."
+    },
+    {
+      "game": "MOMENT leverage puzzle",
+      "verdict": "rejected",
+      "reason": "Explaining the weights was possible but core play did not create compelling repeated decisions."
+    },
+    {
+      "game": "Wave lever tuning experiment",
+      "verdict": "rejected",
+      "reason": "Without visible meaning for frequencies the best tactic was random lever fiddling."
+    },
+    {
+      "game": "Detective elimination puzzle",
+      "verdict": "rejected",
+      "reason": "Arbitrary enforcement of fully narrowing suspects before guessing felt unreasonable. Success conditions must match player intent."
+    },
+    {
+      "game": "Basic 1D line placement",
+      "verdict": "rejected",
+      "reason": "Trivially short search with no deeper layered constraints; increasing dimension alone does not guarantee fun."
+    }
+  ]
+}
