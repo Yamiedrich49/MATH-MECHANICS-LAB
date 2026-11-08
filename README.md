@@ -14,7 +14,7 @@
 | RIBBON REWIRE | [遊ぶ](https://yamiedrich49.github.io/MATH-MECHANICS-LAB/research/ribbon-rewire.html) | 紐の両端を隣接ノードにつなぎ直し、目標の両端位置に到達する。3×3～4×4、6問 | 各問題の最短解の存在・最短手数・一意性を全探索。全6問をブラウザのドラッグ操作でクリア |
 | CHECKSUM | [遊ぶ](https://yamiedrich49.github.io/MATH-MECHANICS-LAB/research/checksum.html) | 行・列の故障数の偶奇を読み、斜め検査を選んで故障マスを修復する。4×4、6問 | 故障パターン全列挙。各問題は定めた検査回数以内に一意特定可能。全6問をブラウザ操作でクリア |
 
-どちらも単一HTMLで動作。390px幅・320px幅のChromiumで描画と主要操作を確認済み。iPhone Safari実機での操作感、音、7歳の子どもによる試遊は未検証。
+どちらも単一HTMLで動作。390px幅・320px幅のChromiumで描画と主要操作を確認済み。RIBBON REWIREはつなぎ替え時の局所的な接続アニメーションを強化。CHECKSUMは行・列のセンサーを触れるようにし、対応する行・列と交点を盤面内で直接強調。390px×844pxでは初級問題の操作部を1画面に収めた。iPhone Safari実機での操作感、音、7歳の子どもによる試遊は未検証。
 
 ### 試遊で重点的に評価したいこと
 
