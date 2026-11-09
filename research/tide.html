@@ -15,6 +15,18 @@ body{min-height:100svh;overscroll-behavior-y:none}button{font:inherit;color:inhe
 .hero{display:flex;align-items:end;gap:12px;justify-content:space-between;margin:23px 2px 14px}.hero-kicker{font-size:10px;color:#509194;letter-spacing:.2em;font-weight:900}.hero h1{font-size:52px;line-height:.98;letter-spacing:-.075em;font-weight:780;margin:6px 0 8px}.subtitle{font-size:13px;line-height:1.6;color:var(--sub);font-weight:590;margin:0}.stagewrap{text-align:right;align-self:center}.stage-index{font-size:12px;color:#3f7e80;font-weight:830;letter-spacing:.13em;white-space:nowrap}.stage-theme{font-size:11px;color:var(--sub);margin-top:5px;max-width:130px}
 .goal-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 11px 0;padding:13px 14px;border:1px solid #dce9e7;border-radius:17px;background:white}.goal-left{display:flex;align-items:center;gap:10px;min-width:0}.goal-caption{font-size:12px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}.goal-rings{display:flex;align-items:center;gap:7px}.goal-ring{height:25px;min-width:25px;padding:0 4px;display:grid;place-items:center;border-radius:50%;border:2px solid var(--target);color:var(--target);font-size:11px;font-weight:920;line-height:1;background:#fff}.goal-ring.reached{background:var(--target);color:white;border-color:var(--target)}.goal-ring.stolen{background:#f4e7e5;color:#ab6f70;border-color:#bd9a96}.moves{font-size:12px;font-weight:860;font-variant-numeric:tabular-nums;white-space:nowrap;color:#557c7e}.moves b{font-size:20px;letter-spacing:-.06em;color:var(--ink)}
 .board-frame{background:linear-gradient(155deg,#fff,#fcfdfc);border:1px solid #dae6e5;border-radius:28px;padding:13px;box-shadow:var(--shadow);position:relative}.board{--gap:5px;display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:var(--gap);background:#fff;border-radius:18px;padding:2px;isolation:isolate;touch-action:manipulation}.cell{position:relative;aspect-ratio:1;min-width:0;padding:0;border:0;border-radius:14px;background:#ecf2f1;display:flex;justify-content:center;align-items:center;z-index:1;overflow:visible;transition:filter .12s ease;user-select:none}.cell.blank{background:#edf3f2}.cell.owned{background:var(--tone);box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}.cell.owned:active{filter:brightness(1.12)}.cell:disabled{cursor:default}.cell.owned.can-grow{cursor:pointer}.cell.owned.no-grow{cursor:default}
+.cell.owned.pressed-family{filter:brightness(1.09) saturate(1.08);box-shadow:inset 0 0 0 3px rgba(255,255,255,.5),0 0 0 2px var(--tone)}
+.cell.blank.learn-target{background:color-mix(in srgb,var(--learn-color) 17%,#edf3f2);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--learn-color) 45%,transparent)}
+.cell.blank.learn-target:before{content:'+';position:absolute;inset:0;display:grid;place-items:center;color:var(--learn-color);opacity:.67;font-size:20px;font-weight:700;line-height:1;pointer-events:none}
+.cell.blank.learn-target:has(.target-ring):before{display:none}
+.grow-shape{width:34px;height:34px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:2px;flex:none}
+.grow-shape span{border-radius:2px;background:transparent}
+.grow-shape .origin{background:#258e91}
+.grow-shape .reach{background:#a4d3d0}
+.banner .grow-shape+.txt{max-width:290px;text-align:left}
+.cell.born{animation:expand .4s cubic-bezier(.17,.8,.22,1) both;animation-delay:0ms!important}
+.cell.born:after{animation-delay:0ms!important}
+
 .cell .bridge-right,.cell .bridge-down{position:absolute;background:var(--tone);z-index:0;pointer-events:none}.cell .bridge-right{right:calc(-1 * var(--gap));width:calc(var(--gap) + 1px);height:41%;top:29.5%}.cell .bridge-down{bottom:calc(-1 * var(--gap));height:calc(var(--gap) + 1px);width:41%;left:29.5%}
 .cell .source-icon{position:relative;z-index:2;width:38%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.76);color:white;display:grid;place-items:center;font-size:clamp(14px,4.3vw,21px);font-weight:820;line-height:1}.cell.owned.amber .source-icon{color:#513e2f;border-color:#775d42;background:rgba(255,255,255,.28)}
 .cell .target-ring{position:absolute;z-index:3;width:47%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.7);border:3px solid var(--target);color:var(--target);font-size:clamp(13px,3.5vw,17px);font-weight:860;line-height:1;box-shadow:0 0 0 3px rgba(255,255,255,.36)}
@@ -50,7 +62,7 @@ const COLORS=[{hex:'#218e91',key:'teal',label:'A'},{hex:'#dca667',key:'amber',la
 // Each test puzzle was independently solved by exhaustive breadth-first search.
 // The best number of moves and uniqueness refer to the fixed growth rule implemented below.
 const LEVELS=[
- {n:3,seeds:[4],goals:[1],best:1,solution:[0],title:'はじめの一滴',subtitle:'色のかたまりを、タップ。'},
+ {n:3,seeds:[4],goals:[1],best:1,solution:[0],title:'はじめの一滴',subtitle:'色に触れて、広がり方を見よう。'},
  {n:3,seeds:[3,5],goals:[4,2],best:2,solution:[0,1],title:'早いもの勝ち',subtitle:'同じ色の輪へ、先に届けよう。'},
  {n:3,seeds:[2,3],goals:[0,6],best:3,solution:[0,0,1],title:'一本道ではない',subtitle:'一度取られたマスは、取り返せない。'},
  {n:4,seeds:[8,4],goals:[5,1],best:4,solution:[0,0,1,1],title:'広がりを読む',subtitle:'色を伸ばす順番で、未来が変わる。'},
@@ -81,28 +93,44 @@ function showWin(){if(!won)return;$('winOverlay').innerHTML=`<div class="win-ove
 function render(){const p=LEVELS[level];const n=p.n;$('stage').textContent=`${String(level+1).padStart(2,'0')} / ${String(LEVELS.length).padStart(2,'0')}`;$('theme').textContent=p.title;$('subtitle').textContent=p.subtitle;$('moveCounter').innerHTML=`<b>${history.length}</b> / ${p.best} 手`;
  $('goalrings').innerHTML=p.goals.map((idx,c)=>`<div class="goal-ring ${state[idx]===c?'reached':state[idx]>=0?'stolen':''}" style="--target:${COLORS[c].hex}">${state[idx]>=0&&state[idx]!==c?'×':COLORS[c].label}</div>`).join('');
  const born=new Set(newborn);
+ // Stage 1 teaches a single simultaneous orthogonal wave with a faint footprint.
+ // Later stages never preview the outcome; prediction is part of the puzzle.
+ const firstWave=level===0&&history.length===0?new Set((advance(state,0,n)?.added)||[]):new Set();
  $('board').style.setProperty('--n',n);
  $('board').innerHTML=state.map((owner,i)=>{
  const c=owner>=0?COLORS[owner]:null,goalColor=p.goals.indexOf(i),isSeed=p.seeds.indexOf(i),isGoal=goalColor>=0,
  good=isGoal&&owner===goalColor,bad=isGoal&&owner>=0&&owner!==goalColor,
  r=Math.floor(i/n),col=i%n,can=owner>=0?canGrow(owner):false;
- const cls=['cell',c?'owned':'blank',c?c.key:'',born.has(i)?'born':'',good?'goal-good':'',bad?'goal-bad':'',level===0&&!history.length&&i===p.seeds[0]?'coach':'',can?'can-grow':'no-grow'].join(' ');
+ const cls=['cell',c?'owned':'blank',c?c.key:'',born.has(i)?'born':'',good?'goal-good':'',bad?'goal-bad':'',level===0&&!history.length&&i===p.seeds[0]?'coach':'',firstWave.has(i)?'learn-target':'',can?'can-grow':'no-grow'].join(' ');
  // Draw narrow connectors between adjacent squares of the same color; this makes connected territories read as a single shape.
  const br=owner>=0&&col<n-1&&state[i+1]===owner,bd=owner>=0&&r<n-1&&state[i+n]===owner;
  const target=isGoal?`<div class="target-ring" style="--target:${COLORS[goalColor].hex}">${bad?'×':COLORS[goalColor].label}</div>`:'';
  const seed=isSeed>=0?`<div class="source-icon">${COLORS[isSeed].label}</div>`:'';
- return `<button class="${cls}" data-i="${i}" aria-label="${isSeed>=0?'色'+COLORS[isSeed].label+'の出発点':owner>=0?'色'+COLORS[owner].label+'の陣地':'空きマス'}${isGoal?'、色'+COLORS[goalColor].label+'のゴール':''}" style="${c?'--tone:'+c.hex+';':''}--delay:${born.has(i)? Math.floor((Math.abs(r-Math.floor(p.seeds[owner]/n))+Math.abs(col-p.seeds[owner]%n))*19):0}ms">${br?'<span class="bridge-right"></span>':''}${bd?'<span class="bridge-down"></span>':''}${seed}${target}</button>`;
+ return `<button class="${cls}" data-i="${i}" aria-label="${isSeed>=0?'色'+COLORS[isSeed].label+'の出発点':owner>=0?'色'+COLORS[owner].label+'の陣地':'空きマス'}${isGoal?'、色'+COLORS[goalColor].label+'のゴール':''}" style="${c?'--tone:'+c.hex+';':''}${firstWave.has(i)?'--learn-color:'+COLORS[0].hex+';':''}--delay:0ms">${br?'<span class="bridge-right"></span>':''}${bd?'<span class="bridge-down"></span>':''}${seed}${target}</button>`;
  }).join('');
- $('board').querySelectorAll('.cell').forEach(b=>b.onclick=()=>touchCell(+b.dataset.i));
+ $('board').querySelectorAll('.cell').forEach(b=>{
+   b.onclick=()=>touchCell(+b.dataset.i);
+   const owner=state[+b.dataset.i];
+   if(owner>=0){
+     const highlight=()=>{if(won||failed)return; $('board').querySelectorAll('.cell.owned').forEach(tile=>{if(state[+tile.dataset.i]===owner)tile.classList.add('pressed-family')});};
+     const clear=()=>{$('board').querySelectorAll('.pressed-family').forEach(tile=>tile.classList.remove('pressed-family'));};
+     b.addEventListener('pointerdown',highlight,{passive:true});
+     b.addEventListener('pointercancel',clear);
+     b.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')clear()});
+     b.addEventListener('focus',highlight);
+     b.addEventListener('blur',clear);
+   }
+ });
  $('winOverlay').innerHTML='';
  const banner=$('banner');banner.className='banner'+(won?' win':failed?' loss':'');
  let icon='↗',copy='色のマスをタップすると、周りへ広がる。';
- if(level===0&&!history.length){icon='◉';copy='<b>色のマスに触れる。</b> 輪まで届けよう。'}
+ if(level===0&&!history.length){icon='◉';copy='<b>色のマスに触れる。</b> 薄い4マスが一度に色づく。'}
  else if(won){icon='✓';copy='<b>すべて到着。</b> 次は、色がぶつかる。'}
  else if(failed){icon='↶';copy=stolen(state,p)?'<b>ゴールがふさがれた。</b> 1手戻してみよう。':'<b>手数が足りない。</b> 1手戻して考えよう。';}
- else if(history.length===0){icon='↗';copy='先に広げた色が、場所を取る。'}
- else{icon='↗';copy='広がった場所は、ほかの色に渡せない。'}
- banner.innerHTML=`<div class="symbol">${icon}</div><div class="txt">${copy}</div>`;
+ else if(history.length===0){icon='↗';copy='上下左右に1マス。斜めには広がらない。'}
+ else{icon='↗';copy='新しく取ったマスからも、次の一手で広がる。'}
+ const growGlyph='<div class="grow-shape" aria-hidden="true"><span></span><span class="reach"></span><span></span><span class="reach"></span><span class="origin"></span><span class="reach"></span><span></span><span class="reach"></span><span></span></div>';
+ banner.innerHTML=`${won||failed?'<div class="symbol">'+icon+'</div>':growGlyph}<div class="txt">${copy}</div>`;
  $('undo').disabled=!history.length;$('next').disabled=!won||level===LEVELS.length-1;
  $('next').innerHTML=level===LEVELS.length-1?'全問題クリア ✓':'次の問題 <span class="icon">→</span>';
  $('next').classList.toggle('primary',won&&level<LEVELS.length-1);
@@ -112,7 +140,7 @@ function render(){const p=LEVELS[level];const n=p.n;$('stage').textContent=`${St
 }
 $('undo').onclick=undo;$('reset').onclick=()=>{tone('undo');setLevel(level)};$('next').onclick=()=>{if(!won||level===LEVELS.length-1)return;tone('tap');setLevel(level+1)};
 $('sound').onclick=()=>{sound=!sound;persist();$('sound').textContent=sound?'♫':'♪̸';if(sound)tone('tap')};
-$('help').onclick=()=>{$('modal').innerHTML=`<div class="dialog-bg"><div class="dialog"><small>HOW TO PLAY</small><h2>タップして、広げる。</h2><p>色のかたまりに触れると、隣の空きマスへ一斉に<strong>1マスずつ</strong>広がる。<br>同じ色の輪に、全部の色を届けたらクリア。<br>ほかの色が先に取ったマスは奪えない。だから<strong>広げる順番</strong>が大切。</p><button id="closeHelp">遊んでみる</button></div></div>`; const close=()=>{$('modal').innerHTML=''};$('closeHelp').onclick=close;$('modal').querySelector('.dialog-bg').onclick=e=>{if(e.target.classList.contains('dialog-bg'))close()}};
+$('help').onclick=()=>{$('modal').innerHTML=`<div class="dialog-bg"><div class="dialog"><small>HOW TO PLAY</small><h2>タップして、広げる。</h2><p>色のかたまりに触れると、その色の<strong>すべてのマス</strong>から、上下左右の空きマスへ一斉に<strong>1マスだけ</strong>広がる。斜めには広がらない。<br>同じ色の輪に、全部の色を届けたらクリア。<br>ほかの色が先に取ったマスは奪えない。だから<strong>広げる順番</strong>が大切。</p><button id="closeHelp">遊んでみる</button></div></div>`; const close=()=>{$('modal').innerHTML=''};$('closeHelp').onclick=close;$('modal').querySelector('.dialog-bg').onclick=e=>{if(e.target.classList.contains('dialog-bg'))close()}};
 window.__tideTest={LEVELS,get:()=>({level,board:state.slice(),history:history.length,won,failed}),setLevel,act:(color)=>{const pos=state.findIndex(v=>v===color);if(pos!==-1)touchCell(pos)},undo};
 setLevel(level);
 })();
