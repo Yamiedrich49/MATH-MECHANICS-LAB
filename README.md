@@ -5,6 +5,15 @@
 **試遊URL：** https://yamiedrich49.github.io/MATH-MECHANICS-LAB/  
 **GitHub Pages設定：** https://github.com/Yamiedrich49/MATH-MECHANICS-LAB/settings/pages
 
+## TIDE / UI refinement — 2026-11-09
+
+フィードバック：「色の広がり方のルールが曖昧」。
+
+- **確定ルール**：選んだ色の領域を構成する全マスから、上下左右の空きマスに対し、同時に1マスぶんだけ拡張。斜め移動・他色の上書き・他色を飛び越すことはできない。
+- **初回のみ**：ステージ1の次に色づく4マスを薄い色で示し、指で触れたときの変化と一致させる。ステージ2以降は新たに色づく場所を事前に表示しない（予測の楽しさを守る）。
+- **操作反応**：押した色の領域全体が同時に反応。拡張時の新規マスのアニメーションを同時化し、何段階も連鎖するように見える時間差を廃止。
+- **検証**：390px・320px幅でレイアウト確認。全8問を画面のタップ操作で再クリア、JavaScript例外なし。ゲームロジック・問題データ・進捗保存キーは変更なし。iPhone Safari実機の評価は未検証。
+
 ## NEW PLAYABLE RESEARCH — TIDE / 2026-11-08
 
 **[TIDEをプレイ](https://yamiedrich49.github.io/MATH-MECHANICS-LAB/research/tide.html)**
